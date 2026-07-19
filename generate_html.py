@@ -2134,8 +2134,9 @@ def main():
             overlay.classList.add('active');
             
             let counter = 0;
-            const maxTicks = 15;
-            let interval = 80;
+            // Aumentamos los "ticks" para que dure el doble
+            const maxTicks = 35; 
+            let interval = 40; // Comienza MUY rápido
             
             function tick() {{
                 const tempIdx = Math.floor(Math.random() * moviesData.length);
@@ -2145,7 +2146,12 @@ def main():
                 counter++;
                 
                 if (counter < maxTicks) {{
-                    if (counter > maxTicks * 0.6) interval += 40; 
+                    // Ralentizar progresivamente pero más fuerte al final
+                    if (counter > maxTicks * 0.8) {{
+                        interval += 80; // Frena bruscamente en los últimos ticks
+                    }} else if (counter > maxTicks * 0.5) {{
+                        interval += 20; // Empieza a frenar
+                    }}
                     setTimeout(tick, interval);
                 }} else {{
                     const finalIdx = Math.floor(Math.random() * moviesData.length);
