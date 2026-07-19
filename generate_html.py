@@ -1,0 +1,1798 @@
+import json
+import urllib.parse
+import os
+
+def main():
+    if not os.path.exists('movies_data.json'):
+        print("Error: movies_data.json not found!")
+        return
+
+    with open('movies_data.json', 'r', encoding='utf-8') as f:
+        movies = json.load(f)
+
+    # Generate movie cards HTML
+    cards_html = ""
+    for idx, m in enumerate(movies):
+        # Join genres
+        genres_badges = "".join([f'<span class="genre-badge" onclick="event.stopPropagation(); filterByGenre(\'{g}\')">{g}</span>' for g in m['genres']])
+        
+        # Format directors and cast
+        directors = ", ".join(m['directors']) if m['directors'] else "No disponible"
+        cast = ", ".join(m['cast'][:5]) if m['cast'] else "No disponible"
+        
+        # Prepare share messages
+        # URL-encoded text
+        share_title = m['title']
+        share_director = m['directors'][0] if m['directors'] else "director desconocido"
+        imdb_link = m['imdb_url'] or m['tmdb_url'] or "https://www.imdb.com"
+        
+        whatsapp_text = urllib.parse.quote(f"🎥 *{share_title}* ({m['year']})\n📅 {m['date']}\n🎬 Dirigida por: {share_director}\n⏱️ Duración: {m['duration']}\n🔍 Más info: {imdb_link}")
+        telegram_text = urllib.parse.quote(f"🎥 *{share_title}* ({m['year']}) - {m['date']}\n🎬 Dirigida por: {share_director}\n⏱️ Duración: {m['duration']}\n🔍 Más info: {imdb_link}")
+        
+        whatsapp_url = f"https://api.whatsapp.com/send?text={whatsapp_text}"
+        telegram_url = f"https://t.me/share/url?url={urllib.parse.quote(imdb_link)}&text={telegram_text}"
+        
+        # Unique ID for toggle and element selection
+        card_id = f"card-{idx}"
+        
+        # Dynamic poster fallback
+        poster_src = m['poster_url'] if m['poster_url'] else 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80'
+        
+        # Extract short day name and date for visual badge
+        # e.g., "Viernes, 31 de julio" -> Day: "Vie", Date: "31 Jul"
+        date_parts = m['date'].split(',')
+        day_name = date_parts[0][:3].upper() if len(date_parts) > 0 else "FILM"
+        date_num = date_parts[1].strip().replace(" de ", " ") if len(date_parts) > 1 else ""
+        # Shorten month name if possible
+        date_num = date_num.replace("julio", "Jul").replace("agosto", "Ago")
+        
+        youtube_id = m.get('youtube_id', '')
+        yt_thumb = f'https://img.youtube.com/vi/{youtube_id}/maxresdefault.jpg' if youtube_id else poster_src
+        cards_html += f"""
+        <div class="movie-card" onclick="openModal({idx})" data-title="{m['title'].lower()}" data-director="{directors.lower()}" data-genres="{','.join(m['genres']).lower()}" data-country="{m['country'].lower()}" data-date="{m['date'].lower()}" data-cast="{','.join(m['cast']).lower() if m['cast'] else ''}">
+            <div class="card-header-img">
+                <img class="poster-img" src="{poster_src}" alt="Póster de {m['title']}" loading="lazy">
+                <div class="thumb-overlay" data-yt-id="{youtube_id}" style="background-image: url('{yt_thumb}')"></div>
+                <div class="date-badge">
+                    <span class="day">{day_name}</span>
+                    <span class="num">{date_num}</span>
+                </div>
+                <div class="duration-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    {m['duration']}
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="title-section">
+                    <h3 class="movie-title">{m['title']} <span class="movie-year">({m['year']})</span></h3>
+                    <p class="movie-country">{m['country']}</p>
+                </div>
+                
+                <div class="genres-container">
+                    {genres_badges}
+                </div>
+                
+                <div class="synopsis-container">
+                    <p class="synopsis-text" id="syn-{card_id}">{m['synopsis']}</p>
+                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('{card_id}')" id="btn-{card_id}">Leer más</button>
+                </div>
+                
+                <div class="tech-spec-grid">
+                    <div class="spec-item">
+                        <span class="spec-label">Director:</span>
+                        <span class="spec-value">{directors}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Elenco principal:</span>
+                        <span class="spec-value">{cast}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="links-row">
+                    <button class="details-btn" onclick="event.stopPropagation(); openModal({idx})">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        Ver Detalles
+                    </button>
+                </div>
+                <div class="share-row">
+                    <span class="share-label">Compartir:</span>
+                    <div class="share-buttons">
+                        <a href="{whatsapp_url}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn whatsapp" title="Compartir por WhatsApp" aria-label="Compartir por WhatsApp">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.335 4.963L2 22l5.233-1.371a9.948 9.948 0 0 0 4.779 1.218h.004c5.502 0 9.99-4.478 9.99-9.988.002-2.67-1.034-5.177-2.92-7.062C17.199 3.013 14.691 2 12.012 2zm4.72 13.568c-.26.732-1.503 1.35-2.065 1.415-.561.066-1.125.107-1.912-.139a11.516 11.516 0 0 1-5.158-3.177 12.19 12.19 0 0 1-2.203-3.666 4.3 4.3 0 0 1-.225-1.92c.166-.889.585-1.38.868-1.745.283-.365.617-.456.822-.456.205 0 .41.002.589.012.192.01.442-.074.693.528.26.626.884 2.144.962 2.302.078.158.13.342.026.55-.104.208-.156.342-.312.521-.156.18-.328.401-.468.538-.156.152-.32.318-.138.63.182.312.812 1.337 1.737 2.164.925.826 1.704 1.08 2.029 1.215.325.135.513.114.707-.107.195-.221.844-.981 1.071-1.317.227-.336.455-.28.766-.165.311.115 1.97.928 2.307 1.096.337.168.562.25.642.387.08.137.08.795-.18 1.527z"/></svg>
+                        </a>
+                        <a href="{telegram_url}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """
+
+    # Read base index.html template and insert
+    html_content = f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cine Club CCC - Ciclo de Agosto 2026</title>
+    
+    <!-- Meta tags for SEO & Sharing -->
+    <meta name="description" content="Descubre la cartelera completa del Ciclo de Cine CCC para agosto de 2026. Fichas técnicas, sinopsis, imágenes y enlaces de compartir para WhatsApp y Telegram.">
+    <meta property="og:title" content="Cine Club CCC - Ciclo de Agosto 2026">
+    <meta property="og:description" content="Programación completa de películas desde el 31 de julio hasta el 30 de agosto de 2026. Tarjetas interactivas de películas para compartir.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&q=80">
+    <meta property="og:type" content="website">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {{
+            --bg-primary: #0d1a14;      /* teal oscuro del cartel */
+            --bg-secondary: #122019;
+            --bg-card: rgba(20, 45, 30, 0.45);
+            --bg-card-hover: rgba(20, 45, 30, 0.65);
+            --accent: #c8362b;          /* rojo carmesí del cartel */
+            --accent-glow: rgba(200, 54, 43, 0.35);
+            --teal: #1c4232;
+            --teal-light: #2d6e4e;
+            --cream: #f4efe0;           /* crema del fondo del cartel */
+            --text-main: #f0ead6;
+            --text-muted: #8faa98;
+            --text-dark: #5a7a66;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            
+            --whatsapp: #25d366;
+            --telegram: #0088cc;
+            --imdb: #f5c518;
+        }}
+        
+        * {{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }}
+        
+        body {{
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(ellipse at 15% 0%, rgba(44, 110, 78, 0.18) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 10%, rgba(200, 54, 43, 0.08) 0%, transparent 45%);
+            background-attachment: fixed;
+        }}
+        
+        header {{
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem 3rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 3rem;
+            text-align: left;
+        }}
+        
+        .header-content {{
+            min-width: 0;
+        }}
+        
+        .header-poster {{
+            flex-shrink: 0;
+            width: 220px;
+            position: relative;
+        }}
+        
+        .header-poster img {{
+            width: 100%;
+            border-radius: 8px;
+            box-shadow:
+                0 4px 6px rgba(0,0,0,0.2),
+                0 20px 60px rgba(0,0,0,0.5),
+                0 0 0 1px rgba(255,255,255,0.06);
+            transform: rotate(2deg);
+            transition: transform 0.4s ease;
+        }}
+        
+        .header-poster img:hover {{
+            transform: rotate(0deg) scale(1.03);
+        }}
+        
+        .header-eyebrow {{
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }}
+        
+        .header-logo {{
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 0.12rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }}
+        
+        .header-divider {{
+            width: 1px;
+            height: 1rem;
+            background: var(--border-color);
+        }}
+        
+        .header-tag {{
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            font-weight: 700;
+            font-size: 0.78rem;
+            display: inline-block;
+        }}
+        
+        h1 {{
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(3.5rem, 7vw, 6.5rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.1em;
+            line-height: 0.92;
+            color: var(--cream);
+            /* Subtle double-color effect like the poster */
+            background: none;
+            -webkit-text-fill-color: var(--cream);
+        }}
+        
+        .header-subtitle-edition {{
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            font-weight: 600;
+            font-style: italic;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }}
+        
+        .subtitle {{
+            color: var(--text-muted);
+            max-width: 560px;
+            margin-bottom: 1.75rem;
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.7;
+        }}
+        
+        .header-info-pills {{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1.75rem;
+        }}
+        
+        .info-pill {{
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 0.4rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }}
+        
+        .info-pill svg {{
+            width: 0.85rem;
+            height: 0.85rem;
+            color: var(--accent);
+            flex-shrink: 0;
+        }}
+        
+        /* Share program banner */
+        .share-program-container {{
+            margin-top: 0;
+        }}
+        .share-program-btn {{
+            background: rgba(200, 54, 43, 0.12);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }}
+        .share-program-btn:hover {{
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-2px);
+        }}
+        
+        @media (max-width: 768px) {{
+            header {{
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 3rem 1.5rem 2rem;
+                gap: 2rem;
+            }}
+            .header-poster {{
+                width: 160px;
+                margin: 0 auto;
+            }}
+            .header-eyebrow, .header-info-pills {{
+                justify-content: center;
+            }}
+            .subtitle {{ max-width: 100%; }}
+        }}
+        
+        /* Filters and Search */
+        .controls-wrapper {{
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 1.5rem;
+        }}
+        
+        .controls-card {{
+            background: rgba(30, 41, 59, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-glow);
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }}
+        
+        .search-row {{
+            position: relative;
+            width: 100%;
+        }}
+        
+        .search-input {{
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1rem 1rem 3rem;
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }}
+        
+        .search-input:focus {{
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
+            background: rgba(15, 23, 42, 0.8);
+        }}
+        
+        .search-icon {{
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.2rem;
+            height: 1.2rem;
+            color: var(--text-dark);
+            pointer-events: none;
+        }}
+        
+        .filters-row {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            justify-content: center;
+        }}
+        
+        .filter-label {{
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }}
+        
+        .filter-chip {{
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }}
+        
+        .filter-chip:hover {{
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+        }}
+        
+        .filter-chip.active {{
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+            font-weight: 600;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }}
+        
+        .stats-row {{
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.75rem;
+            text-align: center;
+        }}
+        
+        .clear-filters-btn {{
+            color: var(--accent);
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: opacity 0.2s;
+        }}
+        
+        .clear-filters-btn:hover {{
+            text-decoration: underline;
+        }}
+        
+        /* Grid */
+        .movies-grid {{
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2.5rem 2rem;
+            transition: all 0.3s ease;
+        }}
+        
+        /* Movie Card */
+        .movie-card {{
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-glow);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            height: 100%;
+        }}
+        
+        .movie-card:hover {{
+            transform: translateY(-8px);
+            border-color: rgba(245, 158, 11, 0.4);
+            background: var(--bg-card-hover);
+            box-shadow: 0 20px 38px rgba(0,0,0,0.5), 0 0 20px rgba(245,158,11,0.05);
+        }}
+        
+        .card-header-img {{
+            position: relative;
+            height: 480px;
+            overflow: hidden;
+        }}
+        
+        /* Ken Burns: poster zoom on hover */
+        .card-header-img img.poster-img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.6s ease;
+            transform-origin: center center;
+        }}
+        
+        .movie-card:hover .card-header-img img.poster-img {{
+            transform: scale(1.12);
+        }}
+
+        /* YouTube thumbnail overlay with Ken Burns */
+        @keyframes kenBurns {{
+            0%   {{ transform: scale(1.05) translate(0, 0); }}
+            33%  {{ transform: scale(1.12) translate(-1.5%, 1%); }}
+            66%  {{ transform: scale(1.1)  translate(1.5%, -0.5%); }}
+            100% {{ transform: scale(1.05) translate(0, 0); }}
+        }}
+        
+        .thumb-overlay {{
+            position: absolute;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            z-index: 1;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            transform: scale(1.05);
+            pointer-events: none;
+        }}
+        
+        .movie-card:hover .thumb-overlay {{
+            opacity: 1;
+            animation: kenBurns 8s ease-in-out infinite;
+        }}
+        
+        .card-header-img::after {{
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to top, var(--bg-primary) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 2;
+        }}
+        
+        /* Badge Date */
+        .date-badge {{
+            position: absolute;
+            top: 1.25rem;
+            left: 1.25rem;
+            z-index: 2;
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 0.9rem;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 2;
+        }}
+        
+        .date-badge .day {{
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+        }}
+        
+        .date-badge .num {{
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-top: 0.1rem;
+        }}
+        
+        /* Duration Pill */
+        .duration-pill {{
+            position: absolute;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            z-index: 2;
+            background: rgba(11, 15, 25, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 2;
+        }}
+        
+        .duration-pill svg {{
+            width: 0.85rem;
+            height: 0.85rem;
+            color: var(--accent);
+        }}
+        
+        /* Card Body */
+        .card-body {{
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            background: linear-gradient(to bottom, var(--bg-primary) 0%, rgba(19, 26, 44, 0.3) 100%);
+        }}
+        
+        .title-section {{
+            margin-bottom: 1rem;
+        }}
+        
+        .movie-title {{
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }}
+        
+        .movie-year {{
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 1.1rem;
+        }}
+        
+        .movie-country {{
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+        }}
+        
+        /* Genre list */
+        .genres-container {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.25rem;
+        }}
+        
+        .genre-badge {{
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }}
+        
+        .genre-badge:hover {{
+            background: var(--accent-glow);
+            color: var(--accent);
+            border-color: var(--accent);
+        }}
+        
+        /* Synopsis */
+        .synopsis-container {{
+            margin-bottom: 1.5rem;
+            position: relative;
+        }}
+        
+        .synopsis-text {{
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }}
+        
+        .synopsis-text.expanded {{
+            display: block;
+            -webkit-line-clamp: initial;
+            overflow: visible;
+        }}
+        
+        .toggle-synopsis-btn {{
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.4rem;
+            padding: 0;
+            display: block;
+            transition: color 0.2s;
+        }}
+        
+        .toggle-synopsis-btn:hover {{
+            color: #fff;
+            text-decoration: underline;
+        }}
+        
+        /* Technical details */
+        .tech-spec-grid {{
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.25rem;
+            margin-top: auto;
+        }}
+        
+        .spec-item {{
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }}
+        
+        .spec-label {{
+            font-size: 0.75rem;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05rem;
+        }}
+        
+        .spec-value {{
+            font-size: 0.9rem;
+            color: var(--text-main);
+            font-weight: 400;
+        }}
+        
+        /* Footer Actions */
+        .card-footer {{
+            padding: 1.25rem 1.75rem;
+            background: rgba(11, 15, 25, 0.4);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }}
+        
+        .links-row {{
+            display: flex;
+            width: 100%;
+        }}
+        
+        .imdb-btn {{
+            width: 100%;
+            background: var(--imdb);
+            color: #000;
+            font-weight: 700;
+            text-decoration: none;
+            padding: 0.7rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(245, 197, 24, 0.15);
+        }}
+        
+        .imdb-btn:hover {{
+            background: #fff;
+            box-shadow: 0 6px 18px rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }}
+        
+        .imdb-btn svg {{
+            width: 1.2rem;
+            height: 1.2rem;
+        }}
+        
+        .share-row {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }}
+        
+        .share-label {{
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            font-weight: 700;
+        }}
+        
+        .share-buttons {{
+            display: flex;
+            gap: 0.6rem;
+        }}
+        
+        .share-btn {{
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+        }}
+        
+        .share-btn svg {{
+            width: 1.1rem;
+            height: 1.1rem;
+        }}
+        
+        .share-btn.whatsapp:hover {{
+            background: var(--whatsapp);
+            border-color: var(--whatsapp);
+            box-shadow: 0 0 12px rgba(37, 211, 102, 0.4);
+            transform: scale(1.1);
+        }}
+        
+        .share-btn.telegram:hover {{
+            background: var(--telegram);
+            border-color: var(--telegram);
+            box-shadow: 0 0 12px rgba(0, 136, 204, 0.4);
+            transform: scale(1.1);
+        }}
+        
+        /* Empty State */
+        .empty-state {{
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+            display: none;
+        }}
+        
+        .empty-state svg {{
+            width: 4rem;
+            height: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            stroke-width: 1.5;
+        }}
+        
+        .empty-state h3 {{
+            font-size: 1.5rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }}
+        
+        footer {{
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(11, 15, 25, 0.6);
+            backdrop-filter: blur(10px);
+        }}
+        
+        /* Toast notification */
+        .toast {{
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent);
+            color: var(--text-main);
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            z-index: 1000;
+            transform: translateY(150%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }}
+        
+        .toast.show {{
+            transform: translateY(0);
+        }}
+        
+        .toast svg {{
+            color: var(--accent);
+            width: 1.2rem;
+            height: 1.2rem;
+        }}
+        
+        /* Modal Detail View Overlay */
+        .modal-overlay {{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 1000;
+            display: block;
+            padding: 4rem 1rem;
+            overflow-y: auto;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }}
+        
+        .modal-overlay.open {{
+            opacity: 1;
+            pointer-events: all;
+        }}
+        
+        .modal-container {{
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            background: #0e1322;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            margin: 0 auto;
+        }}
+        
+        .modal-overlay.open .modal-container {{
+            transform: scale(1) translateY(0);
+        }}
+        
+        .modal-close-btn {{
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 1100;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }}
+        
+        .modal-close-btn:hover {{
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
+            transform: rotate(90deg);
+            box-shadow: 0 0 15px var(--accent);
+        }}
+        
+        .modal-video-header {{
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 50.25%; /* 16:9 Aspect Ratio */
+            background: #000;
+            overflow: hidden;
+        }}
+        
+        .video-wrapper {{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }}
+        
+        .video-wrapper iframe {{
+            width: 100%;
+            height: 100%;
+            border: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+        }}
+        
+        .video-wrapper iframe.fade-in {{
+            opacity: 1;
+        }}
+        
+        .video-overlay-gradient {{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to top, #0e1322, transparent);
+            pointer-events: none;
+        }}
+        
+        .modal-header-info {{
+            position: absolute;
+            bottom: 2rem;
+            left: 3rem;
+            right: 3rem;
+            z-index: 2;
+            pointer-events: none;
+        }}
+        
+        .modal-date-badge {{
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid var(--accent);
+            padding: 0.35rem 0.8rem;
+            border-radius: 50px;
+            display: inline-block;
+        }}
+        
+        .modal-title {{
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            line-height: 1.2;
+            margin-top: 0.6rem;
+            color: #fff;
+        }}
+        
+        .modal-subtitle {{
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-top: 0.25rem;
+        }}
+        
+        .modal-body {{
+            padding: 3rem;
+            background: #0e1322;
+        }}
+        
+        .modal-grid {{
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 3rem;
+        }}
+        
+        .modal-poster-wrapper {{
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+            background: rgba(255,255,255,0.02);
+            aspect-ratio: 2/3;
+        }}
+        
+        .modal-poster-wrapper img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }}
+        
+        .modal-meta-pills {{
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }}
+        
+        .meta-pill-item {{
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }}
+        
+        .pill-label {{
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            font-weight: 700;
+            letter-spacing: 0.05rem;
+        }}
+        
+        .pill-value {{
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }}
+        
+        .modal-main-content {{
+            display: flex;
+            flex-direction: column;
+            gap: 2.2rem;
+        }}
+        
+        .modal-section {{
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }}
+        
+        .section-title {{
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 0.12rem;
+            border-left: 3px solid var(--accent);
+            padding-left: 0.75rem;
+            line-height: 1;
+        }}
+        
+        .modal-synopsis {{
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-weight: 300;
+        }}
+        
+        .spec-value-large {{
+            font-size: 1.1rem;
+            color: var(--text-main);
+            font-weight: 400;
+        }}
+        
+        .modal-section-grid {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }}
+        
+        .resources-section {{
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 1.5rem;
+        }}
+        
+        .resources-buttons {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }}
+        
+        .resource-btn {{
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }}
+        
+        .resource-btn.imdb {{
+            background: rgba(245, 197, 24, 0.1);
+            border: 1px solid #f5c518;
+            color: #f5c518;
+        }}
+        
+        .resource-btn.imdb:hover {{
+            background: #f5c518;
+            color: #000;
+            box-shadow: 0 0 15px rgba(245, 197, 24, 0.3);
+        }}
+        
+        .resource-btn.tmdb {{
+            background: rgba(3, 180, 228, 0.1);
+            border: 1px solid #03b4e4;
+            color: #03b4e4;
+        }}
+        
+        .resource-btn.tmdb:hover {{
+            background: #03b4e4;
+            color: #000;
+            box-shadow: 0 0 15px rgba(3, 180, 228, 0.3);
+        }}
+        
+        .resource-btn.share {{
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+        }}
+        
+        .resource-btn.share:hover {{
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }}
+        
+        /* Details button style for cards */
+        .details-btn {{
+            width: 100%;
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0.7rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }}
+        
+        .details-btn:hover {{
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 4px 15px var(--accent-glow);
+            transform: translateY(-1px);
+        }}
+        
+        .details-btn svg {{
+            width: 1.2rem;
+            height: 1.2rem;
+        }}
+
+        /* Make cards cursor pointer and liftable */
+        .movie-card {{
+            cursor: pointer;
+        }}
+        
+        /* Responsive design adjustments */
+        @media (max-width: 768px) {{
+            h1 {{
+                font-size: 2.2rem;
+            }}
+            header {{
+                padding: 3rem 1rem 1.5rem;
+            }}
+            .card-header-img {{
+                height: 400px;
+            }}
+            .movies-grid {{
+                grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+                gap: 1.5rem;
+                padding: 0 1rem 4rem;
+            }}
+            .controls-wrapper {{
+                padding: 0 1rem;
+            }}
+            .modal-overlay {{
+                padding: 1rem;
+            }}
+            .modal-container {{
+                border-radius: 16px;
+            }}
+            .modal-close-btn {{
+                top: 1rem;
+                right: 1rem;
+                width: 2.5rem;
+                height: 2.5rem;
+            }}
+            .modal-video-header {{
+                padding-bottom: 56.25%; /* normal 16:9 on mobile */
+            }}
+            .modal-title {{
+                font-size: 1.8rem;
+            }}
+            .modal-header-info {{
+                bottom: 1.5rem;
+                left: 1.5rem;
+                right: 1.5rem;
+            }}
+            .modal-body {{
+                padding: 1.5rem;
+            }}
+            .modal-grid {{
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }}
+            .modal-poster-wrapper {{
+                max-width: 180px;
+                margin: 0 auto;
+            }}
+            .modal-meta-pills {{
+                flex-direction: row;
+                justify-content: center;
+            }}
+            .meta-pill-item {{
+                flex: 1;
+                text-align: center;
+            }}
+            .modal-section-grid {{
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }}
+            .resources-buttons {{
+                flex-direction: column;
+            }}
+            .resource-btn {{
+                width: 100%;
+                justify-content: center;
+            }}
+        }}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="header-eyebrow">
+                <span class="header-logo">CCCC · Centre del Carme</span>
+                <div class="header-divider"></div>
+                <span class="header-tag">Cinema d&#39;Estiu 2026</span>
+            </div>
+            
+            <h1>Embriagados<br>de humor</h1>
+            <p class="header-subtitle-edition">América y la comedia &mdash; 3&ordf; edición</p>
+            
+            <p class="subtitle">Un recorrido por la comedia producida en América. Mockumentaries, clásicos incúnables, cine político y de autor. Películas donde la personalidad triunfa y el placer campa a sus anchas.</p>
+            
+            <div class="header-info-pills">
+                <span class="info-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    31 julio &ndash; 30 agosto 2026
+                </span>
+                <span class="info-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    A las 22:00 h
+                </span>
+                <span class="info-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    C/ Museo, 2 &middot; Valencia
+                </span>
+                <span class="info-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"></path><path d="M22 7H2v5h20V7z"></path><path d="M12 22V7"></path><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+                    Entrada gratuita
+                </span>
+                <span class="info-pill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    V.O. subtitulada
+                </span>
+            </div>
+        </div>
+        
+        <div class="header-poster">
+            <img src="poster.png" alt="Cartel oficial CCCC Cinema d'Estiu 2026">
+        </div>
+    </header>
+
+    <div class="controls-wrapper">
+        <div class="controls-card">
+            <div class="search-row">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar película por título, director, país, fecha..." oninput="filterMovies()">
+            </div>
+            
+
+            <div class="stats-row">
+                <span id="results-count">Mostrando 27 de 27 películas</span>
+                <button class="clear-filters-btn" id="clear-btn" onclick="clearFilters()" style="display: none;">Limpiar filtros</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="movies-grid" id="movies-grid">
+        {cards_html}
+        
+        <div class="empty-state" id="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            <h3>No se encontraron películas</h3>
+            <p>Prueba a buscar con otros términos o limpia los filtros activos.</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Cine Club CCC. Todos los derechos reservados.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.6;">Fichas técnicas y sinopsis oficiales extraídas del programa del Centre del Carme (CCCC).</p>
+    </footer>
+
+    <!-- Movie Details Modal -->
+    <div id="movie-modal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-container" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeModal()" aria-label="Cerrar detalles">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            
+            <!-- Fullscreen Video/Trailer Header -->
+            <div class="modal-video-header" id="modal-video-header">
+                <div class="video-wrapper">
+                    <iframe id="modal-trailer-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="video-overlay-gradient"></div>
+                <div class="modal-header-info">
+                    <span class="modal-date-badge" id="modal-date"></span>
+                    <h2 class="modal-title" id="modal-title"></h2>
+                    <p class="modal-subtitle" id="modal-subtitle"></p>
+                </div>
+            </div>
+            
+            <!-- Modal Body Content -->
+            <div class="modal-body">
+                <div class="modal-grid">
+                    <!-- Left side: Poster & Metadata pills -->
+                    <div class="modal-sidebar">
+                        <div class="modal-poster-wrapper">
+                            <img id="modal-poster" src="" alt="Poster de la película">
+                        </div>
+                        <div class="modal-meta-pills">
+                            <div class="meta-pill-item">
+                                <span class="pill-label">País</span>
+                                <span class="pill-value" id="modal-country"></span>
+                            </div>
+                            <div class="meta-pill-item">
+                                <span class="pill-label">Duración</span>
+                                <span class="pill-value" id="modal-duration"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right side: Synopsis, Genres, Tech Spec -->
+                    <div class="modal-main-content">
+                        <div class="modal-section">
+                            <h4 class="section-title">Sinopsis</h4>
+                            <p class="modal-synopsis" id="modal-synopsis"></p>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h4 class="section-title">Géneros</h4>
+                            <div class="genres-container" id="modal-genres"></div>
+                        </div>
+                        
+                        <div class="modal-section-grid">
+                            <div class="modal-section">
+                                <h4 class="section-title">Director(es)</h4>
+                                <p class="spec-value-large" id="modal-directors"></p>
+                            </div>
+                            <div class="modal-section">
+                                <h4 class="section-title">Reparto Principal</h4>
+                                <p class="spec-value-large" id="modal-cast"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-section resources-section">
+                            <h4 class="section-title">Recursos y Enlaces</h4>
+                            <div class="resources-buttons">
+                                <a id="modal-link-imdb" href="" target="_blank" class="resource-btn imdb">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-6h2v6zm4 0h-2v-4h-1v4h-2v-6h3c1.1 0 2 .9 2 2v4z"/></svg>
+                                    Ver en IMDb
+                                </a>
+                                <a id="modal-link-tmdb" href="" target="_blank" class="resource-btn tmdb">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-6h2v6zm4 0h-2v-4h-1v4h-2v-6h3c1.1 0 2 .9 2 2v4z"/></svg>
+                                    Ver en TMDb
+                                </a>
+                                <button class="resource-btn share" onclick="shareCurrentMovieModal()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                                    Copiar Invitación
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast message -->
+    <div class="toast" id="copy-toast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span id="toast-message">Copiado al portapapeles</span>
+    </div>
+
+    <script>
+        const moviesData = {json.dumps(movies, ensure_ascii=False)};
+        let activeDayFilter = null;
+        let activeGenreFilter = null;
+
+        function toggleSynopsis(cardId) {{
+            const synopsis = document.getElementById(`syn-${{cardId}}`);
+            const btn = document.getElementById(`btn-${{cardId}}`);
+            
+            if (synopsis.classList.contains('expanded')) {{
+                synopsis.classList.remove('expanded');
+                btn.textContent = 'Leer más';
+            }} else {{
+                synopsis.classList.add('expanded');
+                btn.textContent = 'Leer menos';
+            }}
+        }}
+        // YouTube thumbnail fallback:
+        // maxresdefault.jpg may not exist -> YouTube returns a 120x90 grey placeholder.
+        // We detect this by checking naturalWidth and fall back through sddefault -> hqdefault -> poster.
+        document.querySelectorAll('.thumb-overlay[data-yt-id]').forEach(el => {{
+            const ytId = el.getAttribute('data-yt-id');
+            if (!ytId) return;
+            
+            const fallbacks = [
+                `https://img.youtube.com/vi/${{ytId}}/maxresdefault.jpg`,
+                `https://img.youtube.com/vi/${{ytId}}/sddefault.jpg`,
+                `https://img.youtube.com/vi/${{ytId}}/hqdefault.jpg`,
+            ];
+            
+            function tryNext(index) {{
+                if (index >= fallbacks.length) return; // keep poster as bg
+                const img = new Image();
+                img.onload = function() {{
+                    if (this.naturalWidth <= 120) {{
+                        // YouTube 404 placeholder is 120x90
+                        tryNext(index + 1);
+                    }} else {{
+                        el.style.backgroundImage = `url('${{fallbacks[index]}}')`;
+                    }}
+                }};
+                img.onerror = () => tryNext(index + 1);
+                img.src = fallbacks[index];
+            }}
+            tryNext(0);
+        }});
+
+
+        function toggleDayFilter(day, element) {{
+            const chips = document.querySelectorAll('.filters-row .filter-chip');
+            
+            if (activeDayFilter === day) {{
+                activeDayFilter = null;
+                element.classList.remove('active');
+            }} else {{
+                activeDayFilter = day;
+                chips.forEach(c => c.classList.remove('active'));
+                element.classList.add('active');
+            }}
+            
+            filterMovies();
+        }}
+
+        function filterByGenre(genre) {{
+            // Custom filtering by genre badge click
+            activeGenreFilter = genre;
+            // Let's set the search input or handle genre filter directly
+            document.getElementById('search-input').value = genre;
+            filterMovies();
+            showToast(`Filtrado por género: ${{genre}}`);
+        }}
+
+        function filterMovies() {{
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.movie-card');
+            let visibleCount = 0;
+            
+            cards.forEach(card => {{
+                const title = card.getAttribute('data-title');
+                const director = card.getAttribute('data-director');
+                const genres = card.getAttribute('data-genres');
+                const country = card.getAttribute('data-country');
+                const date = card.getAttribute('data-date');
+                const cast = card.getAttribute('data-cast') || '';
+                
+                let matchesSearch = !query || 
+                    title.includes(query) || 
+                    director.includes(query) || 
+                    genres.includes(query) || 
+                    country.includes(query) ||
+                    date.includes(query) ||
+                    cast.includes(query);
+                    
+                let matchesDay = true;
+                if (activeDayFilter) {{
+                    // check if the date attribute starts with the activeDayFilter
+                    matchesDay = date.startsWith(activeDayFilter);
+                }}
+                
+                if (matchesSearch && matchesDay) {{
+                    card.style.display = 'flex';
+                    visibleCount++;
+                }} else {{
+                    card.style.display = 'none';
+                }}
+            }});
+            
+            // Show/hide empty state
+            const emptyState = document.getElementById('empty-state');
+            if (visibleCount === 0) {{
+                emptyState.style.display = 'block';
+            }} else {{
+                emptyState.style.display = 'none';
+            }}
+            
+            // Update results text
+            const resultsText = document.getElementById('results-count');
+            resultsText.textContent = `Mostrando ${{visibleCount}} de ${{cards.length}} películas`;
+            
+            // Show clear button if filters or search are active
+            const clearBtn = document.getElementById('clear-btn');
+            if (query || activeDayFilter) {{
+                clearBtn.style.display = 'inline-block';
+            }} else {{
+                clearBtn.style.display = 'none';
+            }}
+        }}
+
+        function clearFilters() {{
+            document.getElementById('search-input').value = '';
+            activeDayFilter = null;
+            activeGenreFilter = null;
+            
+            const chips = document.querySelectorAll('.filters-row .filter-chip');
+            chips.forEach(c => c.classList.remove('active'));
+            
+            filterMovies();
+        }}
+
+        function copyFullProgramInvite() {{
+            const inviteText = `🎬 *CICLO DE CINE CCC - AGOSTO 2026* 🎬\n\nTe invito a ver la cartelera de películas programada para este mes. Aquí tienes los detalles del ciclo completo:\n\n🔗 Web Oficial: ${{window.location.origin + window.location.pathname}}\n\n📅 ¡Elige tus días favoritos y acompáñanos!`;
+            
+            navigator.clipboard.writeText(inviteText).then(() => {{
+                showToast("Invitación copiada al portapapeles 📋");
+            }}).catch(err => {{
+                console.error('Error copying text: ', err);
+            }});
+        }}
+
+        function showToast(message) {{
+            const toast = document.getElementById('copy-toast');
+            const msgEl = document.getElementById('toast-message');
+            msgEl.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {{
+                toast.classList.remove('show');
+            }}, 3000);
+        }}
+
+        let currentMovieIndex = null;
+
+        function openModal(idx) {{
+            const movie = moviesData[idx];
+            currentMovieIndex = idx;
+            
+            document.getElementById('modal-title').innerText = movie.title;
+            document.getElementById('modal-subtitle').innerText = `${{movie.year}} · ${{movie.country}} · ${{movie.duration}}`;
+            document.getElementById('modal-date').innerText = movie.date;
+            document.getElementById('modal-poster').src = movie.poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
+            document.getElementById('modal-poster').alt = `Póster de ${{movie.title}}`;
+            document.getElementById('modal-country').innerText = movie.country;
+            document.getElementById('modal-duration').innerText = movie.duration;
+            document.getElementById('modal-synopsis').innerText = movie.synopsis;
+            
+            // Genres
+            const genresContainer = document.getElementById('modal-genres');
+            genresContainer.innerHTML = movie.genres.map(g => `<span class="genre-badge" onclick="closeModalAndFilterGenre('${{g}}')">${{g}}</span>`).join('');
+            
+            // Directors & Cast
+            document.getElementById('modal-directors').innerText = movie.directors.join(', ') || 'No disponible';
+            document.getElementById('modal-cast').innerText = movie.cast.join(', ') || 'No disponible';
+            
+            // Links
+            const imdbLink = movie.imdb_url || movie.tmdb_url || 'https://www.imdb.com';
+            document.getElementById('modal-link-imdb').href = imdbLink;
+            
+            const tmdbEl = document.getElementById('modal-link-tmdb');
+            if (!movie.tmdb_url) {{
+                tmdbEl.style.display = 'none';
+            }} else {{
+                tmdbEl.href = movie.tmdb_url;
+                tmdbEl.style.display = 'inline-flex';
+            }}
+            
+            // Set YouTube Trailer Iframe source
+            const iframe = document.getElementById('modal-trailer-iframe');
+            iframe.classList.remove('fade-in');
+            
+            if (movie.youtube_id) {{
+                iframe.src = `https://www.youtube.com/embed/${{movie.youtube_id}}?autoplay=1&mute=0&controls=0&loop=1&playlist=${{movie.youtube_id}}`;
+                setTimeout(() => {{
+                    iframe.classList.add('fade-in');
+                }}, 600);
+            }} else {{
+                iframe.src = '';
+            }}
+            
+            // Open Modal
+            const modal = document.getElementById('movie-modal');
+            modal.style.display = 'block';
+            // Force reflow for transitions
+            modal.offsetHeight;
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden'; // prevent scrolling behind
+            
+            // Update URL hash without jumping page
+            history.pushState(null, null, `#movie-${{idx}}`);
+        }}
+
+        function closeModal() {{
+            const modal = document.getElementById('movie-modal');
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+            
+            // Reset iframe to stop playback
+            const iframe = document.getElementById('modal-trailer-iframe');
+            iframe.classList.remove('fade-in');
+            iframe.src = '';
+            
+            // Clear URL hash
+            history.pushState(null, null, ' ');
+            
+            setTimeout(() => {{
+                modal.style.display = 'none';
+            }}, 400);
+        }}
+
+        function closeModalAndFilterGenre(genre) {{
+            closeModal();
+            setTimeout(() => {{
+                filterByGenre(genre);
+            }}, 450);
+        }}
+
+        function shareCurrentMovieModal() {{
+            if (currentMovieIndex === null) return;
+            const movie = moviesData[currentMovieIndex];
+            const shareUrl = `${{window.location.origin + window.location.pathname}}#movie-${{currentMovieIndex}}`;
+            const shareText = `🎥 *${{movie.title}}* (${{movie.year}})\n📅 ${{movie.date}}\n🎬 Dirigida por: ${{movie.directors.join(', ')}}\n⏱️ Duración: ${{movie.duration}}\n\n🔗 Ver ficha técnica y trailer completo en:\n${{shareUrl}}`;
+            
+            navigator.clipboard.writeText(shareText).then(() => {{
+                showToast("¡Enlace e invitación a la película copiados! 📋");
+            }}).catch(err => {{
+                console.error("Error al copiar enlace", err);
+            }});
+        }}
+
+        // Listen for browser navigation (back button) or initial hash
+        window.addEventListener('popstate', () => {{
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#movie-')) {{
+                const idx = parseInt(hash.replace('#movie-', ''), 10);
+                if (!isNaN(idx) && idx >= 0 && idx < moviesData.length) {{
+                    openModal(idx);
+                }}
+            }} else {{
+                const modal = document.getElementById('movie-modal');
+                if (modal.classList.contains('open')) {{
+                    closeModal();
+                }}
+            }}
+        }});
+
+        window.addEventListener('DOMContentLoaded', () => {{
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#movie-')) {{
+                const idx = parseInt(hash.replace('#movie-', ''), 10);
+                if (!isNaN(idx) && idx >= 0 && idx < moviesData.length) {{
+                    setTimeout(() => {{
+                        openModal(idx);
+                    }}, 400);
+                }}
+            }}
+        }});
+    </script>
+</body>
+</html>
+"""
+
+    with open('index.html', 'w', encoding='utf-8') as f:
+        f.write(html_content)
+
+    print("index.html generated successfully!")
+
+if __name__ == '__main__':
+    main()
