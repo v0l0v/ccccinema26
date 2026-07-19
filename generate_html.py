@@ -901,6 +901,26 @@ def main():
             height: 1.2rem;
         }}
         
+        /* Poster Modal */
+        #poster-modal {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }}
+        .poster-modal-img {{
+            max-width: 100%;
+            max-height: 95vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            transform: scale(0.95);
+            transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: zoom-out;
+        }}
+        #poster-modal.open .poster-modal-img {{
+            transform: scale(1);
+        }}
+        
         /* Modal Detail View Overlay */
         .modal-overlay {{
             position: fixed;
@@ -1380,8 +1400,8 @@ def main():
             </div>
         </div>
         
-        <div class="header-poster">
-            <img src="poster.png" alt="Cartel oficial CCCC Cinema d'Estiu 2026">
+        <div class="header-poster" style="cursor: pointer;" onclick="openPosterModal()">
+            <img src="poster.png" alt="Cartel oficial CCCC Cinema d'Estiu 2026" title="Ver cartel en grande">
         </div>
     </header>
 
@@ -1414,6 +1434,11 @@ def main():
     </main>
 
 
+
+    <!-- Poster Modal -->
+    <div id="poster-modal" class="modal-overlay" onclick="closePosterModal()">
+        <img src="poster.png" class="poster-modal-img" alt="Cartel en grande" onclick="event.stopPropagation(); closePosterModal()">
+    </div>
 
     <!-- Movie Details Modal -->
     <div id="movie-modal" class="modal-overlay" onclick="closeModal()">
@@ -1733,6 +1758,16 @@ def main():
             
             // Update URL hash without jumping page
             history.pushState(null, null, `#movie-${{idx}}`);
+        }}
+
+        function openPosterModal() {{
+            document.getElementById('poster-modal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }}
+        
+        function closePosterModal() {{
+            document.getElementById('poster-modal').classList.remove('open');
+            document.body.style.overflow = '';
         }}
 
         function closeModal() {{
