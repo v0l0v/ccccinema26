@@ -134,19 +134,19 @@ def main():
     
     <style>
         :root {{
-            --bg-primary: #0d1a14;      /* teal oscuro del cartel */
-            --bg-secondary: #122019;
-            --bg-card: rgba(20, 45, 30, 0.45);
-            --bg-card-hover: rgba(20, 45, 30, 0.65);
-            --accent: #c8362b;          /* rojo carmesí del cartel */
-            --accent-glow: rgba(200, 54, 43, 0.35);
-            --teal: #1c4232;
-            --teal-light: #2d6e4e;
-            --cream: #f4efe0;           /* crema del fondo del cartel */
-            --text-main: #f0ead6;
-            --text-muted: #8faa98;
-            --text-dark: #5a7a66;
-            --border-color: rgba(255, 255, 255, 0.08);
+            --bg-primary: #122d2a;      /* verde muy oscuro basado en el cartel */
+            --bg-secondary: #1a423e;
+            --bg-card: rgba(29, 70, 66, 0.6);
+            --bg-card-hover: rgba(19, 120, 82, 0.3);
+            --accent: #d22c36;          /* granate/rojo carmesí del macetero/boca */
+            --accent-glow: rgba(210, 44, 54, 0.4);
+            --teal: #137852;            /* verde medio de las hojas */
+            --teal-light: #4db579;      /* verde claro de los detalles de las hojas */
+            --cream: #f7f0e1;           /* crema del fondo del cartel */
+            --text-main: #f7f0e1;
+            --text-muted: #a6c4b5;
+            --text-dark: #6a9680;
+            --border-color: rgba(77, 181, 121, 0.15);
             --shadow-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
             
             --whatsapp: #25d366;
@@ -167,8 +167,8 @@ def main():
             line-height: 1.6;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(ellipse at 15% 0%, rgba(44, 110, 78, 0.18) 0%, transparent 50%),
-                radial-gradient(ellipse at 85% 10%, rgba(200, 54, 43, 0.08) 0%, transparent 45%);
+                radial-gradient(ellipse at 15% 0%, rgba(19, 120, 82, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 10%, rgba(210, 44, 54, 0.15) 0%, transparent 45%);
             background-attachment: fixed;
         }}
         
@@ -1222,14 +1222,14 @@ def main():
         /* Details button style for cards */
         .details-btn {{
             width: 100%;
-            background: rgba(245, 158, 11, 0.08);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            font-weight: 700;
+            background: var(--cream);
+            border: 1px solid var(--cream);
+            color: var(--bg-primary);
+            font-weight: 800;
             cursor: pointer;
             padding: 0.7rem;
             border-radius: 12px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-family: inherit;
             display: flex;
             align-items: center;
@@ -1240,9 +1240,10 @@ def main():
         
         .details-btn:hover {{
             background: var(--accent);
-            color: #000;
+            border-color: var(--accent);
+            color: var(--cream);
             box-shadow: 0 4px 15px var(--accent-glow);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }}
         
         .details-btn svg {{
