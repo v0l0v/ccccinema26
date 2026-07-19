@@ -2103,26 +2103,28 @@ def main():
             canvas.width = 800;
             canvas.height = 1400;
             
-            ctx.fillStyle = '#f4e4bc';
+            // Fondo más envejecido/sepia
+            ctx.fillStyle = '#e8d5b7';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            ctx.strokeStyle = '#c45a49';
-            ctx.lineWidth = 15;
-            ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
+            // Borde exterior grueso (marrón oscuro vintage)
+            ctx.strokeStyle = '#5c3a21';
+            ctx.lineWidth = 12;
+            ctx.strokeRect(35, 35, canvas.width - 70, canvas.height - 70);
             
-            ctx.strokeStyle = '#222';
-            ctx.lineWidth = 4;
-            ctx.setLineDash([20, 20]);
-            ctx.strokeRect(60, 60, canvas.width - 120, canvas.height - 120);
-            ctx.setLineDash([]);
+            // Borde interior fino elegante
+            ctx.lineWidth = 2;
+            ctx.strokeRect(55, 55, canvas.width - 110, canvas.height - 110);
             
-            ctx.fillStyle = '#111';
-            ctx.font = 'bold 50px sans-serif';
+            ctx.fillStyle = '#3a2618';
             ctx.textAlign = 'center';
-            ctx.fillText("CCCC CINEMA D'ESTIU", canvas.width/2, 130);
             
-            ctx.font = '30px sans-serif';
-            ctx.fillText("🎟️ ENTRADA OFICIAL 🎟️", canvas.width/2, 180);
+            // Texto superior con tipografía clásica
+            ctx.font = 'italic 35px "Georgia", serif';
+            ctx.fillText("Este verano no me pierdo...", canvas.width/2, 130);
+            
+            ctx.font = 'bold 50px "Times New Roman", serif';
+            ctx.fillText("CCCC CINEMA D'ESTIU", canvas.width/2, 190);
             
             const rawPosterSrc = m.poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
             // Usamos un proxy de imágenes para evitar problemas de CORS en el canvas al intentar toBlob/toDataURL
@@ -2133,25 +2135,31 @@ def main():
                 const pWidth = 600;
                 const pHeight = 850;
                 const pX = (canvas.width - pWidth) / 2;
-                const pY = 230;
+                const pY = 240;
                 
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(pX - 10, pY - 10, pWidth + 20, pHeight + 20);
+                // Marco blanco tipo foto antigua para el póster
+                ctx.fillStyle = '#fdfbf7';
+                ctx.fillRect(pX - 15, pY - 15, pWidth + 30, pHeight + 45); // un poco más de margen abajo
                 
                 ctx.drawImage(img, pX, pY, pWidth, pHeight);
                 
-                const textY = pY + pHeight + 70;
-                ctx.fillStyle = '#111';
+                const textY = pY + pHeight + 90;
+                ctx.fillStyle = '#3a2618';
                 
-                ctx.font = 'bold 45px sans-serif';
+                // Título en fuente Serif
+                ctx.font = 'bold 45px "Times New Roman", serif';
                 const title = m.title.length > 30 ? m.title.substring(0,27) + '...' : m.title;
                 ctx.fillText(title, canvas.width/2, textY);
                 
-                ctx.font = 'bold 35px sans-serif';
-                ctx.fillStyle = '#c45a49';
-                ctx.fillText(m.date.toUpperCase(), canvas.width/2, textY + 60);
+                // Fecha
+                ctx.font = 'italic 35px "Georgia", serif';
+                ctx.fillStyle = '#7a3e2a';
+                ctx.fillText(m.date, canvas.width/2, textY + 60);
                 
-                drawBarcode(ctx, 150, canvas.height - 150, 500, 80);
+                // Pequeño texto final
+                ctx.font = '22px "Georgia", serif';
+                ctx.fillStyle = '#5c3a21';
+                ctx.fillText("¡Nos vemos en el claustro!", canvas.width/2, canvas.height - 90);
                 
                 canvas.toBlob(async (blob) => {{
                     if (!blob) return;
