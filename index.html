@@ -256,7 +256,7 @@
             width: 100%;
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--border-color);
-            padding: 1rem 1rem 1rem 3rem;
+            padding: 1rem 3.5rem 1rem 3rem;
             border-radius: 12px;
             color: var(--text-main);
             font-size: 1rem;
@@ -347,6 +347,45 @@
         
         .clear-filters-btn:hover {
             text-decoration: underline;
+        }
+        
+        .filter-saved-btn {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-saved-btn svg {
+            width: 1.4rem;
+            height: 1.4rem;
+        }
+        
+        .filter-saved-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .filter-saved-btn.active {
+            color: var(--accent);
+            background: rgba(210, 44, 54, 0.15);
+            border-color: rgba(210, 44, 54, 0.3);
+        }
+        
+        .filter-saved-btn.active svg {
+            fill: var(--accent);
+            stroke: var(--accent);
         }
         
         /* Grid */
@@ -441,6 +480,48 @@
             z-index: 2;
         }
         
+        /* Bookmark Button */
+        .bookmark-btn {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 5;
+            background: rgba(11, 15, 25, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .bookmark-btn svg {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+        
+        .bookmark-btn:hover {
+            transform: scale(1.1);
+            background: rgba(11, 15, 25, 0.9);
+        }
+        
+        .bookmark-btn.saved {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .bookmark-btn.saved svg {
+            fill: #fff;
+            color: var(--accent);
+            stroke: #fff;
+        }
+
         /* Badge Date */
         .date-badge {
             position: absolute;
@@ -1312,6 +1393,9 @@
             <div class="search-row">
                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 <input type="text" id="search-input" class="search-input" placeholder="Buscar película por título, director, país, fecha..." oninput="filterMovies()">
+                <button id="filter-saved-btn" class="filter-saved-btn" onclick="toggleSavedFilter()" title="Ver Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
             </div>
             
 
@@ -1328,6 +1412,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/qBpbQQ9lzNgLNKthcK9oywpoawi.jpg" alt="Póster de Joey Breaker" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="cfwibvJpvSk" style="background-image: url('https://img.youtube.com/vi/cfwibvJpvSk/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(0)" data-idx="0" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">VIE</span>
                     <span class="num">31 Jul</span>
@@ -1393,6 +1480,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/4sCBSQ3lwkVGTmJAGqCenWTLZ94.jpg" alt="Póster de El artista" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="bouKNRrFR_k" style="background-image: url('https://img.youtube.com/vi/bouKNRrFR_k/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(1)" data-idx="1" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">SÁB</span>
                     <span class="num">1 Ago</span>
@@ -1458,6 +1548,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/2q5UUR0ytGqMal3brK3T8RrJmcT.jpg" alt="Póster de Mr. Belvedere Goes to College" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="nKTZuBqPh3Q" style="background-image: url('https://img.youtube.com/vi/nKTZuBqPh3Q/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(2)" data-idx="2" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">DOM</span>
                     <span class="num">2 Ago</span>
@@ -1523,6 +1616,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/zhCROTRo82Ow0KbdtvvSvQEGyHS.jpg" alt="Póster de Mátenme porque me muero" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="GBTErWDdXpw" style="background-image: url('https://img.youtube.com/vi/GBTErWDdXpw/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(3)" data-idx="3" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">MAR</span>
                     <span class="num">4 Ago</span>
@@ -1588,6 +1684,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/hbL76T9sXtgswd47vaRF5pBpgqK.jpg" alt="Póster de Things Change" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="Pm_vqahGYM0" style="background-image: url('https://img.youtube.com/vi/Pm_vqahGYM0/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(4)" data-idx="4" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">MIÉ</span>
                     <span class="num">5 Ago</span>
@@ -1653,6 +1752,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/ku0hPPhkNdXriyjuFY4xCfTYSMh.jpg" alt="Póster de El destino no tiene favoritos" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="EMM9-cYrbPE" style="background-image: url('https://img.youtube.com/vi/EMM9-cYrbPE/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(5)" data-idx="5" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">JUE</span>
                     <span class="num">6 Ago</span>
@@ -1718,6 +1820,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/ju4TjxXBNL4FlO9pJM9034nX8p6.jpg" alt="Póster de Dim Sum: A Little Bit of Heart" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="-wliADoDSTA" style="background-image: url('https://img.youtube.com/vi/-wliADoDSTA/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(6)" data-idx="6" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">VIE</span>
                     <span class="num">7 Ago</span>
@@ -1783,6 +1888,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/zkmDkZNPM8zgfLgKHEQFLXGrf8Q.jpg" alt="Póster de Safety Last!" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="5gh0QzAoWNQ" style="background-image: url('https://img.youtube.com/vi/5gh0QzAoWNQ/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(7)" data-idx="7" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">SÁB</span>
                     <span class="num">8 Ago</span>
@@ -1848,6 +1956,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/zQ98WmhRmmO5vqibNKnDBd47pXz.jpg" alt="Póster de Plaff (Demasiado miedo a la vida)" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="5-r5Qe1b-FY" style="background-image: url('https://img.youtube.com/vi/5-r5Qe1b-FY/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(8)" data-idx="8" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">DOM</span>
                     <span class="num">9 Ago</span>
@@ -1913,6 +2024,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/6TL021aolyyLEtlscCd0UjQqCfb.jpg" alt="Póster de Bluff" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="mkU5ISpTUCc" style="background-image: url('https://img.youtube.com/vi/mkU5ISpTUCc/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(9)" data-idx="9" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">MAR</span>
                     <span class="num">11 Ago</span>
@@ -1978,6 +2092,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/cS7gOIENg0loAwRDvqAVbMghqdT.jpg" alt="Póster de Little Shop of Horrors" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="QqFZuR6UzjA" style="background-image: url('https://img.youtube.com/vi/QqFZuR6UzjA/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(10)" data-idx="10" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">MIÉ</span>
                     <span class="num">12 Ago</span>
@@ -2043,6 +2160,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/3f93YAzZRc2vtOQyRqrakD0YS3O.jpg" alt="Póster de Culpa cero" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="l10LBj4YDK0" style="background-image: url('https://img.youtube.com/vi/l10LBj4YDK0/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(11)" data-idx="11" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">JUE</span>
                     <span class="num">13 Ago</span>
@@ -2108,6 +2228,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/pGgz3Xs9i5AxT5wQHqijSYTWHPq.jpg" alt="Póster de The Sure Thing" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="fxo6F6rJv7E" style="background-image: url('https://img.youtube.com/vi/fxo6F6rJv7E/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(12)" data-idx="12" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">VIE</span>
                     <span class="num">14 Ago</span>
@@ -2173,6 +2296,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/9f4wnYhxt23sdfN8Sm2r0uv5Gvq.jpg" alt="Póster de Denominación de origen" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="NXcXB1lJskA" style="background-image: url('https://img.youtube.com/vi/NXcXB1lJskA/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(13)" data-idx="13" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">SÁB</span>
                     <span class="num">15 Ago</span>
@@ -2238,6 +2364,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/4tlnuwFj1wsiyY75ORq2OU1m0BG.jpg" alt="Póster de Defending Your Life" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="oZEbLVD72hY" style="background-image: url('https://img.youtube.com/vi/oZEbLVD72hY/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(14)" data-idx="14" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">DOM</span>
                     <span class="num">16 Ago</span>
@@ -2303,6 +2432,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/eYIRxmnzZwEQjQiFVt7ibddbxSb.jpg" alt="Póster de De noche vienes, Esmeralda" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="_iKu_FPEnHw" style="background-image: url('https://img.youtube.com/vi/_iKu_FPEnHw/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(15)" data-idx="15" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">MAR</span>
                     <span class="num">18 Ago</span>
@@ -2368,6 +2500,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/qiJuXvPONqTSSnzhbCBqE7EotV.jpg" alt="Póster de She’s Gotta Have It" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="BrK4-lAhkeg" style="background-image: url('https://img.youtube.com/vi/BrK4-lAhkeg/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(16)" data-idx="16" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">MIÉ</span>
                     <span class="num">19 Ago</span>
@@ -2433,6 +2568,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/raCdo5Hjpd3uXbpSd1JZ7tEyE31.jpg" alt="Póster de Lisbela e o Prisioneiro" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="-Rhroj4p7iQ" style="background-image: url('https://img.youtube.com/vi/-Rhroj4p7iQ/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(17)" data-idx="17" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">JUE</span>
                     <span class="num">20 Ago</span>
@@ -2498,6 +2636,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/qgmIadxcSjUKqb3KjfbBJ9t1ZyZ.jpg" alt="Póster de While We’re Young" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="lNEKFG0eAKE" style="background-image: url('https://img.youtube.com/vi/lNEKFG0eAKE/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(18)" data-idx="18" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">VIE</span>
                     <span class="num">21 Ago</span>
@@ -2563,6 +2704,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/a3mMwp42qXaA4DLNcXvNO0u01Pi.jpg" alt="Póster de Doble discurso" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="m6tD1z91QGY" style="background-image: url('https://img.youtube.com/vi/m6tD1z91QGY/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(19)" data-idx="19" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">SÁB</span>
                     <span class="num">22 Ago</span>
@@ -2628,6 +2772,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/7dkh168bJBPAl3tjcnhDHXowyWt.jpg" alt="Póster de Ella McCay" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="hJYPGhJDjaU" style="background-image: url('https://img.youtube.com/vi/hJYPGhJDjaU/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(20)" data-idx="20" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">DOM</span>
                     <span class="num">23 Ago</span>
@@ -2693,6 +2840,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/dHCpKHEBfSGygsZ54RnDOh5s8Ky.jpg" alt="Póster de Never Give a Sucker an Even Break" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="FXGfhqf2k8k" style="background-image: url('https://img.youtube.com/vi/FXGfhqf2k8k/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(21)" data-idx="21" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">MAR</span>
                     <span class="num">25 Ago</span>
@@ -2758,6 +2908,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/h5Od9rVwDBJ9FEtfyxJxjakaoZA.jpg" alt="Póster de 1987" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="jFkw85VKK5U" style="background-image: url('https://img.youtube.com/vi/jFkw85VKK5U/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(22)" data-idx="22" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">MIÉ</span>
                     <span class="num">26 Ago</span>
@@ -2823,6 +2976,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/rjeL29wYY6p0OHGaoFORjXKkwbY.jpg" alt="Póster de A New Leaf" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="R_NqzbyyIjI" style="background-image: url('https://img.youtube.com/vi/R_NqzbyyIjI/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(23)" data-idx="23" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">JUE</span>
                     <span class="num">27 Ago</span>
@@ -2888,6 +3044,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/iKVSoZgThNWfLMHl71VemQ45xMi.jpg" alt="Póster de La práctica" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="Qb1aSFytzME" style="background-image: url('https://img.youtube.com/vi/Qb1aSFytzME/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(24)" data-idx="24" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">VIE</span>
                     <span class="num">28 Ago</span>
@@ -2953,6 +3112,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/lNkj69CCl4GZuLqVpPTEugccn7X.jpg" alt="Póster de Film Geek" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="3b8eOlG6Fbw" style="background-image: url('https://img.youtube.com/vi/3b8eOlG6Fbw/maxresdefault.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(25)" data-idx="25" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">SÁB</span>
                     <span class="num">29 Ago</span>
@@ -3018,6 +3180,9 @@
             <div class="card-header-img">
                 <img class="poster-img" src="https://image.tmdb.org/t/p/w500/jd2p3fdosgWgsZh558TQ1lbGbjl.jpg" alt="Póster de Un poeta" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="" style="background-image: url('https://image.tmdb.org/t/p/w500/jd2p3fdosgWgsZh558TQ1lbGbjl.jpg')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark(26)" data-idx="26" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">DOM</span>
                     <span class="num">30 Ago</span>
@@ -3201,6 +3366,44 @@
         const moviesData = [{"date": "Viernes, 31 de julio", "title": "Joey Breaker", "year": 1992, "country": "Estados Unidos", "duration": "92 minutos", "tmdb_url": "https://www.themoviedb.org/movie/253934-joey-breaker", "genres": ["Comedia", "Drama", "Romance"], "directors": ["Steven Starr"], "cast": ["Richard Edson", "Cedella Marley", "Fred Fondren", "Eric King", "Gina Gershon", "Philip Seymour Hoffman", "Mary Joy", "Sam Coppola", "Michael Imperioli", "Laurence Mason", "Parker Posey", "Bill Bellamy", "Larry Marx", "George Bartenieff", "Benjamin Starr"], "synopsis": "Antes de que se ensaye, aparezcan focos, micrófonos y cámaras, está el negocio del cine. Esos agentes de artistas encargados de colocar talentos, establecer acuerdos y valorar cada proyecto. Leen guiones, están al tanto de los castings, acuden habitualmente a espectáculos, a pases privados de productoras y, en definitiva, luchan por el máximo beneficio para sus artistas. Joey Breaker es uno de ellos, uno divertido, competente y de excelente reputación. A Steven Starr, que desempeñó durante años este mismo oficio, se le ocurrió que debía colocar a su protagonista ante la certeza de que el amor fluye, la pasión existe, pese a vivir de cerca esa crisis amarga que arrancó en los ‘80 por la que que muchos pagaron su intimidad con el contagio de un virus mortal. Durante tres décadas, ese universo genuino de dinero, amor y muerte salpicado con canciones reagge fue invisible. Justo ahora, en el momento mismo de esta inauguración, podremos abrirlos y disfrutarlo gracias a una copia recién restaurada y la generosidad de su director.", "poster_url": "https://image.tmdb.org/t/p/w500/qBpbQQ9lzNgLNKthcK9oywpoawi.jpg", "imdb_url": "https://www.imdb.com/title/tt0107273/", "youtube_id": "cfwibvJpvSk"}, {"date": "Sábado, 1 de agosto", "title": "El artista", "year": 2008, "country": "Argentina-Italia", "duration": "100 minutos", "tmdb_url": "https://www.themoviedb.org/movie/278458-el-artista", "genres": ["Comedia"], "directors": ["Mariano Cohn", "Gastón Duprat"], "cast": ["Sergio Pángaro", "Alberto Laiseca", "Andrés Duprat", "Enrique Gagliesi", "Ana Laura Loza", "Luciana Fauci", "Arturo Caravajal", "Diego Perdomo", "Marcello Prayer", "Mauro Fernández", "Alejandro Cohn", "Diego Bliffeld", "Magdalena Bilotte", "Ricardo Monteoliva", "Agustín Ayala", "Jorge Teraquio"], "synopsis": "En estos tiempos de globalización económica y cultural queda en entredicho la propia categoría de arte. El mercado en el sector artístico llega a jugar un papel tan relevante que cabe cuestionar los procedimientos actuales de consagración de los artistas. De todo eso y mucho más habla la ópera prima de Mariano Cohn y Gastón Duprat. En otras palabras, de cómo esa necesidad imperiosa de críticos y artistas por señalar y alimentar tendencias, ha provocado que el arte deje de ser una fuerza sustantiva y transformadora. Porque ya no se trata de cuestionar el mundo ni de hacer historia, cuando urge plegarse ante las nuevas tiranías estéticas del presente. Formalmente, El artista llega a inquietar cuando va a la contra de lo que su trama y personajes expresan. Muy lejos de intentar seducir o hacerle la rosca al espectador , esta dupla de grandes cineastas no duda en imponer encuadres llamativamente imperfectos o planos de un estatismo que puede resultar irritante para quien no sepa entrar en este divertimento sobre las paradojas del propio acto creativo.", "poster_url": "https://image.tmdb.org/t/p/w500/4sCBSQ3lwkVGTmJAGqCenWTLZ94.jpg", "imdb_url": "https://www.imdb.com/title/tt1321381/", "youtube_id": "bouKNRrFR_k"}, {"date": "Domingo, 2 de agosto", "title": "Mr. Belvedere Goes to College", "year": 1949, "country": "Estados Unidos", "duration": "83 minutos", "tmdb_url": "https://www.themoviedb.org/movie/77012-mr-belvedere-goes-to-college", "genres": ["Comedia"], "directors": ["Elliott Nugent"], "cast": ["Robert Young", "Maureen O’Hara", "Clifton Webb", "Richard Haydn", "Louise Albritton", "Randy Stuart", "Ed Begley", "Larry Olsen", "John Russell", "Betty Lynn", "Willard Robertson", "Dorothy Adams", "Charles Arnt", "Gertrude Astor", "Barbara Blaine"], "synopsis": "Cuando la burocracia del mundo te exige un título, no basta que seas un genio. Siempre elegante, circunspecto y altanero, Lynn Belvedere se abre camino en la universidad en esta secuela de Sitting Pretty (Niñera moderna, 1948) precisamente por la falta de ese certificado que ningún miembro de su legión de fans le pediría. Y es una gozada que este personaje inolvidable siga guardando la compostura vistiendo uniforme y gorra de novato y se maneje tan bien en los espacios estudiantiles sorprendiendo a jóvenes y extraños en plena fiebre del woogie woogie. Como muchos films de posguerra esta comedia señala un trasfondo trágico en el personaje de Shirley Temple, madre de un niño y viuda con tan solo 21 años, así como la celeridad de sus sentimientos: basta un beso en los labios para sellar un compromiso nuevo.", "poster_url": "https://image.tmdb.org/t/p/w500/2q5UUR0ytGqMal3brK3T8RrJmcT.jpg", "imdb_url": "https://www.imdb.com/title/tt0041664/", "youtube_id": "nKTZuBqPh3Q"}, {"date": "Martes, 4 de agosto", "title": "Mátenme porque me muero", "year": 1951, "country": "México", "duration": "99 minutos", "tmdb_url": "https://www.themoviedb.org/movie/101275-matenme-porque-me-muero", "genres": ["Comedia"], "directors": ["Ismael Rodríguez"], "cast": ["Germán Valdés", "Óscar Pulido", "Tongolele", "Marcelo Chávez", "José René Ruiz", "Emma Rodríguez", "Tito Novaro", "Joaquín García Vargas", "Miguel Manzano", "Pompín Iglesias", "Ildefonso Sánchez Curiel", "Pedro de Urdimalas", "Nicolás Rodríguez", "Jesús Graña", "Jorge Treviño", "Guillermo Calles", "Abel Cureño", "El Gigantón", "Los Sherifes"], "synopsis": "La historia artística de Germán Valdés arranca en ciudad Juárez, donde la cultura de México y Estados Unidos se mezclaba, el swing convivía con el bolero y los jóvenes vestían diferente. Y fue ahí donde su personaje más popular, Tin Tan, cambiaría todo y convertiría el barrio en arte. En su piel, Valdés inventó su propia forma de hablar, de caminar y, en definitiva, de ser mejicano. En Mátenme porque me muero decide poner fin a su vida antes de que lo haga un destino fatídico. Y ese gesto la sitúa en la estela Der mann, der seinen Mörder sucht (1931) de Robert Siodmak o I hired a contract killer (1990) de Aki Kaurismaki. El cineasta Ismael Rodríguez aprovechó el carisma de Tin Tan para adaptar libremente una obra de Enrique Jardiel Poncela y, como tantas veces haría Luis Buñuel, encajó ese humor satírico o esperpéntico tan español en una película que, por derecho propio, pertenece a la edad de oro del cine mejicano.", "poster_url": "https://image.tmdb.org/t/p/w500/zhCROTRo82Ow0KbdtvvSvQEGyHS.jpg", "imdb_url": "https://www.imdb.com/title/tt0138629/", "youtube_id": "GBTErWDdXpw"}, {"date": "Miércoles, 5 de agosto", "title": "Things Change", "year": 1988, "country": "Estados Unidos", "duration": "100 minutos", "tmdb_url": "https://www.themoviedb.org/movie/52770-things-change", "genres": ["Comedia", "Crimen", "Drama"], "directors": ["David Mamet"], "cast": ["Don Ameche", "Joe Mantegna", "Robert Prosky", "J. J. Johnston", "Ricky Jay", "Mike Nussbaum", "Jack Wallace", "Dan Comway", "Willo Hausman", "Gail Silver", "Willam H. Macy"], "synopsis": "Comparativamente más ligera que House of Games (1987), la segunda película dirigida por el dramaturgo David Mamet fue probablemente aparcada por su mezcla desconcertante entre comedia, cine de gansters y drama. El film comparte personajes y ambientes turbios pero narra una historia que tiene mucho corazón. El viejo zapatero que interpreta Don Ameche acaba robándole el protagonismo a su actor fetiche, Joe Mantegna, que borda tanto los papeles de mafioso como de timador. Pero al margen de sus diferencias, fue el crítico de Chicago, Roger Ebert, quien dio en el clavo cuando escribió que “si Things Change (1988) resulta tan entretenida como House of games es porque los personajes están desconcertados, no el público, como suele ocurrir con guionistas más descuidados. Mamet nos convierte en cómplices”.", "poster_url": "https://image.tmdb.org/t/p/w500/hbL76T9sXtgswd47vaRF5pBpgqK.jpg", "imdb_url": "https://www.imdb.com/title/tt0096259/", "youtube_id": "Pm_vqahGYM0"}, {"date": "Jueves, 6 de agosto", "title": "El destino no tiene favoritos", "year": 2003, "country": "Perú", "duration": "90 minutos", "tmdb_url": "https://www.themoviedb.org/movie/106885-el-destino-no-tiene-favoritos", "genres": ["Romance", "Comedia"], "directors": ["Álvaro Velarde"], "cast": ["Celine Aguirre", "Víctor Ángeles", "Tatiana Astengo", "Angie Cepeda", "Bernie Paz", "Rebeca Ráez", "Ellena Romero", "Mónica Steuer", "Javier Valdez", "Paul Vega"], "synopsis": "Desde los inicios de su carrera, JeanLuc Godard advirtió que el cine debía retratar el cliché cuando es un signo claramente identificativo de un país. Una lección artística que esta ópera prima aplica a fondo y por partida doble. Ya sobre el papel, ese choque de estereotipos que propone su argumento, exigía un cineasta capaz de manejar con maestría los códigos de una realidad y una ficción condenados a convivir desastrosa y jocosamente en el espacio de una misma pantalla. Al evitar cualquier crítica social y concentrar sus energías en extraer todo el humor de esa familia aristocrática venida menos que acepta involucrarse en el rodaje de una telenovela, Álvaro Velarde logró la que muchos consideran “mejor comedia peruana de todos los tiempos”.", "poster_url": "https://image.tmdb.org/t/p/w500/ku0hPPhkNdXriyjuFY4xCfTYSMh.jpg", "imdb_url": "https://www.imdb.com/title/tt0383307/", "youtube_id": "EMM9-cYrbPE"}, {"date": "Viernes, 7 de agosto", "title": "Dim Sum: A Little Bit of Heart", "year": 1985, "country": "Estados Unidos", "duration": "84 minutos", "tmdb_url": "https://www.themoviedb.org/movie/135418-dim-sum-a-little-bit-of-heart", "genres": ["Comedia"], "directors": ["Wayne Wang"], "cast": ["Laureen Chew", "Kim Chew", "Victor Wong", "Ida F.O. Chung", "Cora Miao", "John Nishio", "Amy Hill", "Keith Choy", "Mary Chew", "Nora Lee", "Rita Yee", "Joan Chen"], "synopsis": "Como su ópera prima, Chan is missing º(1982), Wayne Wang ambientó Dim Sum en el barrio chino de San Francisco. Al registrar una historia sencilla con una cámara fija y contemplativa, provocó que muchos críticos la compararan con la obra de Yasujiro Ozu, pero el joven cineasta llevó ese estilo del maestro japonés al mundo de McDonald’s y la serie Dinastía, dos elementos que fascinaban a esa comunidad de personajes que habla chinglish y acepta de buen grado la fusión de las culturas china y americana. A medio camino entre el rigor formal y un realismo relajado, destaca que la señora Tam y Geraldine hayan sido interpretadas por una madre y su hija en la vida real, permitiendo que, sin necesidad de aclarar nada, Wayne Wang comunique visualmente un profundo pozo de emociones.", "poster_url": "https://image.tmdb.org/t/p/w500/ju4TjxXBNL4FlO9pJM9034nX8p6.jpg", "imdb_url": "https://www.imdb.com/title/tt0089028/", "youtube_id": "-wliADoDSTA"}, {"date": "Sábado, 8 de agosto", "title": "Safety Last!", "year": 1923, "country": "Estados Unidos", "duration": "74 minutos", "tmdb_url": "https://www.themoviedb.org/movie/22596-safety-last", "genres": ["Comedia", "Romance", "Suspense"], "directors": ["Fred C. Newmeyer", "Sam Taylor"], "cast": ["Harold Lloyd", "Mildred Davis", "Bill Strother", "Noah Young", "Westcott Clarke", "Chester A. Bachman", "Ed Brandenburg", "Roy Brooks", "Charley Chase"], "synopsis": "Harold Lloyd era un hombre corriente, como el resto de los mortales, le llamaban “el chico de la calle” y tuvo que pensarlo todo por su falta de inspiración. Para ser un cómico de cine exitoso, tuvo que aprender a serlo, y aprender por las malas. En 1919, Harold perdió dos dedos durante una sesión de fotos, cuando cambió el explosivo por uno real. El médico le dijo que abandonara su carrera pero siguió haciendo acrobacias peligrosas y actuando. Cuatro años después lo vemos en su imagen más emblemática colgado de la aguja de los minutos de un reloj casi en la cima de un enorme edificio. Esta imagen icónica pertenece a un clásico silente que muy pocos han visto. ¿Qué puede llevar a un ciudadano común a escalar un edificio en plan hombre araña? ¿Y qué banda sonora experimental puede acompañar semejante proeza? Sin duda, será el Dr. Truna (Andrés Blasco) quien nos dé la mejor respuesta.", "poster_url": "https://image.tmdb.org/t/p/w500/zkmDkZNPM8zgfLgKHEQFLXGrf8Q.jpg", "imdb_url": "https://www.imdb.com/title/tt0014429/", "youtube_id": "5gh0QzAoWNQ"}, {"date": "Domingo, 9 de agosto", "title": "Plaff (Demasiado miedo a la vida)", "year": 1988, "country": "Cuba", "duration": "110 minutos", "tmdb_url": "https://www.themoviedb.org/movie/337694-demasiado-miedo-a-la-vida-o-plaff", "genres": ["Drama", "Comedia"], "directors": ["Juan Carlos Tabío"], "cast": ["Daisy Granados", "Thais Valdés", "Raúl Palomares", "Jorge Cao", "Alicia Bustamante", "Ana Vivian Mora", "Rolando Núñez", "Natasha Díaz", "Blanquita Contreras", "Miriam Socarras", "Gastón Palmer", "Néstor Jiménez"], "synopsis": "Plaff destaca por su estilo de comedia crítica que recupera el espíritu de Muerte de un burócrata (1966), practicamente desaparecido en la Cuba de finales de los ‘80, retomado solo por Se permuta (1983), el anterior film de Juan Carlos Tabío. La película se permite romper algunas convenciones narrativas al traducir en imágenes su argumento, a veces los actores rompen la cuarta pared y se dirigen al espectador o las escenas discurren recordándole a éste que está presenciando una película. De manera desenfadada aborda los males diarios que abordan a la Cuba de aquella época, como el establecimiento de metas disparatadas, el divorcio de algunos dirigentes con respecto a los trabajadores o las trabas que frenan el desarrollo. Todo ello ungido con un humor ingenioso, una sólida dirección y muy buenas interpretaciones.", "poster_url": "https://image.tmdb.org/t/p/w500/zQ98WmhRmmO5vqibNKnDBd47pXz.jpg", "imdb_url": "https://www.imdb.com/title/tt0095874/", "youtube_id": "5-r5Qe1b-FY"}, {"date": "Martes, 11 de agosto", "title": "Bluff", "year": 2007, "country": "Colombia", "duration": "95 minutos", "tmdb_url": "https://www.themoviedb.org/movie/88282-bluff", "genres": ["Acción", "Comedia", "Suspense"], "directors": ["Felipe Martínez Amador"], "cast": ["Federico Lorusso", "Víctor Mallarino", "Catalina Aristizábal", "Luis Eduardo Arango", "Carolina Gómez", "Felipe Botero", "Verónica Orozco", "Juan Felipe Cano", "Adriana Romero", "Blanca Lucero Bello", "Mónica Montenegro", "Alejandro Morales", "Delio Buenaventura", "Maria Inés Carrasco", "Lucho Velasco"], "synopsis": "Hay un tópico que afirma que el tema primordial del cine colombiano es la violencia. Lo que sí es cierto es que el beneficio personal suele dominar a los personajes de Colombia, sin que importen las consecuencias o quien caiga en su camino. Bluff cuenta la historia de un perdedor, una víctima de la corrupción ajena, la misma que busca saciar la necesidad de dinero, el deseo y el amor. En esa búsqueda nunca impera una idea altruista, se trata única y exclusivamente de la ley del más fuerte o el más vivo. Y por eso mismo de fondo se percibe una fuerte crítica social, institucional y moral contra la polícia, los poderosos y cualquier personaje falto de escrúpulos. No obstante, las intenciones de esta ópera prima de Felipe Martínez Amador se concentran en mezclar el género de thriller con la comedia negra, acumular gags y utilizar los recursos cinematográficos en pos de lograr lo que finalmente es: un ágil divertimento.", "poster_url": "https://image.tmdb.org/t/p/w500/6TL021aolyyLEtlscCd0UjQqCfb.jpg", "imdb_url": "https://www.imdb.com/title/tt0830768/", "youtube_id": "mkU5ISpTUCc"}, {"date": "Miércoles, 12 de agosto", "title": "Little Shop of Horrors", "year": 1986, "country": "Estados Unidos", "duration": "104 minutos", "tmdb_url": "https://www.themoviedb.org/movie/10776-little-shop-of-horrors", "genres": ["Terror", "Comedia"], "directors": ["Frank Oz"], "cast": ["Rick Moranis", "Ellen Greene", "Vincent Gardenia", "Steve Martin", "Tichina Arnold", "Michelle Weeks", "Tisha Campbell", "Jim Belushi", "John Candy", "Christopher Guest", "Bill Murray", "Stan Jones", "Bertice Reading", "Ed Wiley", "Michael Shannon"], "synopsis": "En 1960, Roger Corman apostó que podría realizar un film en un fin de semana si le dejaban aprovechar los decorados de su anterior film, A bucket o blood (Un cubo de sangre, 1959). Y venció. En 1986, Frank Oz sustituiría a Martin Scorsese en la adaptación del exitoso musical que la película inspiró. Y también venció. Acostumbrados a las bondades de los musicales, a ese universo donde lo imposible deja de serlo y el amor sencillamente existe, una comedia siniestra como Little Shop of Horrors fue digna de nuestra simpatía. Por su capacidad de sacar punta a un eclipse de Sol y, consecuentemente, lograr que todos y cada uno de sus personajes se definan por su lado oscuro, su tendencia natural a ser miserables. Si este film ofrece una galería de parásitos emocionales es precisamente para justificar el futuro festín de la planta chupasangre, que ellos mismos alimentan sin recato cometiendo un sinfín de maldades.", "poster_url": "https://image.tmdb.org/t/p/w500/cS7gOIENg0loAwRDvqAVbMghqdT.jpg", "imdb_url": "https://www.imdb.com/title/tt0091419/", "youtube_id": "QqFZuR6UzjA"}, {"date": "Jueves, 13 de agosto", "title": "Culpa cero", "year": 2024, "country": "Argentina", "duration": "106 minutos", "tmdb_url": "https://www.themoviedb.org/movie/1212755-culpa-cero", "genres": ["Comedia"], "directors": ["Valeria Bertuccelli", "Mora Elizalde"], "cast": ["Valeria Bertuccelli", "Justina Bustos", "Cecilia Roth", "Gaia Garibaldi", "Martín Garabal", "Mara Bestelli", "Fabiana Cantilo", "Mey Scápola", "Fabián Arenillas", "Matías Cabrera"], "synopsis": "El segundo largometraje como directora de la actriz Valeria Bertuccelli destaca por su gran libertad y arrojo a la hora de manejar el absurdo e imaginar unas actitudes paulatinamente ridículas por parte de la protagonista, que ella misma asume. Berta Muller es un personaje tan fascinante como contradictorio, predica en sus libros la verdad de la existencia y convence a millones de lectores y en sus redes sociales de que tiene todas las respuestas. Presa de su personaje, Berta tratará de defenderse de la manera más absurda cuando su vida se desmorone como un castillo frágil de naipes. Culpa cero es una comedia incómoda, aguda y rabiosamente actual que no tiene personajes buenos, solo seres idiotas o detestables.", "poster_url": "https://image.tmdb.org/t/p/w500/3f93YAzZRc2vtOQyRqrakD0YS3O.jpg", "imdb_url": "https://www.imdb.com/title/tt32422731/", "youtube_id": "l10LBj4YDK0"}, {"date": "Viernes, 14 de agosto", "title": "The Sure Thing", "year": 1985, "country": "Estados Unidos", "duration": "100 minutos", "tmdb_url": "https://www.themoviedb.org/movie/8992-the-sure-thing", "genres": ["Comedia", "Drama", "Romance"], "directors": ["Rob Reiner"], "cast": ["John Cusak", "Daphne Zuniga", "Anthony Edwards", "Boyd Gaines", "Tim Robbins", "Lisa Jane Persky", "Viveca Lindfors", "Nicolette Sheridan", "Christie-Blake Marcia", "Robert Anthony Marcucci"], "synopsis": "Fue un pequeño milagro que una película como The Sure Thing (1985) preocupada por los sentimientos amorosos de un adolescente. Una película revolucionaria desde el instante en que expone que el sexo debe ir siempre acompañado de respeto y amor en una epoca de auténtico auge del cine más descerebrado y rijoso. Películas tipo Meatballs (Los incorregibles albondigas, 1979) Porky’s (1981) o The Last American Virgin (El último americano virgen, 1982) marcaron una tendencia alimentada por el llamado “sindrome de erotismo neurótico del personaje adolescente”. Rendimos homenaje al recientemente desaparecido Rob Reiner proyectando esta joya injustamente olvidada, una comedia romántica escrita al estilo de los años ‘30 que guarda sus vínculos con el clásico de Frank Capra It happened one night (Sucedió una noche, 1934).", "poster_url": "https://image.tmdb.org/t/p/w500/pGgz3Xs9i5AxT5wQHqijSYTWHPq.jpg", "imdb_url": "https://www.imdb.com/title/tt0090097/", "youtube_id": "fxo6F6rJv7E"}, {"date": "Sábado, 15 de agosto", "title": "Denominación de origen", "year": 2024, "country": "Chile", "duration": "86 minutos", "tmdb_url": "https://www.themoviedb.org/movie/1338208-denominacion-de-origen", "genres": ["Comedia", "Drama"], "directors": ["Tomás Alzamora Muñoz"], "cast": ["Roberto Betancourt", "Luisa Barrientos", "Alexis Marín", "Exequías Inostroza", "Luisa Marabolí"], "synopsis": "Denominación de origen nace de un extrañamiento, el que siente por su pueblo Tomás Alzamora cuando, como tantas cineastas chilenos, decide estudiar la carrera en Santiago. Alzamora convierte su pueblo natal, San Carlos, en el verdadero protagonista de su segundo largometraje e inmortalizar las caras, los personajes típicos de allí, como la persona que vende los remedios o el cochayuyo, una macroalga parda de gran valor nutricional. Como si de un documental se tratara, instala una cámara que sencillamente observa y registra escenas de la vida real aprovechando una competición por el premio a la mejor longaniza. A partir de ahí, el joven cineasta expresa su amor el cine como el arte libre desde el momento en que puedes meterle de todo: literatura en el guión, música antigua y moderna en la banda sonora, teatro en alguna secuencia preparada con los actores,...", "poster_url": "https://image.tmdb.org/t/p/w500/9f4wnYhxt23sdfN8Sm2r0uv5Gvq.jpg", "imdb_url": "https://www.imdb.com/title/tt8215836/", "youtube_id": "NXcXB1lJskA"}, {"date": "Domingo, 16 de agosto", "title": "Defending Your Life", "year": 1991, "country": "Estados Unidos", "duration": "112 minutos", "tmdb_url": "https://www.themoviedb.org/movie/12186-defending-your-life", "genres": ["Romance", "Fantasía", "Comedia", "Drama"], "directors": ["Albert Brooks"], "cast": ["Albert Brooks", "Meryl Streep", "Rip Torn", "Lee Grant", "Julie Cobb", "Peter Schuck", "Time Winters", "Gary Beach", "Sharlie Stuart", "Beth Black", "Clayton Norcross", "Buck Henry", "Shirley McClaine"], "synopsis": "Si volvemos por tercera vez a programar una obra de Albert Brooks es porque creemos que debería engrosar esa lista de grandes cineastas que explotan su comicidad detrás y delante de la cámara: Charles Chaplin, Woody Allen, Nanni Moretti, Jacques Tati, Emmanuel Mouret en sus primeros films,… A principios de los ‘90 un porcentaje alto de estadounidenses creía que había cielo e infierno. Y en esa nutrida legión de creyentes, una mayoría afirmaba que debería ir al cielo. Para el cineasta, guionista y actor Albert Brooks, ese más allá que nos depara tras cruzar la línea de la muerte está muy ligado a lo que hayamos hecho con nuestra vida. En Defending your life (1991) imagina una estación pre-celeste, una especie de higiénico purgatorio donde cada persona fallecida debe saldar cuentas ante un jurado. Todos debemos ser alguien, y sino que se le pregunten al personaje delicioso y abrumador que interpreta Meryl Streep.", "poster_url": "https://image.tmdb.org/t/p/w500/4tlnuwFj1wsiyY75ORq2OU1m0BG.jpg", "imdb_url": "https://www.imdb.com/title/tt0101684/", "youtube_id": "oZEbLVD72hY"}, {"date": "Martes, 18 de agosto", "title": "De noche vienes, Esmeralda", "year": 1997, "country": "México", "duration": "103 minutos", "tmdb_url": "https://www.themoviedb.org/movie/274584-de-noche-vienes-esmeralda", "genres": ["Comedia"], "directors": ["Jaime Humberto Hermosillo"], "cast": ["María Rojo", "Claudio Obregón", "Martha Navarro", "Antonio Crestani", "Tito Vasconcelos", "Ernesto Laguardia", "Alberto Estrella", "Pedro Armendáriz Jr", "Roberto Cobo", "Humberto Pineda", "Arturo Villaseñor", "Ana Ofelia Murguía", "Víctor Carpinteiro", "Humberto Yáñez", "Ana María Jacobo", "Eduardo Salas"], "synopsis": "Jaime Humberto Hermosillo demostró a lo largo de sus 25 largometrajes ser un cineasta experto en las disidencias sexuales, un abanderado del deseo en todas sus formas y un devoto de los universos de las heridas románticas. Este cineasta mejicano sabe perfectamente que uno de los mecanismos de la comedia es poner las cosas donde no le corresponde, y esta vez brinda a su actriz fetiche María Rojo el papel de una mujer fuera de lugar en una sociedad profundamente conservadora. Acusada de bigamia momentos antes de casarse, la protagonista afronta con gracia y desenvoltura un interrogatorio policial que atenta de manera descarada tanto con el rol asignado a la mujer y rompe con el tratamiento cinematográfico del tiempo y espacio que hemos visto en infinidad de películas.", "poster_url": "https://image.tmdb.org/t/p/w500/eYIRxmnzZwEQjQiFVt7ibddbxSb.jpg", "imdb_url": "https://www.imdb.com/title/tt0118941/", "youtube_id": "_iKu_FPEnHw"}, {"date": "Miércoles, 19 de agosto", "title": "She’s Gotta Have It", "year": 1986, "country": "Estados Unidos", "duration": "84 minutos", "tmdb_url": "https://www.themoviedb.org/movie/27995-she-s-gotta-have-it", "genres": ["Comedia", "Romance"], "directors": ["Spike Lee"], "cast": ["Tracy Camilla Johns", "Tommy Redmond Hicks", "John Canada Terrell", "Spike Lee", "Raye Dowell", "Joie Lee", "S. Epatha Merkerson", "Bill Lee", "Cheryl Burr", "Aaron Dugger", "Stephanie Covington", "Renata Cobbs", "Cheryl D. Singleton"], "synopsis": "She’s gotta have it debería ser la referencia principal de cualquiera que quiera hacer cine. Su calidad y alcance superó con creces las posibilidades de su presupuesto ínfimo, 175.000 dólares siendo seleccionada en grandes festivales y distribuida en muchos países (en España lo hizo como Nola Darling). Y respecto a su tema, debemos señalar que en la década de los 80 pocas películas norteamericanas fueron tan sexualmente francas como esta ópera prima de Spike Lee y la de Steven Soderbergh (Sex. Lies and videotapes). La Motion Picture Association of America (MPAA) encargada de otorgar las clasificaciones insistió en recortarla debido a su intento no solo de subvertir los estereotipos sexuales, sino también las representaciones siempre estereotipadas de los afroamericanos que hasta entonces vimos en la gran pantalla.", "poster_url": "https://image.tmdb.org/t/p/w500/qiJuXvPONqTSSnzhbCBqE7EotV.jpg", "imdb_url": "https://www.imdb.com/title/tt0091939/", "youtube_id": "BrK4-lAhkeg"}, {"date": "Jueves, 20 de agosto", "title": "Lisbela e o Prisioneiro", "year": 2003, "country": "Brasil", "duration": "106 minutos", "tmdb_url": "https://www.themoviedb.org/movie/52345-lisbela-e-o-prisioneiro", "genres": ["Comedia", "Romance"], "directors": ["Guel Arraes", "Ligia Feliciano"], "cast": ["André Mattos", "Aramis Trindade", "Bruno García", "Carlos Casagrande", "Cláudio Perotto", "Débora Falabella", "Heloísa Périssé", "Paula Lavigne", "Lívia Falcâo", "Luisa Arraes", "Marco Nanini", "Michelle Birkheuer"], "synopsis": "Guel Arraes se reveló como un gran adaptador con O auto da compadecida (2000), que imprimió un ritmo endiablado a una pieza de la picaresca gracias al despliegue de una gran artilleria audiovisual. Lo mismo podría decirse de su aproximación a la poética de Osman Lins, cuya obra Lisbela e o prisioneiro había llevado previamente al teatro y seguidamente a la televisión y con la que Arraes vuelve a mostrar que el cine brasileño puede ser tan electrizante como el norteamericano. El espíritu de este filme es abiertamente popular, con su humor carioca y una banda sonora que mezcla artistas veteranos y jóvenes animando una imagen colorista que le da una textura diferente a Brasil que suele mostrar en el cine su cara más gris como corresponde a un país que pasa por penurias políticas y una notable falta de industria cinematográfica.", "poster_url": "https://image.tmdb.org/t/p/w500/raCdo5Hjpd3uXbpSd1JZ7tEyE31.jpg", "imdb_url": "https://www.imdb.com/title/tt0379354/", "youtube_id": "-Rhroj4p7iQ"}, {"date": "Viernes, 21 de agosto", "title": "While We’re Young", "year": 2014, "country": "Estados Unidos", "duration": "97 minutos", "tmdb_url": "https://www.themoviedb.org/movie/252512-while-we-re-young", "genres": ["Comedia", "Drama"], "directors": ["Noah Baumbach"], "cast": ["Ben Stiller", "Naomi Watts", "Adam Driver", "Amanda Seyfried", "Maria Dizzia", "Adam Horovitz", "Matthew Maher", "Peter Yarrow", "Bonnie Kaufman", "Hector Otero", "Deborah Eisenberg", "Dree Hemingway", "Matthew Shear", "Annie Baker", "Quincy Tyler Bernstine", "James Manzello", "Laura Hankin", "Charles Grodin", "James Saito", "Braddy Corbet", "Peter Bogdanovich", "Stoddard Blackall"], "synopsis": "Enamorado a sus 61 años de una joven vienesa de 18, Henrik Ibsen escribía en su drama tardío El maestro constructor (1892): “Me he vuelto un perturbado por la gente joven. Me han molestado tanto que he cerrado mis puertas. Quizá debería abrirlas y dejarles entrar”. No es descabellado imaginar que a sus 45 años Noah Baumbach vertiera en While we’re young una mirada sardónica por su implicación emocional por Greta Gerwig de tan solo 30, ni pensar que su película es una puesta al día del clásico All about Eve (1951) de Mankiewicz cuando coloca a un joven documentalista ambicioso (Adam Driver) seduciendo a un veterano (Ben Stiller). Baumbach localiza aquí esa línea borrosa que todos cruzamos al llegar a la mediana edad, pero inmediata y afortunadamente la pisotea brindándonos momentos de gran hilaridad. Pero lo hace con amabilidad hacia quienes hemos hecho ese inevitable viaje y sobrevivido con algo de dignidad.", "poster_url": "https://image.tmdb.org/t/p/w500/qgmIadxcSjUKqb3KjfbBJ9t1ZyZ.jpg", "imdb_url": "https://www.imdb.com/title/tt1791682/", "youtube_id": "lNEKFG0eAKE"}, {"date": "Sábado, 22 de agosto", "title": "Doble discurso", "year": 2023, "country": "Argentina", "duration": "113 minutos", "tmdb_url": "https://www.themoviedb.org/movie/1068385-doble-discurso", "genres": ["Comedia", "Romance", "Suspense"], "directors": ["Hernán Guerschuny"], "cast": ["Magui Bravi", "Julieta Cardinali", "Verónica Hassan", "Rafael Ferro", "Alejandro Gigena", "Nacho Girón", "Ignacio Iriarte", "Daniel Kovac", "Víctor Laplace", "Luis Margani", "Diego Peretti", "Natalia Tesone", "Ana Tula", "Mavira Ibáñez", "Franco Rizzaro", "Mónica Raiola"], "synopsis": "Doble discurso no aborda directamente la política sino su backstage, esos mecanismos internos de cada partido encaminados a mantener y c onstruir a su líder. Una operación no muy distinta a la que Hernán Guerschuny hiciera con el periodismo cinematográfico en su ópera prima, El crítico (2013). El pueblo, esa masa crítica de votantes que quisieran potencial, se mantiene en un espacio en off permanente mientras sí aparecen los medios de información y sus representantes que son los que el partido debería realmente conquistar porque su influencia va a ser decisiva sobre los futuros votantes. El circo político que Guerschuny presenta altera los nombres no tanto porque busque distanciarse del mapa de gobierno real como para expresar que, sean ficticios o no, los partidos siempre acan ofreciendo un espectáculo dominados por traiciones, corrupción y dinero ilegal.", "poster_url": "https://image.tmdb.org/t/p/w500/a3mMwp42qXaA4DLNcXvNO0u01Pi.jpg", "imdb_url": "https://www.imdb.com/title/tt27825595/", "youtube_id": "m6tD1z91QGY"}, {"date": "Domingo, 23 de agosto", "title": "Ella McCay", "year": 2025, "country": "Estados Unidos", "duration": "115 minutos", "tmdb_url": "https://www.themoviedb.org/movie/1206008-ella-mccay", "genres": ["Comedia", "Drama"], "directors": ["James L. Brooks"], "cast": ["Emma Mackey", "Jamie Lee Curtis", "Albert Brooks", "Spike Fearn", "Woody Harrelson", "Rebecca Hall", "Ayo Edebiri", "Kumail Nanjiani", "Jack Lowden", "Julie Kavner", "Joey Brooks", "Tracey Ullman"], "synopsis": "Concentrado en tareas de producción, James L. Brooks no dirigía desde How do you know (¿Cómo sabes si…?, 2010), por lo que éste es un regreso muy esperado. Aparte de un atractivo plantel de secundarios (Jamie Lee Curtis, sobre todo), el punto fuerte de su último film recae en la actriz Emma Mackey que interpreta a Ella McCay, un papel no muy distinto al de la oscarizada Loretta Young de The Farmer’s daughter (Un destino de mujer, 1947), que también asumía el papel de una joven que llega a gobernar y defiende sus nobles objetivos sin que le preocupe para nada ni su reputación personal ni por supuesto enriquecerse. Ambientada en el 2008, presenta un panorama idealista muy distinto a la realidad política actual de Estados Unidos caracterizada más que nunca por la corrupción, la vanidad, el interés propio y la violencia.", "poster_url": "https://image.tmdb.org/t/p/w500/7dkh168bJBPAl3tjcnhDHXowyWt.jpg", "imdb_url": "https://www.imdb.com/title/tt30095066/", "youtube_id": "hJYPGhJDjaU"}, {"date": "Martes, 25 de agosto", "title": "Never Give a Sucker an Even Break", "year": 1941, "country": "Estados Unidos", "duration": "71 minutos", "tmdb_url": "https://www.themoviedb.org/movie/28789-never-give-a-sucker-an-even-break", "genres": ["Comedia"], "directors": ["Edward F. Cline"], "cast": ["W. C. Fields", "Gloria Jean", "Leon Errol", "Billy Lenhart", "Kenneth Brown", "Margaret Dumont", "Susan Miller", "Franklin Pangborn", "Mona Barrie", "Charles Lang", "Anne Nagel", "Nell O’Day", "Irving Bacon", "Jody Gilbert", "Minerva Urecal", "Emmett Vogan", "Carlotta Monti. Estados Unidos"], "synopsis": "En el momento de su estreno un tal Walt, crítico de Variety escribió que “Never Give a Sucker An Even Break era una mezcla de episodios llamativos, enlazados de forma inconexa, pero con suficiente humor como para gustar a los seguidores de lo cómico. Una película de serie B aceptable, en la que la comedia absurda y el slapstick desenfrenado captarán la atención del público”. Vista hoy sigue siendo un producto extremo en el que W. C. Fields imprime tanta locura y estravagancia que cualquiera diría que era consciente de estar rodando su última película como protagonista. En cualquier caso fue su justa venganza contra una industria que empezaba a darle la espalda y Hollywood perdería a uno de los misántropos más ingeniosos que haya surcado el celuloide.", "poster_url": "https://image.tmdb.org/t/p/w500/dHCpKHEBfSGygsZ54RnDOh5s8Ky.jpg", "imdb_url": "https://www.imdb.com/title/tt0033945/", "youtube_id": "FXGfhqf2k8k"}, {"date": "Miércoles, 26 de agosto", "title": "1987", "year": 2014, "country": "Canadá", "duration": "105 minutos", "tmdb_url": "https://www.themoviedb.org/movie/280218-1987", "genres": ["Comedia", "Drama"], "directors": ["Ricardo Trogi"], "cast": ["Jean-Carl Boucher", "Claudio Colangelo", "Sandrine Bisson", "LaurentChristophe De Ruelle", "Pierre-Luc Funk", "Simon Pigeon", "Éléonore Lamothe", "Alysa Labelle", "JP Bergeron", "Martin Laroche", "Luciano Zema", "Bobby Beshro", "Stéphan Allard", "Jean-Sébastien Lavoie", "Marie-Ève Bertrand", "Rose Adam"], "synopsis": "En la segunda parte de su autobiografía, Ricardo Trogi (encarnado siempre por Jean-Carl Boucher) tiene 17 años y su cabeza está llena de ideas, ¡pero sobre todo las hormonas funcionan a plena velocidad! Aquí deja de lado los objetos pequeños, que son los que decoran y dan vida a la habitación de un niño de 11 años y se abre a temas mayores, como son la búsqueda de una identidad sexual. 1987 podría pasar por ser una película más de adolescentes sino fuese por sus constantes referencias a la cultura de los ‘80, el vestuario, los pedianos, y por dar continuidad a 1981 (2008), ser una secuela tan esperada hizo que lograra ser la película quebequense más exitosa del 2014 superando el millón de dólares en taquilla.", "poster_url": "https://image.tmdb.org/t/p/w500/h5Od9rVwDBJ9FEtfyxJxjakaoZA.jpg", "imdb_url": "https://www.imdb.com/title/tt3496058/", "youtube_id": "jFkw85VKK5U"}, {"date": "Jueves, 27 de agosto", "title": "A New Leaf", "year": 1971, "country": "Estados Unidos", "duration": "102 minutos", "tmdb_url": "https://www.themoviedb.org/movie/36850-a-new-leaf", "genres": ["Comedia", "Romance"], "directors": ["Elaine May"], "cast": ["Walter Matthau", "Elaine May", "Jack Weston", "George Rose", "James Coco", "Doris Roberts", "Renée Taylor", "William Redfield", "Graham Jarvis", "Jess Osuna", "David Doyle", "Fred Stewart", "Max Gordon", "Rose Arrick", "Conrad Bain"], "synopsis": "¡¡Qué gran actor fue Walter Matthau!! ¿Cómo es posible que un personaje tan antipático, cruel, déspota, incluso, sanguinario, pueda seducir tanto? Elaine May arrancó con ella una carrera oscura como cineasta, que alcanzó la cifra escasa de 4 títulos todos ellos magníficos y accidentados. El primer montaje de A New Leaf duraba 3 horas, resultando una comedia despiadamente venenosa que Paramount se encargaría de aligerar. Elaine May perdió el litigio contra la productora y esa primera versión quedaría invisible. Sin embargo, incluso con muchas secuencias cortadas, sigue siendo una comedia oscura y compleja, cuyo desarrollo conduce a algo inesperado: que un argumento inteligente, flemático y venenoso como el que May maneja alcance cotas en su desenlace de una gran ternura y humanidad.", "poster_url": "https://image.tmdb.org/t/p/w500/rjeL29wYY6p0OHGaoFORjXKkwbY.jpg", "imdb_url": "https://www.imdb.com/title/tt0067482/", "youtube_id": "R_NqzbyyIjI"}, {"date": "Viernes, 28 de agosto", "title": "La práctica", "year": 2023, "country": "Argentina-Chile-Alemania-Portugal", "duration": "89 minutos", "tmdb_url": "https://www.themoviedb.org/movie/713919-la-practica", "genres": ["Drama", "Comedia"], "directors": ["Martin Rejtman"], "cast": ["Esteban Bigliardi", "Manuela Oyarzún", "Amparo Noguera", "Camila Hirane", "Gabriel Cañas", "Víctor Montero", "Giordano Rossi", "Giannina Fruttero", "Catalina Saavedra", "Mirta Busnelli", "Sérgio de Brito", "Elvis Fuentes", "Mariana Muñoz", "Maria José-Siebald", "Celine Wempe"], "synopsis": "El quinto largometraje de Rejtman encaja perfectamente en su catálogo de comedias negras de bajo riesgo, llenas de personajes demasiado ocupados para preocuparse por otra cosa. Sus historias funcionan como arabescos: las figuras, objetos y líneas de texto circulan, las relaciones se retoman y disuelven de nuevo sin vacilación. Esta vez el humor sutil y observacional de Rejtman fija su atención en esa sociedad moderna que confía en el bienestar como cura para todo. En La práctica escoge esa porción de mundo que promete salud para quienes son conscientes de la salud, una mejora de la vida mediante una estricta disciplina de horarios y libertad de los problemas terrenales gracias a la influencia del hinduismo que aún se siente en la práctica del yoga. La espiritualidad se toma en serio pero al mismo tiempo se pone en perspectiva. Aquí no ofrece salvación, no ayuda contra el dolor de rodilla ni un mal matrimonio, pero como mucho aporta algo de paz y paciencia.", "poster_url": "https://image.tmdb.org/t/p/w500/iKVSoZgThNWfLMHl71VemQ45xMi.jpg", "imdb_url": "https://www.imdb.com/title/tt28233306/", "youtube_id": "Qb1aSFytzME"}, {"date": "Sábado, 29 de agosto", "title": "Film Geek", "year": 2005, "country": "Estados Unidos", "duration": "78 minutos", "tmdb_url": "https://www.themoviedb.org/movie/38908-film-geek", "genres": ["Comedia"], "directors": ["James Westby"], "cast": ["Melik Malkasian", "Ritah Parrish", "John Breen", "Dennis Adkins", "Tara Walker", "Taylor Nida", "Daphne Carver", "Kristen Torrianni", "Michelle Garner", "Michael Ramírez", "Jack Ryan", "Kim Hill", "Tyler Gannon", "Leslie Taylor. Estados Unidos"], "synopsis": "James Westby considera Film Geek como una película semiautobiográfica. Quizá por ello el cineasta no se corta y teje con suficiente ferocidad el retrato de Scotty Pelk, un inadaptado social que ama profundamente las películas. Adicto a los videoclubs y todo lo que significan, Scotty cumple con creces su horario laboral dentro de uno de estos locales dando rienda suelta a su pasión por el orden en las estanterías y una dedicación esmerada y abusiva con los clientes. Scotty es un Imdb andante, una enciclopedia cinematográfica viva. Nombra el título de una película y Scotty enumera el año, el director y los actores más importantes, además de dar un resumen conciso. El actor Melik Malkasian hace una interpretación genial del protagonista poniendo su cuerpo endeble al servicio de esta alma solitaria, alimentada básicamente de celuloide que, en sus ratos de ocio, vierte su pasión cinéfila también por las redes.", "poster_url": "https://image.tmdb.org/t/p/w500/lNkj69CCl4GZuLqVpPTEugccn7X.jpg", "imdb_url": "https://www.imdb.com/title/tt0478148/", "youtube_id": "3b8eOlG6Fbw"}, {"date": "Domingo, 30 de agosto", "title": "Un poeta", "year": 2025, "country": "Colombia-Alemania-Suecia", "duration": "123 minutos", "tmdb_url": "https://www.themoviedb.org/movie/1465563-un-poeta", "genres": ["Comedia", "Drama"], "directors": ["Simón Mesa Soto"], "cast": ["Ubeimar Ríos", "Rebeca Andrade", "Guillermo Cardona", "Margarita Soto", "Hugo Valencia", "Guillermo Restrepo", "Viviana Álvarez Losada", "Ana María Araque Restrepo", "Gabriel Buitrago", "Nelson Camayo", "Javier Castaño Vera", "Sara Castro Parra. Colombia-AlemaniaSuecia"], "synopsis": "Oscar Restrepo está en paro, muy sediento y no tiene dinero. Necesita dibujar un corazón en su pecho para convencerse de que es digno. No está realmente vivo, Óscar es un hombre torcido y desaliñado, con ropa mal ajustada, caspa salpicada sobre su pelo grasiento y una expresión gélida de perro vagabundo. Mientras la poesía revolotea dentro de su alma atormentada y sueña con vivirla, no es capaz de pisar tierra y alimentar y educar a su única hija. Dividida en cuatro capítulos, Un poeta no solo es una película sobre los obstáculos y el miedo que cualquiera siente ante la paternidad, también sobre el flujo nervioso de alquien que abandona momentáneamente su prosa, esa tendencia nauseabunda a dejar pasar la vida, a una decadencia sin fin que pone en pausa ante un posible rayo de esperanza.", "poster_url": "https://image.tmdb.org/t/p/w500/jd2p3fdosgWgsZh558TQ1lbGbjl.jpg", "imdb_url": "https://www.imdb.com/title/tt31835694/"}];
         let activeDayFilter = null;
         let activeGenreFilter = null;
+        let savedMovies = JSON.parse(localStorage.getItem('cineccc_saved') || '[]');
+        let showingOnlySaved = false;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            savedMovies.forEach(idx => {
+                const btn = document.querySelector(`.bookmark-btn[data-idx="${idx}"]`);
+                if (btn) btn.classList.add('saved');
+            });
+        });
+
+        function toggleBookmark(idx) {
+            const btn = document.querySelector(`.bookmark-btn[data-idx="${idx}"]`);
+            const index = savedMovies.indexOf(idx);
+            if (index === -1) {
+                savedMovies.push(idx);
+                if (btn) btn.classList.add('saved');
+                showToast("Película guardada en Mi Diario");
+            } else {
+                savedMovies.splice(index, 1);
+                if (btn) btn.classList.remove('saved');
+                showToast("Película eliminada de Mi Diario");
+            }
+            localStorage.setItem('cineccc_saved', JSON.stringify(savedMovies));
+            if (showingOnlySaved) filterMovies();
+        }
+        
+        function toggleSavedFilter() {
+            showingOnlySaved = !showingOnlySaved;
+            const btn = document.getElementById('filter-saved-btn');
+            if (showingOnlySaved) {
+                btn.classList.add('active');
+                showToast("Mostrando solo Mi Diario");
+            } else {
+                btn.classList.remove('active');
+                showToast("Mostrando todo el programa");
+            }
+            filterMovies();
+        }
 
         function toggleSynopsis(cardId) {
             const synopsis = document.getElementById(`syn-${cardId}`);
@@ -3290,13 +3493,19 @@
                     date.includes(query) ||
                     cast.includes(query);
                     
+                let matchesSaved = true;
+                if (showingOnlySaved) {
+                    const btn = card.querySelector('.bookmark-btn');
+                    matchesSaved = btn && btn.classList.contains('saved');
+                }
+                    
                 let matchesDay = true;
                 if (activeDayFilter) {
                     // check if the date attribute starts with the activeDayFilter
                     matchesDay = date.startsWith(activeDayFilter);
                 }
                 
-                if (matchesSearch && matchesDay) {
+                if (matchesSearch && matchesDay && matchesSaved) {
                     card.style.display = 'flex';
                     visibleCount++;
                 } else {

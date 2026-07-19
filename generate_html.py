@@ -53,6 +53,9 @@ def main():
             <div class="card-header-img">
                 <img class="poster-img" src="{poster_src}" alt="Póster de {m['title']}" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="{youtube_id}" style="background-image: url('{yt_thumb}')"></div>
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark({idx})" data-idx="{idx}" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
                 <div class="date-badge">
                     <span class="day">{day_name}</span>
                     <span class="num">{date_num}</span>
@@ -374,7 +377,7 @@ def main():
             width: 100%;
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--border-color);
-            padding: 1rem 1rem 1rem 3rem;
+            padding: 1rem 3.5rem 1rem 3rem;
             border-radius: 12px;
             color: var(--text-main);
             font-size: 1rem;
@@ -465,6 +468,45 @@ def main():
         
         .clear-filters-btn:hover {{
             text-decoration: underline;
+        }}
+        
+        .filter-saved-btn {{
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }}
+        
+        .filter-saved-btn svg {{
+            width: 1.4rem;
+            height: 1.4rem;
+        }}
+        
+        .filter-saved-btn:hover {{
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }}
+        
+        .filter-saved-btn.active {{
+            color: var(--accent);
+            background: rgba(210, 44, 54, 0.15);
+            border-color: rgba(210, 44, 54, 0.3);
+        }}
+        
+        .filter-saved-btn.active svg {{
+            fill: var(--accent);
+            stroke: var(--accent);
         }}
         
         /* Grid */
@@ -559,6 +601,48 @@ def main():
             z-index: 2;
         }}
         
+        /* Bookmark Button */
+        .bookmark-btn {{
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 5;
+            background: rgba(11, 15, 25, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }}
+        
+        .bookmark-btn svg {{
+            width: 1.2rem;
+            height: 1.2rem;
+        }}
+        
+        .bookmark-btn:hover {{
+            transform: scale(1.1);
+            background: rgba(11, 15, 25, 0.9);
+        }}
+        
+        .bookmark-btn.saved {{
+            background: var(--accent);
+            border-color: var(--accent);
+        }}
+        
+        .bookmark-btn.saved svg {{
+            fill: #fff;
+            color: var(--accent);
+            stroke: #fff;
+        }}
+
         /* Badge Date */
         .date-badge {{
             position: absolute;
@@ -1430,6 +1514,9 @@ def main():
             <div class="search-row">
                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 <input type="text" id="search-input" class="search-input" placeholder="Buscar película por título, director, país, fecha..." oninput="filterMovies()">
+                <button id="filter-saved-btn" class="filter-saved-btn" onclick="toggleSavedFilter()" title="Ver Mi Diario">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                </button>
             </div>
             
 
@@ -1564,6 +1651,44 @@ def main():
         const moviesData = {json.dumps(movies, ensure_ascii=False)};
         let activeDayFilter = null;
         let activeGenreFilter = null;
+        let savedMovies = JSON.parse(localStorage.getItem('cineccc_saved') || '[]');
+        let showingOnlySaved = false;
+        
+        document.addEventListener('DOMContentLoaded', () => {{
+            savedMovies.forEach(idx => {{
+                const btn = document.querySelector(`.bookmark-btn[data-idx="${{idx}}"]`);
+                if (btn) btn.classList.add('saved');
+            }});
+        }});
+
+        function toggleBookmark(idx) {{
+            const btn = document.querySelector(`.bookmark-btn[data-idx="${{idx}}"]`);
+            const index = savedMovies.indexOf(idx);
+            if (index === -1) {{
+                savedMovies.push(idx);
+                if (btn) btn.classList.add('saved');
+                showToast("Película guardada en Mi Diario");
+            }} else {{
+                savedMovies.splice(index, 1);
+                if (btn) btn.classList.remove('saved');
+                showToast("Película eliminada de Mi Diario");
+            }}
+            localStorage.setItem('cineccc_saved', JSON.stringify(savedMovies));
+            if (showingOnlySaved) filterMovies();
+        }}
+        
+        function toggleSavedFilter() {{
+            showingOnlySaved = !showingOnlySaved;
+            const btn = document.getElementById('filter-saved-btn');
+            if (showingOnlySaved) {{
+                btn.classList.add('active');
+                showToast("Mostrando solo Mi Diario");
+            }} else {{
+                btn.classList.remove('active');
+                showToast("Mostrando todo el programa");
+            }}
+            filterMovies();
+        }}
 
         function toggleSynopsis(cardId) {{
             const synopsis = document.getElementById(`syn-${{cardId}}`);
@@ -1653,13 +1778,19 @@ def main():
                     date.includes(query) ||
                     cast.includes(query);
                     
+                let matchesSaved = true;
+                if (showingOnlySaved) {{
+                    const btn = card.querySelector('.bookmark-btn');
+                    matchesSaved = btn && btn.classList.contains('saved');
+                }}
+                    
                 let matchesDay = true;
                 if (activeDayFilter) {{
                     // check if the date attribute starts with the activeDayFilter
                     matchesDay = date.startsWith(activeDayFilter);
                 }}
                 
-                if (matchesSearch && matchesDay) {{
+                if (matchesSearch && matchesDay && matchesSaved) {{
                     card.style.display = 'flex';
                     visibleCount++;
                 }} else {{
