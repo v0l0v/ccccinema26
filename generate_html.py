@@ -27,13 +27,8 @@ def main():
         imdb_link = m['imdb_url'] or m['tmdb_url'] or "https://www.imdb.com"
         
         whatsapp_text = urllib.parse.quote(f"🎥 *{share_title}* ({m['year']})\n📅 {m['date']}\n🎬 Dirigida por: {share_director}\n⏱️ Duración: {m['duration']}\n🔍 Más info: {imdb_link}")
-        telegram_text = urllib.parse.quote(f"🎥 *{share_title}* ({m['year']}) - {m['date']}\n🎬 Dirigida por: {share_director}\n⏱️ Duración: {m['duration']}\n🔍 Más info: {imdb_link}")
-        
-        whatsapp_url = f"https://api.whatsapp.com/send?text={whatsapp_text}"
-        telegram_url = f"https://t.me/share/url?url={urllib.parse.quote(imdb_link)}&text={telegram_text}"
-        
-        # Unique ID for toggle and element selection
-        card_id = f"card-{idx}"
+        # Compartir (ahora genera entradas visuales)
+        card_id = f"card-{{idx}}"
         
         # Dynamic poster fallback
         poster_src = m['poster_url'] if m['poster_url'] else 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80'
@@ -101,16 +96,13 @@ def main():
                     </button>
                 </div>
                 <div class="share-row">
-                    <span class="share-label">Compartir:</span>
+                    <span class="share-label">Generar Entrada:</span>
                     <div class="share-buttons">
-                        <a href="{whatsapp_url}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn whatsapp" title="Compartir por WhatsApp" aria-label="Compartir por WhatsApp">
+                        <button onclick="event.stopPropagation(); generateAndShareTicket({idx})" class="share-btn whatsapp" title="Compartir Entrada por WhatsApp" aria-label="Compartir por WhatsApp">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.335 4.963L2 22l5.233-1.371a9.948 9.948 0 0 0 4.779 1.218h.004c5.502 0 9.99-4.478 9.99-9.988.002-2.67-1.034-5.177-2.92-7.062C17.199 3.013 14.691 2 12.012 2zm4.72 13.568c-.26.732-1.503 1.35-2.065 1.415-.561.066-1.125.107-1.912-.139a11.516 11.516 0 0 1-5.158-3.177 12.19 12.19 0 0 1-2.203-3.666 4.3 4.3 0 0 1-.225-1.92c.166-.889.585-1.38.868-1.745.283-.365.617-.456.822-.456.205 0 .41.002.589.012.192.01.442-.074.693.528.26.626.884 2.144.962 2.302.078.158.13.342.026.55-.104.208-.156.342-.312.521-.156.18-.328.401-.468.538-.156.152-.32.318-.138.63.182.312.812 1.337 1.737 2.164.925.826 1.704 1.08 2.029 1.215.325.135.513.114.707-.107.195-.221.844-.981 1.071-1.317.227-.336.455-.28.766-.165.311.115 1.97.928 2.307 1.096.337.168.562.25.642.387.08.137.08.795-.18 1.527z"/></svg>
-                        </a>
-                        <a href="{telegram_url}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
+                        </button>
+                        <button onclick="event.stopPropagation(); generateAndShareTicket({idx})" class="share-btn telegram" title="Compartir Entrada por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
-                        </a>
-                        <button onclick="event.stopPropagation(); shareMovie({idx})" class="share-btn native" title="Compartir película" aria-label="Compartir película">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                         </button>
                     </div>
                 </div>
@@ -1582,6 +1574,65 @@ def main():
                 font-size: 0.9rem;
             }}
         }}
+        /* Ticket Generator Overlay */
+        .ticket-overlay {{
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(11, 15, 25, 0.95);
+            z-index: 4000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }}
+        
+        .ticket-overlay.active {{
+            opacity: 1;
+            pointer-events: auto;
+        }}
+        
+        .ticket-modal {{
+            background: var(--bg-primary);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            max-width: 90%;
+            width: 450px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }}
+        
+        .ticket-overlay.active .ticket-modal {{
+            transform: scale(1);
+        }}
+        
+        .close-ticket {{
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }}
+        
+        .close-ticket:hover {{
+            background: rgba(255, 255, 255, 0.2);
+        }}
     </style>
 </head>
 <body>
@@ -2040,25 +2091,142 @@ def main():
             document.body.style.overflow = '';
         }}
 
-        async function shareMovie(idx) {{
+        async function generateAndShareTicket(idx) {{
             const m = moviesData[idx];
-            if (!navigator.share) {{
-                alert('Compartir no soportado en este navegador.');
-                return;
-            }}
+            if (!m) return;
             
-            const director = m.directors && m.directors.length > 0 ? m.directors[0] : "desconocido";
-            const link = m.imdb_url || m.tmdb_url || window.location.href;
+            showToast("🎟️ Generando tu entrada...");
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 800;
+            canvas.height = 1400;
+            
+            ctx.fillStyle = '#f4e4bc';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = '#c45a49';
+            ctx.lineWidth = 15;
+            ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
+            
+            ctx.strokeStyle = '#222';
+            ctx.lineWidth = 4;
+            ctx.setLineDash([20, 20]);
+            ctx.strokeRect(60, 60, canvas.width - 120, canvas.height - 120);
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = '#111';
+            ctx.font = 'bold 50px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText("CCCC CINEMA D'ESTIU", canvas.width/2, 130);
+            
+            ctx.font = '30px sans-serif';
+            ctx.fillText("🎟️ ENTRADA OFICIAL 🎟️", canvas.width/2, 180);
+            
+            const posterSrc = m.poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
             
             try {{
-                await navigator.share({{
-                    title: m.title,
-                    text: `🎥 ${{m.title}} (${{m.year}}) - ${{m.date}}\\n🎬 Dirigida por: ${{director}}\\n⏱️ Duración: ${{m.duration}}`,
-                    url: link
-                }});
+                const img = await loadImage(posterSrc);
+                const pWidth = 600;
+                const pHeight = 850;
+                const pX = (canvas.width - pWidth) / 2;
+                const pY = 230;
+                
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(pX - 10, pY - 10, pWidth + 20, pHeight + 20);
+                
+                ctx.drawImage(img, pX, pY, pWidth, pHeight);
+                
+                const textY = pY + pHeight + 70;
+                ctx.fillStyle = '#111';
+                
+                ctx.font = 'bold 45px sans-serif';
+                const title = m.title.length > 30 ? m.title.substring(0,27) + '...' : m.title;
+                ctx.fillText(title, canvas.width/2, textY);
+                
+                ctx.font = 'bold 35px sans-serif';
+                ctx.fillStyle = '#c45a49';
+                ctx.fillText(m.date.toUpperCase(), canvas.width/2, textY + 60);
+                
+                drawBarcode(ctx, 150, canvas.height - 150, 500, 80);
+                
+                canvas.toBlob(async (blob) => {{
+                    if (!blob) return;
+                    
+                    const file = new File([blob], `entrada-${{m.title.replace(/\\s+/g, '-').toLowerCase()}}.png`, {{ type: 'image/png' }});
+                    
+                    if (navigator.canShare && navigator.canShare({{ files: [file] }})) {{
+                        try {{
+                            await navigator.share({{
+                                files: [file],
+                                title: `Entrada para ${{m.title}}`,
+                                text: `¡Me voy a ver ${{m.title}} en el CCCC Cinema d'Estiu!`
+                            }});
+                        }} catch (err) {{
+                            console.log("Error al compartir nativo:", err);
+                            showTicketModal(canvas.toDataURL());
+                        }}
+                    }} else {{
+                        showTicketModal(canvas.toDataURL());
+                    }}
+                }}, 'image/png');
+                
             }} catch (err) {{
-                console.log('Error al compartir', err);
+                console.error("Error drawing ticket:", err);
+                showToast("❌ Error al generar la entrada");
             }}
+        }}
+        
+        function loadImage(src) {{
+            return new Promise((resolve, reject) => {{
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = src;
+            }});
+        }}
+        
+        function drawBarcode(ctx, x, y, width, height) {{
+            ctx.fillStyle = '#000';
+            let currX = x;
+            while(currX < x + width) {{
+                const barWidth = Math.random() * 6 + 1;
+                if (currX + barWidth <= x + width) {{
+                    ctx.fillRect(currX, y, barWidth, height);
+                }}
+                currX += barWidth + Math.random() * 5 + 1;
+            }}
+        }}
+        
+        function showTicketModal(dataUrl) {{
+            let overlay = document.getElementById('ticket-overlay');
+            if (!overlay) {{
+                overlay = document.createElement('div');
+                overlay.id = 'ticket-overlay';
+                overlay.className = 'ticket-overlay';
+                overlay.innerHTML = `
+                    <div class="ticket-modal">
+                        <button class="close-ticket" onclick="document.getElementById('ticket-overlay').classList.remove('active')">&times;</button>
+                        <h3 style="color:#fff; margin-bottom: 1rem;">¡Tu entrada está lista!</h3>
+                        <p style="color:var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Mantén pulsada la imagen para enviarla, o usa el botón de descargar.</p>
+                        <img id="ticket-result" src="" alt="Ticket generado" style="max-width:100%; max-height:60vh; border-radius:8px; box-shadow:0 10px 25px rgba(0,0,0,0.5);">
+                        <br><br>
+                        <a id="ticket-download-btn" href="" download="entrada-cccc.png" class="details-btn" style="display:inline-flex; width:auto; padding: 0.8rem 2rem; margin-top:1rem;">
+                            ⬇️ Descargar Entrada
+                        </a>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+            }}
+            
+            document.getElementById('ticket-result').src = dataUrl;
+            document.getElementById('ticket-download-btn').href = dataUrl;
+            
+            setTimeout(() => {{
+                overlay.classList.add('active');
+            }}, 10);
         }}
 
         function closeModal() {{
