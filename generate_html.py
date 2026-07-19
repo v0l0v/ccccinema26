@@ -106,6 +106,9 @@ def main():
                         <a href="{telegram_url}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie({idx})" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -845,6 +848,23 @@ def main():
             border-color: var(--telegram);
             box-shadow: 0 0 12px rgba(0, 136, 204, 0.4);
             transform: scale(1.1);
+        }}
+        
+        .share-btn.native {{
+            display: none;
+            border: none;
+            cursor: pointer;
+        }}
+        
+        .share-btn.native:hover {{
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
+        }}
+        
+        @media (max-width: 768px) {{
+            .share-btn.native {{
+                display: flex;
+            }}
         }}
         
         /* Empty State */
@@ -1768,6 +1788,27 @@ def main():
         function closePosterModal() {{
             document.getElementById('poster-modal').classList.remove('open');
             document.body.style.overflow = '';
+        }}
+
+        async function shareMovie(idx) {{
+            const m = moviesData[idx];
+            if (!navigator.share) {{
+                alert('Compartir no soportado en este navegador.');
+                return;
+            }}
+            
+            const director = m.directors && m.directors.length > 0 ? m.directors[0] : "desconocido";
+            const link = m.imdb_url || m.tmdb_url || window.location.href;
+            
+            try {{
+                await navigator.share({{
+                    title: m.title,
+                    text: `🎥 ${{m.title}} (${{m.year}}) - ${{m.date}}\\n🎬 Dirigida por: ${{director}}\\n⏱️ Duración: ${{m.duration}}`,
+                    url: link
+                }});
+            }} catch (err) {{
+                console.log('Error al compartir', err);
+            }}
         }}
 
         function closeModal() {{

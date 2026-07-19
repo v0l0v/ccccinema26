@@ -732,6 +732,23 @@
             transform: scale(1.1);
         }
         
+        .share-btn.native {
+            display: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .share-btn.native:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .share-btn.native {
+                display: flex;
+            }
+        }
+        
         /* Empty State */
         .empty-state {
             grid-column: 1 / -1;
@@ -1364,6 +1381,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0107273/&text=%F0%9F%8E%A5%20%2AJoey%20Breaker%2A%20%281992%29%20-%20Viernes%2C%2031%20de%20julio%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Steven%20Starr%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2092%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0107273/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(0)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1426,6 +1446,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt1321381/&text=%F0%9F%8E%A5%20%2AEl%20artista%2A%20%282008%29%20-%20S%C3%A1bado%2C%201%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Mariano%20Cohn%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20100%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt1321381/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(1)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1488,6 +1511,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0041664/&text=%F0%9F%8E%A5%20%2AMr.%20Belvedere%20Goes%20to%20College%2A%20%281949%29%20-%20Domingo%2C%202%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Elliott%20Nugent%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2083%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0041664/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(2)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1550,6 +1576,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0138629/&text=%F0%9F%8E%A5%20%2AM%C3%A1tenme%20porque%20me%20muero%2A%20%281951%29%20-%20Martes%2C%204%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Ismael%20Rodr%C3%ADguez%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2099%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0138629/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(3)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1612,6 +1641,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0096259/&text=%F0%9F%8E%A5%20%2AThings%20Change%2A%20%281988%29%20-%20Mi%C3%A9rcoles%2C%205%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20David%20Mamet%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20100%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0096259/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(4)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1674,6 +1706,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0383307/&text=%F0%9F%8E%A5%20%2AEl%20destino%20no%20tiene%20favoritos%2A%20%282003%29%20-%20Jueves%2C%206%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20%C3%81lvaro%20Velarde%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2090%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0383307/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(5)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1736,6 +1771,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0089028/&text=%F0%9F%8E%A5%20%2ADim%20Sum%3A%20A%20Little%20Bit%20of%20Heart%2A%20%281985%29%20-%20Viernes%2C%207%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Wayne%20Wang%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2084%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0089028/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(6)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1798,6 +1836,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0014429/&text=%F0%9F%8E%A5%20%2ASafety%20Last%21%2A%20%281923%29%20-%20S%C3%A1bado%2C%208%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Fred%20C.%20Newmeyer%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2074%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0014429/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(7)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1860,6 +1901,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0095874/&text=%F0%9F%8E%A5%20%2APlaff%20%28Demasiado%20miedo%20a%20la%20vida%29%2A%20%281988%29%20-%20Domingo%2C%209%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Juan%20Carlos%20Tab%C3%ADo%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20110%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0095874/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(8)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1922,6 +1966,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0830768/&text=%F0%9F%8E%A5%20%2ABluff%2A%20%282007%29%20-%20Martes%2C%2011%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Felipe%20Mart%C3%ADnez%20Amador%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2095%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0830768/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(9)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1984,6 +2031,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0091419/&text=%F0%9F%8E%A5%20%2ALittle%20Shop%20of%20Horrors%2A%20%281986%29%20-%20Mi%C3%A9rcoles%2C%2012%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Frank%20Oz%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20104%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0091419/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(10)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2046,6 +2096,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt32422731/&text=%F0%9F%8E%A5%20%2ACulpa%20cero%2A%20%282024%29%20-%20Jueves%2C%2013%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Valeria%20Bertuccelli%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20106%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt32422731/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(11)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2108,6 +2161,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0090097/&text=%F0%9F%8E%A5%20%2AThe%20Sure%20Thing%2A%20%281985%29%20-%20Viernes%2C%2014%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Rob%20Reiner%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20100%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0090097/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(12)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2170,6 +2226,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt8215836/&text=%F0%9F%8E%A5%20%2ADenominaci%C3%B3n%20de%20origen%2A%20%282024%29%20-%20S%C3%A1bado%2C%2015%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Tom%C3%A1s%20Alzamora%20Mu%C3%B1oz%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2086%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt8215836/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(13)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2232,6 +2291,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0101684/&text=%F0%9F%8E%A5%20%2ADefending%20Your%20Life%2A%20%281991%29%20-%20Domingo%2C%2016%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Albert%20Brooks%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20112%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0101684/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(14)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2294,6 +2356,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0118941/&text=%F0%9F%8E%A5%20%2ADe%20noche%20vienes%2C%20Esmeralda%2A%20%281997%29%20-%20Martes%2C%2018%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Jaime%20Humberto%20Hermosillo%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20103%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0118941/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(15)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2356,6 +2421,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0091939/&text=%F0%9F%8E%A5%20%2AShe%E2%80%99s%20Gotta%20Have%20It%2A%20%281986%29%20-%20Mi%C3%A9rcoles%2C%2019%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Spike%20Lee%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2084%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0091939/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(16)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2418,6 +2486,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0379354/&text=%F0%9F%8E%A5%20%2ALisbela%20e%20o%20Prisioneiro%2A%20%282003%29%20-%20Jueves%2C%2020%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Guel%20Arraes%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20106%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0379354/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(17)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2480,6 +2551,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt1791682/&text=%F0%9F%8E%A5%20%2AWhile%20We%E2%80%99re%20Young%2A%20%282014%29%20-%20Viernes%2C%2021%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Noah%20Baumbach%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2097%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt1791682/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(18)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2542,6 +2616,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt27825595/&text=%F0%9F%8E%A5%20%2ADoble%20discurso%2A%20%282023%29%20-%20S%C3%A1bado%2C%2022%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Hern%C3%A1n%20Guerschuny%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20113%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt27825595/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(19)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2604,6 +2681,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt30095066/&text=%F0%9F%8E%A5%20%2AElla%20McCay%2A%20%282025%29%20-%20Domingo%2C%2023%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20James%20L.%20Brooks%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20115%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt30095066/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(20)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2666,6 +2746,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0033945/&text=%F0%9F%8E%A5%20%2ANever%20Give%20a%20Sucker%20an%20Even%20Break%2A%20%281941%29%20-%20Martes%2C%2025%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Edward%20F.%20Cline%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2071%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0033945/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(21)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2728,6 +2811,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt3496058/&text=%F0%9F%8E%A5%20%2A1987%2A%20%282014%29%20-%20Mi%C3%A9rcoles%2C%2026%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Ricardo%20Trogi%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20105%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt3496058/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(22)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2790,6 +2876,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0067482/&text=%F0%9F%8E%A5%20%2AA%20New%20Leaf%2A%20%281971%29%20-%20Jueves%2C%2027%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Elaine%20May%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20102%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0067482/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(23)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2852,6 +2941,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt28233306/&text=%F0%9F%8E%A5%20%2ALa%20pr%C3%A1ctica%2A%20%282023%29%20-%20Viernes%2C%2028%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Martin%20Rejtman%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2089%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt28233306/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(24)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2914,6 +3006,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt0478148/&text=%F0%9F%8E%A5%20%2AFilm%20Geek%2A%20%282005%29%20-%20S%C3%A1bado%2C%2029%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20James%20Westby%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%2078%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt0478148/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(25)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2976,6 +3071,9 @@
                         <a href="https://t.me/share/url?url=https%3A//www.imdb.com/title/tt31835694/&text=%F0%9F%8E%A5%20%2AUn%20poeta%2A%20%282025%29%20-%20Domingo%2C%2030%20de%20agosto%0A%F0%9F%8E%AC%20Dirigida%20por%3A%20Sim%C3%B3n%20Mesa%20Soto%0A%E2%8F%B1%EF%B8%8F%20Duraci%C3%B3n%3A%20123%20minutos%0A%F0%9F%94%8D%20M%C3%A1s%20info%3A%20https%3A//www.imdb.com/title/tt31835694/" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="share-btn telegram" title="Compartir por Telegram" aria-label="Compartir por Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </a>
+                        <button onclick="event.stopPropagation(); shareMovie(26)" class="share-btn native" title="Compartir película" aria-label="Compartir película">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -3333,6 +3431,27 @@ Te invito a ver la cartelera de películas programada para este mes. Aquí tiene
         function closePosterModal() {
             document.getElementById('poster-modal').classList.remove('open');
             document.body.style.overflow = '';
+        }
+
+        async function shareMovie(idx) {
+            const m = moviesData[idx];
+            if (!navigator.share) {
+                alert('Compartir no soportado en este navegador.');
+                return;
+            }
+            
+            const director = m.directors && m.directors.length > 0 ? m.directors[0] : "desconocido";
+            const link = m.imdb_url || m.tmdb_url || window.location.href;
+            
+            try {
+                await navigator.share({
+                    title: m.title,
+                    text: `🎥 ${m.title} (${m.year}) - ${m.date}\n🎬 Dirigida por: ${director}\n⏱️ Duración: ${m.duration}`,
+                    url: link
+                });
+            } catch (err) {
+                console.log('Error al compartir', err);
+            }
         }
 
         function closeModal() {
