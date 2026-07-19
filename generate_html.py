@@ -1468,6 +1468,80 @@ def main():
             font-weight: 500;
         }}
         
+        /* Cinematic Roulette Overlay */
+        .roulette-overlay {{
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(11, 15, 25, 0.95);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }}
+        
+        .roulette-overlay.active {{
+            opacity: 1;
+            pointer-events: auto;
+        }}
+        
+        .roulette-content {{
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }}
+        
+        .roulette-overlay.active .roulette-content {{
+            transform: scale(1);
+        }}
+        
+        .roulette-title {{
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(210, 44, 54, 0.5);
+            animation: pulse-title 1s infinite alternate;
+        }}
+        
+        @keyframes pulse-title {{
+            from {{ opacity: 0.7; }}
+            to {{ opacity: 1; text-shadow: 0 0 20px rgba(210, 44, 54, 0.8); }}
+        }}
+        
+        .roulette-frame {{
+            position: relative;
+            width: 250px;
+            height: 350px;
+            margin: 0 auto;
+            border: 4px solid #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+            background: #000;
+        }}
+        
+        .roulette-frame img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.1s;
+        }}
+        
+        .film-grain {{
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+            opacity: 0.3;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }}
+        
         /* Floating Action Button - Surprise Me */
         .fab-surprise {{
             position: fixed;
@@ -2054,13 +2128,55 @@ def main():
         }});
         function surpriseMe() {{
             if (!moviesData || moviesData.length === 0) return;
-            const randomIdx = Math.floor(Math.random() * moviesData.length);
-            showToast("🎲 ¡Eligiendo película sorpresa!");
-            setTimeout(() => {{
-                openModal(randomIdx);
-            }}, 600);
+            
+            const overlay = document.getElementById('roulette-overlay');
+            const posterEl = document.getElementById('roulette-poster');
+            overlay.classList.add('active');
+            
+            let counter = 0;
+            const maxTicks = 15;
+            let interval = 80;
+            
+            function tick() {{
+                const tempIdx = Math.floor(Math.random() * moviesData.length);
+                const tempPoster = moviesData[tempIdx].poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
+                posterEl.src = tempPoster;
+                
+                counter++;
+                
+                if (counter < maxTicks) {{
+                    if (counter > maxTicks * 0.6) interval += 40; 
+                    setTimeout(tick, interval);
+                }} else {{
+                    const finalIdx = Math.floor(Math.random() * moviesData.length);
+                    const finalPoster = moviesData[finalIdx].poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
+                    posterEl.src = finalPoster;
+                    
+                    posterEl.style.opacity = '0';
+                    setTimeout(() => {{ posterEl.style.opacity = '1'; }}, 50);
+                    
+                    setTimeout(() => {{
+                        overlay.classList.remove('active');
+                        setTimeout(() => {{
+                            openModal(finalIdx);
+                        }}, 400);
+                    }}, 1200);
+                }}
+            }}
+            
+            tick();
         }}
     </script>
+    <!-- Cinematic Roulette Overlay -->
+    <div id="roulette-overlay" class="roulette-overlay">
+        <div class="roulette-content">
+            <h2 class="roulette-title">Ruleta Cinéfila</h2>
+            <div class="roulette-frame">
+                <img id="roulette-poster" src="" alt="Eligiendo...">
+                <div class="film-grain"></div>
+            </div>
+        </div>
+    </div>
     <!-- Surprise Me FAB -->
     <button class="fab-surprise" onclick="surpriseMe()" title="¡Ruleta Cinéfila!" aria-label="Elegir película al azar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
