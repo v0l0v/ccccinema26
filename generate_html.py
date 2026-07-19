@@ -980,7 +980,7 @@ def main():
         .toast {{
             position: fixed;
             bottom: 2rem;
-            right: 2rem;
+            left: 50%;
             background: var(--bg-secondary);
             border: 1px solid var(--accent);
             color: var(--text-main);
@@ -990,13 +990,17 @@ def main():
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            z-index: 1000;
-            transform: translateY(150%);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(150px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }}
         
         .toast.show {{
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
         }}
         
         .toast svg {{
