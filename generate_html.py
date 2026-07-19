@@ -1329,6 +1329,24 @@ def main():
                 justify-content: center;
             }}
         }}
+        .site-footer {{
+            text-align: center;
+            padding: 3rem 1.5rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            background: rgba(18, 45, 42, 0.4);
+        }}
+        
+        .site-footer p {{
+            margin-bottom: 0.5rem;
+        }}
+        
+        .site-footer .footer-highlight {{
+            color: var(--cream);
+            font-weight: 500;
+        }}
     </style>
 </head>
 <body>
@@ -1499,6 +1517,14 @@ def main():
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
         <span id="toast-message">Copiado al portapapeles</span>
     </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p class="footer-highlight">© 2026 CCCC · Centre del Carme. Todos los derechos reservados.</p>
+        <p>Fichas técnicas y sinopsis oficiales extraídas del programa del Centre del Carme (CCCC).</p>
+        <p>Cinema d'Estiu 2026</p>
+        <p style="margin-top: 1.5rem; font-size: 0.8rem; opacity: 0.8;">Creado y diseñado por v0l0v</p>
+    </footer>
 
     <script>
         const moviesData = {json.dumps(movies, ensure_ascii=False)};
