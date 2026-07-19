@@ -2124,7 +2124,9 @@ def main():
             ctx.font = '30px sans-serif';
             ctx.fillText("🎟️ ENTRADA OFICIAL 🎟️", canvas.width/2, 180);
             
-            const posterSrc = m.poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
+            const rawPosterSrc = m.poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
+            // Usamos un proxy de imágenes para evitar problemas de CORS en el canvas al intentar toBlob/toDataURL
+            const posterSrc = "https://wsrv.nl/?url=" + encodeURIComponent(rawPosterSrc);
             
             try {{
                 const img = await loadImage(posterSrc);
