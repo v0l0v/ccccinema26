@@ -71,9 +71,7 @@ def main():
                     {genres_badges}
                 </div>
                 
-                <div class="synopsis-container">
-                    <p class="synopsis-text">{m['synopsis']}</p>
-                </div>
+
                 
                 <div class="tech-spec-grid">
                     <div class="spec-item">
