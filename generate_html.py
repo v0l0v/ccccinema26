@@ -72,8 +72,7 @@ def main():
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-{card_id}">{m['synopsis']}</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('{card_id}')" id="btn-{card_id}">Leer más</button>
+                    <p class="synopsis-text">{m['synopsis']}</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -768,36 +767,6 @@ def main():
         .synopsis-text {{
             font-size: 0.9rem;
             color: var(--text-muted);
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-        }}
-        
-        .synopsis-text.expanded {{
-            display: block;
-            -webkit-line-clamp: initial;
-            overflow: visible;
-        }}
-        
-        .toggle-synopsis-btn {{
-            background: none;
-            border: none;
-            color: var(--accent);
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 0.4rem;
-            padding: 0;
-            display: block;
-            transition: color 0.2s;
-        }}
-        
-        .toggle-synopsis-btn:hover {{
-            color: #fff;
-            text-decoration: underline;
         }}
         
         /* Technical details */

@@ -655,36 +655,6 @@
         .synopsis-text {
             font-size: 0.9rem;
             color: var(--text-muted);
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-        }
-        
-        .synopsis-text.expanded {
-            display: block;
-            -webkit-line-clamp: initial;
-            overflow: visible;
-        }
-        
-        .toggle-synopsis-btn {
-            background: none;
-            border: none;
-            color: var(--accent);
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 0.4rem;
-            padding: 0;
-            display: block;
-            transition: color 0.2s;
-        }
-        
-        .toggle-synopsis-btn:hover {
-            color: #fff;
-            text-decoration: underline;
         }
         
         /* Technical details */
@@ -1626,8 +1596,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Antes de que se ensaye, aparezcan focos, micrófonos y cámaras, está el negocio del cine. Esos agentes de artistas encargados de colocar talentos, establecer acuerdos y valorar cada proyecto. Leen guiones, están al tanto de los castings, acuden habitualmente a espectáculos, a pases privados de productoras y, en definitiva, luchan por el máximo beneficio para sus artistas. Joey Breaker es uno de ellos, uno divertido, competente y de excelente reputación. A Steven Starr, que desempeñó durante años este mismo oficio, se le ocurrió que debía colocar a su protagonista ante la certeza de que el amor fluye, la pasión existe, pese a vivir de cerca esa crisis amarga que arrancó en los ‘80 por la que que muchos pagaron su intimidad con el contagio de un virus mortal. Durante tres décadas, ese universo genuino de dinero, amor y muerte salpicado con canciones reagge fue invisible. Justo ahora, en el momento mismo de esta inauguración, podremos abrirlos y disfrutarlo gracias a una copia recién restaurada y la generosidad de su director.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Antes de que se ensaye, aparezcan focos, micrófonos y cámaras, está el negocio del cine. Esos agentes de artistas encargados de colocar talentos, establecer acuerdos y valorar cada proyecto. Leen guiones, están al tanto de los castings, acuden habitualmente a espectáculos, a pases privados de productoras y, en definitiva, luchan por el máximo beneficio para sus artistas. Joey Breaker es uno de ellos, uno divertido, competente y de excelente reputación. A Steven Starr, que desempeñó durante años este mismo oficio, se le ocurrió que debía colocar a su protagonista ante la certeza de que el amor fluye, la pasión existe, pese a vivir de cerca esa crisis amarga que arrancó en los ‘80 por la que que muchos pagaron su intimidad con el contagio de un virus mortal. Durante tres décadas, ese universo genuino de dinero, amor y muerte salpicado con canciones reagge fue invisible. Justo ahora, en el momento mismo de esta inauguración, podremos abrirlos y disfrutarlo gracias a una copia recién restaurada y la generosidad de su director.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -1691,8 +1660,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">En estos tiempos de globalización económica y cultural queda en entredicho la propia categoría de arte. El mercado en el sector artístico llega a jugar un papel tan relevante que cabe cuestionar los procedimientos actuales de consagración de los artistas. De todo eso y mucho más habla la ópera prima de Mariano Cohn y Gastón Duprat. En otras palabras, de cómo esa necesidad imperiosa de críticos y artistas por señalar y alimentar tendencias, ha provocado que el arte deje de ser una fuerza sustantiva y transformadora. Porque ya no se trata de cuestionar el mundo ni de hacer historia, cuando urge plegarse ante las nuevas tiranías estéticas del presente. Formalmente, El artista llega a inquietar cuando va a la contra de lo que su trama y personajes expresan. Muy lejos de intentar seducir o hacerle la rosca al espectador , esta dupla de grandes cineastas no duda en imponer encuadres llamativamente imperfectos o planos de un estatismo que puede resultar irritante para quien no sepa entrar en este divertimento sobre las paradojas del propio acto creativo.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">En estos tiempos de globalización económica y cultural queda en entredicho la propia categoría de arte. El mercado en el sector artístico llega a jugar un papel tan relevante que cabe cuestionar los procedimientos actuales de consagración de los artistas. De todo eso y mucho más habla la ópera prima de Mariano Cohn y Gastón Duprat. En otras palabras, de cómo esa necesidad imperiosa de críticos y artistas por señalar y alimentar tendencias, ha provocado que el arte deje de ser una fuerza sustantiva y transformadora. Porque ya no se trata de cuestionar el mundo ni de hacer historia, cuando urge plegarse ante las nuevas tiranías estéticas del presente. Formalmente, El artista llega a inquietar cuando va a la contra de lo que su trama y personajes expresan. Muy lejos de intentar seducir o hacerle la rosca al espectador , esta dupla de grandes cineastas no duda en imponer encuadres llamativamente imperfectos o planos de un estatismo que puede resultar irritante para quien no sepa entrar en este divertimento sobre las paradojas del propio acto creativo.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -1756,8 +1724,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Cuando la burocracia del mundo te exige un título, no basta que seas un genio. Siempre elegante, circunspecto y altanero, Lynn Belvedere se abre camino en la universidad en esta secuela de Sitting Pretty (Niñera moderna, 1948) precisamente por la falta de ese certificado que ningún miembro de su legión de fans le pediría. Y es una gozada que este personaje inolvidable siga guardando la compostura vistiendo uniforme y gorra de novato y se maneje tan bien en los espacios estudiantiles sorprendiendo a jóvenes y extraños en plena fiebre del woogie woogie. Como muchos films de posguerra esta comedia señala un trasfondo trágico en el personaje de Shirley Temple, madre de un niño y viuda con tan solo 21 años, así como la celeridad de sus sentimientos: basta un beso en los labios para sellar un compromiso nuevo.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Cuando la burocracia del mundo te exige un título, no basta que seas un genio. Siempre elegante, circunspecto y altanero, Lynn Belvedere se abre camino en la universidad en esta secuela de Sitting Pretty (Niñera moderna, 1948) precisamente por la falta de ese certificado que ningún miembro de su legión de fans le pediría. Y es una gozada que este personaje inolvidable siga guardando la compostura vistiendo uniforme y gorra de novato y se maneje tan bien en los espacios estudiantiles sorprendiendo a jóvenes y extraños en plena fiebre del woogie woogie. Como muchos films de posguerra esta comedia señala un trasfondo trágico en el personaje de Shirley Temple, madre de un niño y viuda con tan solo 21 años, así como la celeridad de sus sentimientos: basta un beso en los labios para sellar un compromiso nuevo.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -1821,8 +1788,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">La historia artística de Germán Valdés arranca en ciudad Juárez, donde la cultura de México y Estados Unidos se mezclaba, el swing convivía con el bolero y los jóvenes vestían diferente. Y fue ahí donde su personaje más popular, Tin Tan, cambiaría todo y convertiría el barrio en arte. En su piel, Valdés inventó su propia forma de hablar, de caminar y, en definitiva, de ser mejicano. En Mátenme porque me muero decide poner fin a su vida antes de que lo haga un destino fatídico. Y ese gesto la sitúa en la estela Der mann, der seinen Mörder sucht (1931) de Robert Siodmak o I hired a contract killer (1990) de Aki Kaurismaki. El cineasta Ismael Rodríguez aprovechó el carisma de Tin Tan para adaptar libremente una obra de Enrique Jardiel Poncela y, como tantas veces haría Luis Buñuel, encajó ese humor satírico o esperpéntico tan español en una película que, por derecho propio, pertenece a la edad de oro del cine mejicano.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">La historia artística de Germán Valdés arranca en ciudad Juárez, donde la cultura de México y Estados Unidos se mezclaba, el swing convivía con el bolero y los jóvenes vestían diferente. Y fue ahí donde su personaje más popular, Tin Tan, cambiaría todo y convertiría el barrio en arte. En su piel, Valdés inventó su propia forma de hablar, de caminar y, en definitiva, de ser mejicano. En Mátenme porque me muero decide poner fin a su vida antes de que lo haga un destino fatídico. Y ese gesto la sitúa en la estela Der mann, der seinen Mörder sucht (1931) de Robert Siodmak o I hired a contract killer (1990) de Aki Kaurismaki. El cineasta Ismael Rodríguez aprovechó el carisma de Tin Tan para adaptar libremente una obra de Enrique Jardiel Poncela y, como tantas veces haría Luis Buñuel, encajó ese humor satírico o esperpéntico tan español en una película que, por derecho propio, pertenece a la edad de oro del cine mejicano.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -1886,8 +1852,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Comparativamente más ligera que House of Games (1987), la segunda película dirigida por el dramaturgo David Mamet fue probablemente aparcada por su mezcla desconcertante entre comedia, cine de gansters y drama. El film comparte personajes y ambientes turbios pero narra una historia que tiene mucho corazón. El viejo zapatero que interpreta Don Ameche acaba robándole el protagonismo a su actor fetiche, Joe Mantegna, que borda tanto los papeles de mafioso como de timador. Pero al margen de sus diferencias, fue el crítico de Chicago, Roger Ebert, quien dio en el clavo cuando escribió que “si Things Change (1988) resulta tan entretenida como House of games es porque los personajes están desconcertados, no el público, como suele ocurrir con guionistas más descuidados. Mamet nos convierte en cómplices”.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Comparativamente más ligera que House of Games (1987), la segunda película dirigida por el dramaturgo David Mamet fue probablemente aparcada por su mezcla desconcertante entre comedia, cine de gansters y drama. El film comparte personajes y ambientes turbios pero narra una historia que tiene mucho corazón. El viejo zapatero que interpreta Don Ameche acaba robándole el protagonismo a su actor fetiche, Joe Mantegna, que borda tanto los papeles de mafioso como de timador. Pero al margen de sus diferencias, fue el crítico de Chicago, Roger Ebert, quien dio en el clavo cuando escribió que “si Things Change (1988) resulta tan entretenida como House of games es porque los personajes están desconcertados, no el público, como suele ocurrir con guionistas más descuidados. Mamet nos convierte en cómplices”.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -1951,8 +1916,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Desde los inicios de su carrera, JeanLuc Godard advirtió que el cine debía retratar el cliché cuando es un signo claramente identificativo de un país. Una lección artística que esta ópera prima aplica a fondo y por partida doble. Ya sobre el papel, ese choque de estereotipos que propone su argumento, exigía un cineasta capaz de manejar con maestría los códigos de una realidad y una ficción condenados a convivir desastrosa y jocosamente en el espacio de una misma pantalla. Al evitar cualquier crítica social y concentrar sus energías en extraer todo el humor de esa familia aristocrática venida menos que acepta involucrarse en el rodaje de una telenovela, Álvaro Velarde logró la que muchos consideran “mejor comedia peruana de todos los tiempos”.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Desde los inicios de su carrera, JeanLuc Godard advirtió que el cine debía retratar el cliché cuando es un signo claramente identificativo de un país. Una lección artística que esta ópera prima aplica a fondo y por partida doble. Ya sobre el papel, ese choque de estereotipos que propone su argumento, exigía un cineasta capaz de manejar con maestría los códigos de una realidad y una ficción condenados a convivir desastrosa y jocosamente en el espacio de una misma pantalla. Al evitar cualquier crítica social y concentrar sus energías en extraer todo el humor de esa familia aristocrática venida menos que acepta involucrarse en el rodaje de una telenovela, Álvaro Velarde logró la que muchos consideran “mejor comedia peruana de todos los tiempos”.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2016,8 +1980,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Como su ópera prima, Chan is missing º(1982), Wayne Wang ambientó Dim Sum en el barrio chino de San Francisco. Al registrar una historia sencilla con una cámara fija y contemplativa, provocó que muchos críticos la compararan con la obra de Yasujiro Ozu, pero el joven cineasta llevó ese estilo del maestro japonés al mundo de McDonald’s y la serie Dinastía, dos elementos que fascinaban a esa comunidad de personajes que habla chinglish y acepta de buen grado la fusión de las culturas china y americana. A medio camino entre el rigor formal y un realismo relajado, destaca que la señora Tam y Geraldine hayan sido interpretadas por una madre y su hija en la vida real, permitiendo que, sin necesidad de aclarar nada, Wayne Wang comunique visualmente un profundo pozo de emociones.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Como su ópera prima, Chan is missing º(1982), Wayne Wang ambientó Dim Sum en el barrio chino de San Francisco. Al registrar una historia sencilla con una cámara fija y contemplativa, provocó que muchos críticos la compararan con la obra de Yasujiro Ozu, pero el joven cineasta llevó ese estilo del maestro japonés al mundo de McDonald’s y la serie Dinastía, dos elementos que fascinaban a esa comunidad de personajes que habla chinglish y acepta de buen grado la fusión de las culturas china y americana. A medio camino entre el rigor formal y un realismo relajado, destaca que la señora Tam y Geraldine hayan sido interpretadas por una madre y su hija en la vida real, permitiendo que, sin necesidad de aclarar nada, Wayne Wang comunique visualmente un profundo pozo de emociones.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2081,8 +2044,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Harold Lloyd era un hombre corriente, como el resto de los mortales, le llamaban “el chico de la calle” y tuvo que pensarlo todo por su falta de inspiración. Para ser un cómico de cine exitoso, tuvo que aprender a serlo, y aprender por las malas. En 1919, Harold perdió dos dedos durante una sesión de fotos, cuando cambió el explosivo por uno real. El médico le dijo que abandonara su carrera pero siguió haciendo acrobacias peligrosas y actuando. Cuatro años después lo vemos en su imagen más emblemática colgado de la aguja de los minutos de un reloj casi en la cima de un enorme edificio. Esta imagen icónica pertenece a un clásico silente que muy pocos han visto. ¿Qué puede llevar a un ciudadano común a escalar un edificio en plan hombre araña? ¿Y qué banda sonora experimental puede acompañar semejante proeza? Sin duda, será el Dr. Truna (Andrés Blasco) quien nos dé la mejor respuesta.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Harold Lloyd era un hombre corriente, como el resto de los mortales, le llamaban “el chico de la calle” y tuvo que pensarlo todo por su falta de inspiración. Para ser un cómico de cine exitoso, tuvo que aprender a serlo, y aprender por las malas. En 1919, Harold perdió dos dedos durante una sesión de fotos, cuando cambió el explosivo por uno real. El médico le dijo que abandonara su carrera pero siguió haciendo acrobacias peligrosas y actuando. Cuatro años después lo vemos en su imagen más emblemática colgado de la aguja de los minutos de un reloj casi en la cima de un enorme edificio. Esta imagen icónica pertenece a un clásico silente que muy pocos han visto. ¿Qué puede llevar a un ciudadano común a escalar un edificio en plan hombre araña? ¿Y qué banda sonora experimental puede acompañar semejante proeza? Sin duda, será el Dr. Truna (Andrés Blasco) quien nos dé la mejor respuesta.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2146,8 +2108,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Plaff destaca por su estilo de comedia crítica que recupera el espíritu de Muerte de un burócrata (1966), practicamente desaparecido en la Cuba de finales de los ‘80, retomado solo por Se permuta (1983), el anterior film de Juan Carlos Tabío. La película se permite romper algunas convenciones narrativas al traducir en imágenes su argumento, a veces los actores rompen la cuarta pared y se dirigen al espectador o las escenas discurren recordándole a éste que está presenciando una película. De manera desenfadada aborda los males diarios que abordan a la Cuba de aquella época, como el establecimiento de metas disparatadas, el divorcio de algunos dirigentes con respecto a los trabajadores o las trabas que frenan el desarrollo. Todo ello ungido con un humor ingenioso, una sólida dirección y muy buenas interpretaciones.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Plaff destaca por su estilo de comedia crítica que recupera el espíritu de Muerte de un burócrata (1966), practicamente desaparecido en la Cuba de finales de los ‘80, retomado solo por Se permuta (1983), el anterior film de Juan Carlos Tabío. La película se permite romper algunas convenciones narrativas al traducir en imágenes su argumento, a veces los actores rompen la cuarta pared y se dirigen al espectador o las escenas discurren recordándole a éste que está presenciando una película. De manera desenfadada aborda los males diarios que abordan a la Cuba de aquella época, como el establecimiento de metas disparatadas, el divorcio de algunos dirigentes con respecto a los trabajadores o las trabas que frenan el desarrollo. Todo ello ungido con un humor ingenioso, una sólida dirección y muy buenas interpretaciones.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2211,8 +2172,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Hay un tópico que afirma que el tema primordial del cine colombiano es la violencia. Lo que sí es cierto es que el beneficio personal suele dominar a los personajes de Colombia, sin que importen las consecuencias o quien caiga en su camino. Bluff cuenta la historia de un perdedor, una víctima de la corrupción ajena, la misma que busca saciar la necesidad de dinero, el deseo y el amor. En esa búsqueda nunca impera una idea altruista, se trata única y exclusivamente de la ley del más fuerte o el más vivo. Y por eso mismo de fondo se percibe una fuerte crítica social, institucional y moral contra la polícia, los poderosos y cualquier personaje falto de escrúpulos. No obstante, las intenciones de esta ópera prima de Felipe Martínez Amador se concentran en mezclar el género de thriller con la comedia negra, acumular gags y utilizar los recursos cinematográficos en pos de lograr lo que finalmente es: un ágil divertimento.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Hay un tópico que afirma que el tema primordial del cine colombiano es la violencia. Lo que sí es cierto es que el beneficio personal suele dominar a los personajes de Colombia, sin que importen las consecuencias o quien caiga en su camino. Bluff cuenta la historia de un perdedor, una víctima de la corrupción ajena, la misma que busca saciar la necesidad de dinero, el deseo y el amor. En esa búsqueda nunca impera una idea altruista, se trata única y exclusivamente de la ley del más fuerte o el más vivo. Y por eso mismo de fondo se percibe una fuerte crítica social, institucional y moral contra la polícia, los poderosos y cualquier personaje falto de escrúpulos. No obstante, las intenciones de esta ópera prima de Felipe Martínez Amador se concentran en mezclar el género de thriller con la comedia negra, acumular gags y utilizar los recursos cinematográficos en pos de lograr lo que finalmente es: un ágil divertimento.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2276,8 +2236,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">En 1960, Roger Corman apostó que podría realizar un film en un fin de semana si le dejaban aprovechar los decorados de su anterior film, A bucket o blood (Un cubo de sangre, 1959). Y venció. En 1986, Frank Oz sustituiría a Martin Scorsese en la adaptación del exitoso musical que la película inspiró. Y también venció. Acostumbrados a las bondades de los musicales, a ese universo donde lo imposible deja de serlo y el amor sencillamente existe, una comedia siniestra como Little Shop of Horrors fue digna de nuestra simpatía. Por su capacidad de sacar punta a un eclipse de Sol y, consecuentemente, lograr que todos y cada uno de sus personajes se definan por su lado oscuro, su tendencia natural a ser miserables. Si este film ofrece una galería de parásitos emocionales es precisamente para justificar el futuro festín de la planta chupasangre, que ellos mismos alimentan sin recato cometiendo un sinfín de maldades.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">En 1960, Roger Corman apostó que podría realizar un film en un fin de semana si le dejaban aprovechar los decorados de su anterior film, A bucket o blood (Un cubo de sangre, 1959). Y venció. En 1986, Frank Oz sustituiría a Martin Scorsese en la adaptación del exitoso musical que la película inspiró. Y también venció. Acostumbrados a las bondades de los musicales, a ese universo donde lo imposible deja de serlo y el amor sencillamente existe, una comedia siniestra como Little Shop of Horrors fue digna de nuestra simpatía. Por su capacidad de sacar punta a un eclipse de Sol y, consecuentemente, lograr que todos y cada uno de sus personajes se definan por su lado oscuro, su tendencia natural a ser miserables. Si este film ofrece una galería de parásitos emocionales es precisamente para justificar el futuro festín de la planta chupasangre, que ellos mismos alimentan sin recato cometiendo un sinfín de maldades.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2341,8 +2300,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">El segundo largometraje como directora de la actriz Valeria Bertuccelli destaca por su gran libertad y arrojo a la hora de manejar el absurdo e imaginar unas actitudes paulatinamente ridículas por parte de la protagonista, que ella misma asume. Berta Muller es un personaje tan fascinante como contradictorio, predica en sus libros la verdad de la existencia y convence a millones de lectores y en sus redes sociales de que tiene todas las respuestas. Presa de su personaje, Berta tratará de defenderse de la manera más absurda cuando su vida se desmorone como un castillo frágil de naipes. Culpa cero es una comedia incómoda, aguda y rabiosamente actual que no tiene personajes buenos, solo seres idiotas o detestables.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">El segundo largometraje como directora de la actriz Valeria Bertuccelli destaca por su gran libertad y arrojo a la hora de manejar el absurdo e imaginar unas actitudes paulatinamente ridículas por parte de la protagonista, que ella misma asume. Berta Muller es un personaje tan fascinante como contradictorio, predica en sus libros la verdad de la existencia y convence a millones de lectores y en sus redes sociales de que tiene todas las respuestas. Presa de su personaje, Berta tratará de defenderse de la manera más absurda cuando su vida se desmorone como un castillo frágil de naipes. Culpa cero es una comedia incómoda, aguda y rabiosamente actual que no tiene personajes buenos, solo seres idiotas o detestables.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2406,8 +2364,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Fue un pequeño milagro que una película como The Sure Thing (1985) preocupada por los sentimientos amorosos de un adolescente. Una película revolucionaria desde el instante en que expone que el sexo debe ir siempre acompañado de respeto y amor en una epoca de auténtico auge del cine más descerebrado y rijoso. Películas tipo Meatballs (Los incorregibles albondigas, 1979) Porky’s (1981) o The Last American Virgin (El último americano virgen, 1982) marcaron una tendencia alimentada por el llamado “sindrome de erotismo neurótico del personaje adolescente”. Rendimos homenaje al recientemente desaparecido Rob Reiner proyectando esta joya injustamente olvidada, una comedia romántica escrita al estilo de los años ‘30 que guarda sus vínculos con el clásico de Frank Capra It happened one night (Sucedió una noche, 1934).</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Fue un pequeño milagro que una película como The Sure Thing (1985) preocupada por los sentimientos amorosos de un adolescente. Una película revolucionaria desde el instante en que expone que el sexo debe ir siempre acompañado de respeto y amor en una epoca de auténtico auge del cine más descerebrado y rijoso. Películas tipo Meatballs (Los incorregibles albondigas, 1979) Porky’s (1981) o The Last American Virgin (El último americano virgen, 1982) marcaron una tendencia alimentada por el llamado “sindrome de erotismo neurótico del personaje adolescente”. Rendimos homenaje al recientemente desaparecido Rob Reiner proyectando esta joya injustamente olvidada, una comedia romántica escrita al estilo de los años ‘30 que guarda sus vínculos con el clásico de Frank Capra It happened one night (Sucedió una noche, 1934).</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2471,8 +2428,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Denominación de origen nace de un extrañamiento, el que siente por su pueblo Tomás Alzamora cuando, como tantas cineastas chilenos, decide estudiar la carrera en Santiago. Alzamora convierte su pueblo natal, San Carlos, en el verdadero protagonista de su segundo largometraje e inmortalizar las caras, los personajes típicos de allí, como la persona que vende los remedios o el cochayuyo, una macroalga parda de gran valor nutricional. Como si de un documental se tratara, instala una cámara que sencillamente observa y registra escenas de la vida real aprovechando una competición por el premio a la mejor longaniza. A partir de ahí, el joven cineasta expresa su amor el cine como el arte libre desde el momento en que puedes meterle de todo: literatura en el guión, música antigua y moderna en la banda sonora, teatro en alguna secuencia preparada con los actores,...</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Denominación de origen nace de un extrañamiento, el que siente por su pueblo Tomás Alzamora cuando, como tantas cineastas chilenos, decide estudiar la carrera en Santiago. Alzamora convierte su pueblo natal, San Carlos, en el verdadero protagonista de su segundo largometraje e inmortalizar las caras, los personajes típicos de allí, como la persona que vende los remedios o el cochayuyo, una macroalga parda de gran valor nutricional. Como si de un documental se tratara, instala una cámara que sencillamente observa y registra escenas de la vida real aprovechando una competición por el premio a la mejor longaniza. A partir de ahí, el joven cineasta expresa su amor el cine como el arte libre desde el momento en que puedes meterle de todo: literatura en el guión, música antigua y moderna en la banda sonora, teatro en alguna secuencia preparada con los actores,...</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2536,8 +2492,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Si volvemos por tercera vez a programar una obra de Albert Brooks es porque creemos que debería engrosar esa lista de grandes cineastas que explotan su comicidad detrás y delante de la cámara: Charles Chaplin, Woody Allen, Nanni Moretti, Jacques Tati, Emmanuel Mouret en sus primeros films,… A principios de los ‘90 un porcentaje alto de estadounidenses creía que había cielo e infierno. Y en esa nutrida legión de creyentes, una mayoría afirmaba que debería ir al cielo. Para el cineasta, guionista y actor Albert Brooks, ese más allá que nos depara tras cruzar la línea de la muerte está muy ligado a lo que hayamos hecho con nuestra vida. En Defending your life (1991) imagina una estación pre-celeste, una especie de higiénico purgatorio donde cada persona fallecida debe saldar cuentas ante un jurado. Todos debemos ser alguien, y sino que se le pregunten al personaje delicioso y abrumador que interpreta Meryl Streep.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Si volvemos por tercera vez a programar una obra de Albert Brooks es porque creemos que debería engrosar esa lista de grandes cineastas que explotan su comicidad detrás y delante de la cámara: Charles Chaplin, Woody Allen, Nanni Moretti, Jacques Tati, Emmanuel Mouret en sus primeros films,… A principios de los ‘90 un porcentaje alto de estadounidenses creía que había cielo e infierno. Y en esa nutrida legión de creyentes, una mayoría afirmaba que debería ir al cielo. Para el cineasta, guionista y actor Albert Brooks, ese más allá que nos depara tras cruzar la línea de la muerte está muy ligado a lo que hayamos hecho con nuestra vida. En Defending your life (1991) imagina una estación pre-celeste, una especie de higiénico purgatorio donde cada persona fallecida debe saldar cuentas ante un jurado. Todos debemos ser alguien, y sino que se le pregunten al personaje delicioso y abrumador que interpreta Meryl Streep.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2601,8 +2556,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Jaime Humberto Hermosillo demostró a lo largo de sus 25 largometrajes ser un cineasta experto en las disidencias sexuales, un abanderado del deseo en todas sus formas y un devoto de los universos de las heridas románticas. Este cineasta mejicano sabe perfectamente que uno de los mecanismos de la comedia es poner las cosas donde no le corresponde, y esta vez brinda a su actriz fetiche María Rojo el papel de una mujer fuera de lugar en una sociedad profundamente conservadora. Acusada de bigamia momentos antes de casarse, la protagonista afronta con gracia y desenvoltura un interrogatorio policial que atenta de manera descarada tanto con el rol asignado a la mujer y rompe con el tratamiento cinematográfico del tiempo y espacio que hemos visto en infinidad de películas.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Jaime Humberto Hermosillo demostró a lo largo de sus 25 largometrajes ser un cineasta experto en las disidencias sexuales, un abanderado del deseo en todas sus formas y un devoto de los universos de las heridas románticas. Este cineasta mejicano sabe perfectamente que uno de los mecanismos de la comedia es poner las cosas donde no le corresponde, y esta vez brinda a su actriz fetiche María Rojo el papel de una mujer fuera de lugar en una sociedad profundamente conservadora. Acusada de bigamia momentos antes de casarse, la protagonista afronta con gracia y desenvoltura un interrogatorio policial que atenta de manera descarada tanto con el rol asignado a la mujer y rompe con el tratamiento cinematográfico del tiempo y espacio que hemos visto en infinidad de películas.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2666,8 +2620,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">She’s gotta have it debería ser la referencia principal de cualquiera que quiera hacer cine. Su calidad y alcance superó con creces las posibilidades de su presupuesto ínfimo, 175.000 dólares siendo seleccionada en grandes festivales y distribuida en muchos países (en España lo hizo como Nola Darling). Y respecto a su tema, debemos señalar que en la década de los 80 pocas películas norteamericanas fueron tan sexualmente francas como esta ópera prima de Spike Lee y la de Steven Soderbergh (Sex. Lies and videotapes). La Motion Picture Association of America (MPAA) encargada de otorgar las clasificaciones insistió en recortarla debido a su intento no solo de subvertir los estereotipos sexuales, sino también las representaciones siempre estereotipadas de los afroamericanos que hasta entonces vimos en la gran pantalla.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">She’s gotta have it debería ser la referencia principal de cualquiera que quiera hacer cine. Su calidad y alcance superó con creces las posibilidades de su presupuesto ínfimo, 175.000 dólares siendo seleccionada en grandes festivales y distribuida en muchos países (en España lo hizo como Nola Darling). Y respecto a su tema, debemos señalar que en la década de los 80 pocas películas norteamericanas fueron tan sexualmente francas como esta ópera prima de Spike Lee y la de Steven Soderbergh (Sex. Lies and videotapes). La Motion Picture Association of America (MPAA) encargada de otorgar las clasificaciones insistió en recortarla debido a su intento no solo de subvertir los estereotipos sexuales, sino también las representaciones siempre estereotipadas de los afroamericanos que hasta entonces vimos en la gran pantalla.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2731,8 +2684,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Guel Arraes se reveló como un gran adaptador con O auto da compadecida (2000), que imprimió un ritmo endiablado a una pieza de la picaresca gracias al despliegue de una gran artilleria audiovisual. Lo mismo podría decirse de su aproximación a la poética de Osman Lins, cuya obra Lisbela e o prisioneiro había llevado previamente al teatro y seguidamente a la televisión y con la que Arraes vuelve a mostrar que el cine brasileño puede ser tan electrizante como el norteamericano. El espíritu de este filme es abiertamente popular, con su humor carioca y una banda sonora que mezcla artistas veteranos y jóvenes animando una imagen colorista que le da una textura diferente a Brasil que suele mostrar en el cine su cara más gris como corresponde a un país que pasa por penurias políticas y una notable falta de industria cinematográfica.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Guel Arraes se reveló como un gran adaptador con O auto da compadecida (2000), que imprimió un ritmo endiablado a una pieza de la picaresca gracias al despliegue de una gran artilleria audiovisual. Lo mismo podría decirse de su aproximación a la poética de Osman Lins, cuya obra Lisbela e o prisioneiro había llevado previamente al teatro y seguidamente a la televisión y con la que Arraes vuelve a mostrar que el cine brasileño puede ser tan electrizante como el norteamericano. El espíritu de este filme es abiertamente popular, con su humor carioca y una banda sonora que mezcla artistas veteranos y jóvenes animando una imagen colorista que le da una textura diferente a Brasil que suele mostrar en el cine su cara más gris como corresponde a un país que pasa por penurias políticas y una notable falta de industria cinematográfica.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2796,8 +2748,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Enamorado a sus 61 años de una joven vienesa de 18, Henrik Ibsen escribía en su drama tardío El maestro constructor (1892): “Me he vuelto un perturbado por la gente joven. Me han molestado tanto que he cerrado mis puertas. Quizá debería abrirlas y dejarles entrar”. No es descabellado imaginar que a sus 45 años Noah Baumbach vertiera en While we’re young una mirada sardónica por su implicación emocional por Greta Gerwig de tan solo 30, ni pensar que su película es una puesta al día del clásico All about Eve (1951) de Mankiewicz cuando coloca a un joven documentalista ambicioso (Adam Driver) seduciendo a un veterano (Ben Stiller). Baumbach localiza aquí esa línea borrosa que todos cruzamos al llegar a la mediana edad, pero inmediata y afortunadamente la pisotea brindándonos momentos de gran hilaridad. Pero lo hace con amabilidad hacia quienes hemos hecho ese inevitable viaje y sobrevivido con algo de dignidad.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Enamorado a sus 61 años de una joven vienesa de 18, Henrik Ibsen escribía en su drama tardío El maestro constructor (1892): “Me he vuelto un perturbado por la gente joven. Me han molestado tanto que he cerrado mis puertas. Quizá debería abrirlas y dejarles entrar”. No es descabellado imaginar que a sus 45 años Noah Baumbach vertiera en While we’re young una mirada sardónica por su implicación emocional por Greta Gerwig de tan solo 30, ni pensar que su película es una puesta al día del clásico All about Eve (1951) de Mankiewicz cuando coloca a un joven documentalista ambicioso (Adam Driver) seduciendo a un veterano (Ben Stiller). Baumbach localiza aquí esa línea borrosa que todos cruzamos al llegar a la mediana edad, pero inmediata y afortunadamente la pisotea brindándonos momentos de gran hilaridad. Pero lo hace con amabilidad hacia quienes hemos hecho ese inevitable viaje y sobrevivido con algo de dignidad.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2861,8 +2812,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Doble discurso no aborda directamente la política sino su backstage, esos mecanismos internos de cada partido encaminados a mantener y c onstruir a su líder. Una operación no muy distinta a la que Hernán Guerschuny hiciera con el periodismo cinematográfico en su ópera prima, El crítico (2013). El pueblo, esa masa crítica de votantes que quisieran potencial, se mantiene en un espacio en off permanente mientras sí aparecen los medios de información y sus representantes que son los que el partido debería realmente conquistar porque su influencia va a ser decisiva sobre los futuros votantes. El circo político que Guerschuny presenta altera los nombres no tanto porque busque distanciarse del mapa de gobierno real como para expresar que, sean ficticios o no, los partidos siempre acan ofreciendo un espectáculo dominados por traiciones, corrupción y dinero ilegal.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Doble discurso no aborda directamente la política sino su backstage, esos mecanismos internos de cada partido encaminados a mantener y c onstruir a su líder. Una operación no muy distinta a la que Hernán Guerschuny hiciera con el periodismo cinematográfico en su ópera prima, El crítico (2013). El pueblo, esa masa crítica de votantes que quisieran potencial, se mantiene en un espacio en off permanente mientras sí aparecen los medios de información y sus representantes que son los que el partido debería realmente conquistar porque su influencia va a ser decisiva sobre los futuros votantes. El circo político que Guerschuny presenta altera los nombres no tanto porque busque distanciarse del mapa de gobierno real como para expresar que, sean ficticios o no, los partidos siempre acan ofreciendo un espectáculo dominados por traiciones, corrupción y dinero ilegal.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2926,8 +2876,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Concentrado en tareas de producción, James L. Brooks no dirigía desde How do you know (¿Cómo sabes si…?, 2010), por lo que éste es un regreso muy esperado. Aparte de un atractivo plantel de secundarios (Jamie Lee Curtis, sobre todo), el punto fuerte de su último film recae en la actriz Emma Mackey que interpreta a Ella McCay, un papel no muy distinto al de la oscarizada Loretta Young de The Farmer’s daughter (Un destino de mujer, 1947), que también asumía el papel de una joven que llega a gobernar y defiende sus nobles objetivos sin que le preocupe para nada ni su reputación personal ni por supuesto enriquecerse. Ambientada en el 2008, presenta un panorama idealista muy distinto a la realidad política actual de Estados Unidos caracterizada más que nunca por la corrupción, la vanidad, el interés propio y la violencia.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Concentrado en tareas de producción, James L. Brooks no dirigía desde How do you know (¿Cómo sabes si…?, 2010), por lo que éste es un regreso muy esperado. Aparte de un atractivo plantel de secundarios (Jamie Lee Curtis, sobre todo), el punto fuerte de su último film recae en la actriz Emma Mackey que interpreta a Ella McCay, un papel no muy distinto al de la oscarizada Loretta Young de The Farmer’s daughter (Un destino de mujer, 1947), que también asumía el papel de una joven que llega a gobernar y defiende sus nobles objetivos sin que le preocupe para nada ni su reputación personal ni por supuesto enriquecerse. Ambientada en el 2008, presenta un panorama idealista muy distinto a la realidad política actual de Estados Unidos caracterizada más que nunca por la corrupción, la vanidad, el interés propio y la violencia.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -2991,8 +2940,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">En el momento de su estreno un tal Walt, crítico de Variety escribió que “Never Give a Sucker An Even Break era una mezcla de episodios llamativos, enlazados de forma inconexa, pero con suficiente humor como para gustar a los seguidores de lo cómico. Una película de serie B aceptable, en la que la comedia absurda y el slapstick desenfrenado captarán la atención del público”. Vista hoy sigue siendo un producto extremo en el que W. C. Fields imprime tanta locura y estravagancia que cualquiera diría que era consciente de estar rodando su última película como protagonista. En cualquier caso fue su justa venganza contra una industria que empezaba a darle la espalda y Hollywood perdería a uno de los misántropos más ingeniosos que haya surcado el celuloide.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">En el momento de su estreno un tal Walt, crítico de Variety escribió que “Never Give a Sucker An Even Break era una mezcla de episodios llamativos, enlazados de forma inconexa, pero con suficiente humor como para gustar a los seguidores de lo cómico. Una película de serie B aceptable, en la que la comedia absurda y el slapstick desenfrenado captarán la atención del público”. Vista hoy sigue siendo un producto extremo en el que W. C. Fields imprime tanta locura y estravagancia que cualquiera diría que era consciente de estar rodando su última película como protagonista. En cualquier caso fue su justa venganza contra una industria que empezaba a darle la espalda y Hollywood perdería a uno de los misántropos más ingeniosos que haya surcado el celuloide.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -3056,8 +3004,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">En la segunda parte de su autobiografía, Ricardo Trogi (encarnado siempre por Jean-Carl Boucher) tiene 17 años y su cabeza está llena de ideas, ¡pero sobre todo las hormonas funcionan a plena velocidad! Aquí deja de lado los objetos pequeños, que son los que decoran y dan vida a la habitación de un niño de 11 años y se abre a temas mayores, como son la búsqueda de una identidad sexual. 1987 podría pasar por ser una película más de adolescentes sino fuese por sus constantes referencias a la cultura de los ‘80, el vestuario, los pedianos, y por dar continuidad a 1981 (2008), ser una secuela tan esperada hizo que lograra ser la película quebequense más exitosa del 2014 superando el millón de dólares en taquilla.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">En la segunda parte de su autobiografía, Ricardo Trogi (encarnado siempre por Jean-Carl Boucher) tiene 17 años y su cabeza está llena de ideas, ¡pero sobre todo las hormonas funcionan a plena velocidad! Aquí deja de lado los objetos pequeños, que son los que decoran y dan vida a la habitación de un niño de 11 años y se abre a temas mayores, como son la búsqueda de una identidad sexual. 1987 podría pasar por ser una película más de adolescentes sino fuese por sus constantes referencias a la cultura de los ‘80, el vestuario, los pedianos, y por dar continuidad a 1981 (2008), ser una secuela tan esperada hizo que lograra ser la película quebequense más exitosa del 2014 superando el millón de dólares en taquilla.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -3121,8 +3068,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">¡¡Qué gran actor fue Walter Matthau!! ¿Cómo es posible que un personaje tan antipático, cruel, déspota, incluso, sanguinario, pueda seducir tanto? Elaine May arrancó con ella una carrera oscura como cineasta, que alcanzó la cifra escasa de 4 títulos todos ellos magníficos y accidentados. El primer montaje de A New Leaf duraba 3 horas, resultando una comedia despiadamente venenosa que Paramount se encargaría de aligerar. Elaine May perdió el litigio contra la productora y esa primera versión quedaría invisible. Sin embargo, incluso con muchas secuencias cortadas, sigue siendo una comedia oscura y compleja, cuyo desarrollo conduce a algo inesperado: que un argumento inteligente, flemático y venenoso como el que May maneja alcance cotas en su desenlace de una gran ternura y humanidad.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">¡¡Qué gran actor fue Walter Matthau!! ¿Cómo es posible que un personaje tan antipático, cruel, déspota, incluso, sanguinario, pueda seducir tanto? Elaine May arrancó con ella una carrera oscura como cineasta, que alcanzó la cifra escasa de 4 títulos todos ellos magníficos y accidentados. El primer montaje de A New Leaf duraba 3 horas, resultando una comedia despiadamente venenosa que Paramount se encargaría de aligerar. Elaine May perdió el litigio contra la productora y esa primera versión quedaría invisible. Sin embargo, incluso con muchas secuencias cortadas, sigue siendo una comedia oscura y compleja, cuyo desarrollo conduce a algo inesperado: que un argumento inteligente, flemático y venenoso como el que May maneja alcance cotas en su desenlace de una gran ternura y humanidad.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -3186,8 +3132,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">El quinto largometraje de Rejtman encaja perfectamente en su catálogo de comedias negras de bajo riesgo, llenas de personajes demasiado ocupados para preocuparse por otra cosa. Sus historias funcionan como arabescos: las figuras, objetos y líneas de texto circulan, las relaciones se retoman y disuelven de nuevo sin vacilación. Esta vez el humor sutil y observacional de Rejtman fija su atención en esa sociedad moderna que confía en el bienestar como cura para todo. En La práctica escoge esa porción de mundo que promete salud para quienes son conscientes de la salud, una mejora de la vida mediante una estricta disciplina de horarios y libertad de los problemas terrenales gracias a la influencia del hinduismo que aún se siente en la práctica del yoga. La espiritualidad se toma en serio pero al mismo tiempo se pone en perspectiva. Aquí no ofrece salvación, no ayuda contra el dolor de rodilla ni un mal matrimonio, pero como mucho aporta algo de paz y paciencia.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">El quinto largometraje de Rejtman encaja perfectamente en su catálogo de comedias negras de bajo riesgo, llenas de personajes demasiado ocupados para preocuparse por otra cosa. Sus historias funcionan como arabescos: las figuras, objetos y líneas de texto circulan, las relaciones se retoman y disuelven de nuevo sin vacilación. Esta vez el humor sutil y observacional de Rejtman fija su atención en esa sociedad moderna que confía en el bienestar como cura para todo. En La práctica escoge esa porción de mundo que promete salud para quienes son conscientes de la salud, una mejora de la vida mediante una estricta disciplina de horarios y libertad de los problemas terrenales gracias a la influencia del hinduismo que aún se siente en la práctica del yoga. La espiritualidad se toma en serio pero al mismo tiempo se pone en perspectiva. Aquí no ofrece salvación, no ayuda contra el dolor de rodilla ni un mal matrimonio, pero como mucho aporta algo de paz y paciencia.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -3251,8 +3196,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">James Westby considera Film Geek como una película semiautobiográfica. Quizá por ello el cineasta no se corta y teje con suficiente ferocidad el retrato de Scotty Pelk, un inadaptado social que ama profundamente las películas. Adicto a los videoclubs y todo lo que significan, Scotty cumple con creces su horario laboral dentro de uno de estos locales dando rienda suelta a su pasión por el orden en las estanterías y una dedicación esmerada y abusiva con los clientes. Scotty es un Imdb andante, una enciclopedia cinematográfica viva. Nombra el título de una película y Scotty enumera el año, el director y los actores más importantes, además de dar un resumen conciso. El actor Melik Malkasian hace una interpretación genial del protagonista poniendo su cuerpo endeble al servicio de esta alma solitaria, alimentada básicamente de celuloide que, en sus ratos de ocio, vierte su pasión cinéfila también por las redes.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">James Westby considera Film Geek como una película semiautobiográfica. Quizá por ello el cineasta no se corta y teje con suficiente ferocidad el retrato de Scotty Pelk, un inadaptado social que ama profundamente las películas. Adicto a los videoclubs y todo lo que significan, Scotty cumple con creces su horario laboral dentro de uno de estos locales dando rienda suelta a su pasión por el orden en las estanterías y una dedicación esmerada y abusiva con los clientes. Scotty es un Imdb andante, una enciclopedia cinematográfica viva. Nombra el título de una película y Scotty enumera el año, el director y los actores más importantes, además de dar un resumen conciso. El actor Melik Malkasian hace una interpretación genial del protagonista poniendo su cuerpo endeble al servicio de esta alma solitaria, alimentada básicamente de celuloide que, en sus ratos de ocio, vierte su pasión cinéfila también por las redes.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
@@ -3316,8 +3260,7 @@
                 </div>
                 
                 <div class="synopsis-container">
-                    <p class="synopsis-text" id="syn-card-{idx}">Oscar Restrepo está en paro, muy sediento y no tiene dinero. Necesita dibujar un corazón en su pecho para convencerse de que es digno. No está realmente vivo, Óscar es un hombre torcido y desaliñado, con ropa mal ajustada, caspa salpicada sobre su pelo grasiento y una expresión gélida de perro vagabundo. Mientras la poesía revolotea dentro de su alma atormentada y sueña con vivirla, no es capaz de pisar tierra y alimentar y educar a su única hija. Dividida en cuatro capítulos, Un poeta no solo es una película sobre los obstáculos y el miedo que cualquiera siente ante la paternidad, también sobre el flujo nervioso de alquien que abandona momentáneamente su prosa, esa tendencia nauseabunda a dejar pasar la vida, a una decadencia sin fin que pone en pausa ante un posible rayo de esperanza.</p>
-                    <button class="toggle-synopsis-btn" onclick="event.stopPropagation(); toggleSynopsis('card-{idx}')" id="btn-card-{idx}">Leer más</button>
+                    <p class="synopsis-text">Oscar Restrepo está en paro, muy sediento y no tiene dinero. Necesita dibujar un corazón en su pecho para convencerse de que es digno. No está realmente vivo, Óscar es un hombre torcido y desaliñado, con ropa mal ajustada, caspa salpicada sobre su pelo grasiento y una expresión gélida de perro vagabundo. Mientras la poesía revolotea dentro de su alma atormentada y sueña con vivirla, no es capaz de pisar tierra y alimentar y educar a su única hija. Dividida en cuatro capítulos, Un poeta no solo es una película sobre los obstáculos y el miedo que cualquiera siente ante la paternidad, también sobre el flujo nervioso de alquien que abandona momentáneamente su prosa, esa tendencia nauseabunda a dejar pasar la vida, a una decadencia sin fin que pone en pausa ante un posible rayo de esperanza.</p>
                 </div>
                 
                 <div class="tech-spec-grid">
