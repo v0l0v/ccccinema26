@@ -1730,7 +1730,7 @@ def main():
         }}
 
         #film-burn-overlay.burning {{
-            animation: filmBurnAnim 0.7s ease-in-out forwards;
+            animation: filmBurnAnim 1.4s ease-in-out forwards;
         }}
 
         @keyframes filmBurnAnim {{
@@ -2218,7 +2218,7 @@ def main():
             
             // Update URL hash without jumping page
             history.pushState(null, null, `#movie-${{idx}}`);
-            }}, 250); // 250ms delay para sincronizar con el fogonazo de película
+            }}, 500); // 500ms delay para sincronizar con el fogonazo de película
         }}
 
         function openPosterModal() {{
