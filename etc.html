@@ -199,30 +199,27 @@
             const dist = 2800; // Distancia a la cara del "cubo"
 
             if (maxDist < 0.25) {
-                // Zona 1: Centro (Adelante)
-                warpTargetZ = -dist;
-                pendingWorldIndex = 0;
+                warpTargetZ = -dist; // Adelante (Centro)
+                pendingWorldIndex = navMap[currentWorld].center;
             } else if (maxDist > 0.85) {
-                // Zona 2: Bordes extremos de la pantalla (Atrás)
-                warpTargetZ = dist;
-                pendingWorldIndex = 1;
+                warpTargetZ = dist; // Atrás (Bordes extremos)
+                pendingWorldIndex = navMap[currentWorld].edges;
             } else {
-                // Zonas 3, 4, 5, 6: Puntos Cardinales
                 if (Math.abs(nx) > Math.abs(ny)) {
                     if (nx > 0) {
-                        warpTargetX = dist; // Este (Derecha)
-                        pendingWorldIndex = 2;
+                        warpTargetX = dist; // Derecha
+                        pendingWorldIndex = navMap[currentWorld].right;
                     } else {
-                        warpTargetX = -dist; // Oeste (Izquierda)
-                        pendingWorldIndex = 3;
+                        warpTargetX = -dist; // Izquierda
+                        pendingWorldIndex = navMap[currentWorld].left;
                     }
                 } else {
                     if (ny > 0) {
-                        warpTargetY = dist; // Norte (Arriba)
-                        pendingWorldIndex = 4;
+                        warpTargetY = dist; // Arriba
+                        pendingWorldIndex = navMap[currentWorld].up;
                     } else {
-                        warpTargetY = -dist; // Sur (Abajo)
-                        pendingWorldIndex = 5;
+                        warpTargetY = -dist; // Abajo
+                        pendingWorldIndex = navMap[currentWorld].down;
                     }
                 }
             }
@@ -244,16 +241,27 @@
         const positions = new Float32Array(particles * 3);
         const colors = new Float32Array(particles * 3);
         
-        // 6 Mundos para las 6 caras del cubo direccional
+        // 6 Mundos para las 6 caras del cubo direccional numerados del 1 al 6
         let currentWorld = 0;
         const worldPalettes = [
-            { name: "NEON PRIME", bg: 0x0a0515, c1: 0xff0055, c2: 0x00eeff, c3: 0x5500ff, type: 'neon' }, // 0: Adelante (Centro)
-            { name: "SOLARIS-VII", bg: 0x1a0a00, c1: 0xff8800, c2: 0xffd700, c3: 0xff0000, type: 'fire' }, // 1: Atrás
-            { name: "TOX-9", bg: 0x001105, c1: 0x00ff00, c2: 0x0088ff, c3: 0xccff00, type: 'toxic' },    // 2: Derecha
-            { name: "GLACIER-X", bg: 0x000511, c1: 0x00ffff, c2: 0xffffff, c3: 0x0055ff, type: 'ice' },      // 3: Izquierda
-            { name: "AURA-5", bg: 0x110011, c1: 0xff00ff, c2: 0xaa00ff, c3: 0xff88ff, type: 'aura' },        // 4: Arriba
-            { name: "TERRA-NOVA", bg: 0x001100, c1: 0x00ff00, c2: 0x004400, c3: 0x88cc00, type: 'terra' }    // 5: Abajo
+            { name: "1: NEON PRIME", bg: 0x0a0515, c1: 0xff0055, c2: 0x00eeff, c3: 0x5500ff, type: 'neon' }, 
+            { name: "2: AURA-5", bg: 0x110011, c1: 0xff00ff, c2: 0xaa00ff, c3: 0xff88ff, type: 'aura' },    
+            { name: "3: SOLARIS-VII", bg: 0x1a0a00, c1: 0xff8800, c2: 0xffd700, c3: 0xff0000, type: 'fire' },
+            { name: "4: TERRA-NOVA", bg: 0x001100, c1: 0x00ff00, c2: 0x004400, c3: 0x88cc00, type: 'terra' },
+            { name: "5: TOX-9", bg: 0x001105, c1: 0x00ff00, c2: 0x0088ff, c3: 0xccff00, type: 'toxic' },   
+            { name: "6: GLACIER-X", bg: 0x000511, c1: 0x00ffff, c2: 0xffffff, c3: 0x0055ff, type: 'ice' }     
         ];
+
+        // Mapa de navegación (cubo topológico continuo)
+        const navMap = {
+            // [center, edges, right, left, up, down]
+            0: { center: 2, edges: 0, right: 4, left: 5, up: 1, down: 3 }, // 1 Frente
+            1: { center: 3, edges: 1, right: 4, left: 5, up: 2, down: 0 }, // 2 Arriba
+            2: { center: 0, edges: 2, right: 5, left: 4, up: 3, down: 1 }, // 3 Atrás
+            3: { center: 1, edges: 3, right: 4, left: 5, up: 0, down: 2 }, // 4 Abajo
+            4: { center: 5, edges: 4, right: 2, left: 0, up: 1, down: 3 }, // 5 Derecha
+            5: { center: 4, edges: 5, right: 0, left: 2, up: 1, down: 3 }  // 6 Izquierda
+        };
         
         let color1 = new THREE.Color(worldPalettes[0].c1);
         let color2 = new THREE.Color(worldPalettes[0].c2);
