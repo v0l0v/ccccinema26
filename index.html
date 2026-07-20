@@ -3290,6 +3290,10 @@
                         </div>
                         <div class="modal-meta-pills">
                             <div class="meta-pill-item">
+                                <span class="pill-label">Año</span>
+                                <span class="pill-value" id="modal-year"></span>
+                            </div>
+                            <div class="meta-pill-item">
                                 <span class="pill-label">País</span>
                                 <span class="pill-value" id="modal-country"></span>
                             </div>
@@ -3297,6 +3301,14 @@
                                 <span class="pill-label">Duración</span>
                                 <span class="pill-value" id="modal-duration"></span>
                             </div>
+                            <a id="modal-link-imdb" href="#" target="_blank" class="meta-pill-item" style="text-decoration:none; cursor:pointer;">
+                                <span class="pill-label">Ficha</span>
+                                <span class="pill-value" style="color:var(--primary-color);">IMDb ↗</span>
+                            </a>
+                            <a id="modal-link-tmdb" href="#" target="_blank" class="meta-pill-item" style="text-decoration:none; cursor:pointer;">
+                                <span class="pill-label">Ficha</span>
+                                <span class="pill-value" style="color:var(--primary-color);">TMDb ↗</span>
+                            </a>
                         </div>
                     </div>
                     
@@ -3323,22 +3335,8 @@
                             </div>
                         </div>
                         
-                        <div class="modal-section resources-section">
-                            <h4 class="section-title">Recursos y Enlaces</h4>
-                            <div class="resources-buttons">
-                                <a id="modal-link-imdb" href="" target="_blank" class="resource-btn imdb">
-                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-6h2v6zm4 0h-2v-4h-1v4h-2v-6h3c1.1 0 2 .9 2 2v4z"/></svg>
-                                    Ver en IMDb
-                                </a>
-                                <a id="modal-link-tmdb" href="" target="_blank" class="resource-btn tmdb">
-                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15H9v-6h2v6zm4 0h-2v-4h-1v4h-2v-6h3c1.1 0 2 .9 2 2v4z"/></svg>
-                                    Ver en TMDb
-                                </a>
-                                <button class="resource-btn share" onclick="shareCurrentMovieModal()">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                                    Copiar Invitación
-                                </button>
-                            </div>
+                        <div class="modal-section resources-section" id="modal-ticket-preview-container">
+                            <!-- Aquí se inyectará la imagen generada de la entrada dinámicamente -->
                         </div>
                     </div>
                 </div>
@@ -3593,7 +3591,9 @@ Te invito a ver la cartelera de películas programada para este mes. Aquí tiene
             document.getElementById('modal-directors').innerText = movie.directors.join(', ') || 'No disponible';
             document.getElementById('modal-cast').innerText = movie.cast.join(', ') || 'No disponible';
             
-            // Links
+            // Meta pills values & Links
+            document.getElementById('modal-year').innerText = movie.year;
+            
             const imdbLink = movie.imdb_url || movie.tmdb_url || 'https://www.imdb.com';
             document.getElementById('modal-link-imdb').href = imdbLink;
             
@@ -3602,12 +3602,29 @@ Te invito a ver la cartelera de películas programada para este mes. Aquí tiene
                 tmdbEl.style.display = 'none';
             } else {
                 tmdbEl.href = movie.tmdb_url;
-                tmdbEl.style.display = 'inline-flex';
+                tmdbEl.style.display = 'flex';
             }
             
             // Set YouTube Trailer Iframe source
             const iframe = document.getElementById('modal-trailer-iframe');
             iframe.classList.remove('fade-in');
+            
+            // Generate ticket preview dynamically
+            const ticketPreviewContainer = document.getElementById('modal-ticket-preview-container');
+            ticketPreviewContainer.innerHTML = '<p style="text-align: center; font-size: 0.9rem; opacity: 0.7;">Generando tu entrada...</p>';
+            
+            generateTicketCanvas(idx).then(canvas => {
+                if(canvas) {
+                    const dataUrl = canvas.toDataURL('image/png');
+                    ticketPreviewContainer.innerHTML = `
+                        <h4 class="section-title" style="text-align:left;">Comparte tu asistencia</h4>
+                        <p style="text-align:left; font-size:0.9rem; margin-top:-10px; margin-bottom:15px; opacity:0.8;">Haz clic en tu entrada (souvenir virtual) para avisar a tus amigos del evento.</p>
+                        <img src="${dataUrl}" alt="Entrada Generada" style="width:100%; max-width:500px; display:block; margin: 0; border-radius:10px; cursor:pointer; box-shadow: 0 5px 25px rgba(0,0,0,0.5); transition: transform 0.2s ease; transform-origin: left center;" 
+                        onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'"
+                        onclick="generateAndShareTicket(${idx})" title="Haz clic para compartir">
+                    `;
+                }
+            });
             
             if (movie.youtube_id) {
                 iframe.src = `https://www.youtube.com/embed/${movie.youtube_id}?autoplay=1&mute=0&controls=0&loop=1&playlist=${movie.youtube_id}`;
@@ -3640,11 +3657,9 @@ Te invito a ver la cartelera de películas programada para este mes. Aquí tiene
             document.body.style.overflow = '';
         }
 
-        async function generateAndShareTicket(idx) {
+        async function generateTicketCanvas(idx) {
             const m = moviesData[idx];
-            if (!m) return;
-            
-            showToast("🎟️ Generando tu entrada...");
+            if (!m) return null;
             
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -3702,14 +3717,16 @@ Te invito a ver la cartelera de películas programada para este mes. Aquí tiene
                 console.log("No se pudo cargar el logo del festival para la entrada");
             }
 
-            // 3. Perforaciones de película (arriba y abajo) AHORA DESPUÉS DEL CARTEL
-            ctx.fillStyle = '#ffffff'; // Huecos que dejan ver el fondo (usamos blanco)
+            // 3. Perforaciones de película (arriba y abajo) AHORA CON TRANSPARENCIA REAL
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fillStyle = '#000000'; // Transparencia real
             for(let x = 12; x < tWidth; x += 32) {
                 ctx.fillRect(x, 12, 16, 22);
                 ctx.fillRect(x, tHeight - 34, 16, 22);
             }
+            ctx.restore();
             
-            // Número de ticket (abajo a la izquierda)
             ctx.fillStyle = lightColor;
             ctx.font = '22px "Trebuchet MS", Arial, sans-serif';
             ctx.textAlign = 'left';
@@ -3754,18 +3771,9 @@ Te invito a ver la cartelera de películas programada para este mes. Aquí tiene
             ctx.font = 'bold 22px "Trebuchet MS", Arial, sans-serif';
             ctx.fillText(m.date.toUpperCase() + " · 22:00 H", textRightX, 345);
             
-            // 7. Stub derecho (código de barras y texto, más estrecho)
-            let currX = 895;
-            while(currX < 940) {
-                const barWidth = Math.random() * 4 + 1.5;
-                if (currX + barWidth <= 940) {
-                    ctx.fillRect(currX, 45, barWidth, 340);
-                }
-                currX += barWidth + Math.random() * 4 + 2;
-            }
-            
+            // 7. Stub derecho (texto sin código de barras para que destaque la mordida)
             ctx.save();
-            ctx.translate(965, tHeight / 2);
+            ctx.translate(940, tHeight / 2); // Centrado en el talón derecho
             ctx.rotate(-Math.PI / 2);
             ctx.fillStyle = darkColor;
             ctx.font = 'bold 26px "Impact", "Arial Black", sans-serif'; // fuente más pequeña para que quepa bien el texto largo
@@ -3773,6 +3781,53 @@ Te invito a ver la cartelera de películas programada para este mes. Aquí tiene
             ctx.textBaseline = 'middle';
             ctx.fillText("PROMOTIONAL SOUVENIR", 0, 0);
             ctx.restore();
+            
+            // 8. ¡EL MORDISCO DE LA PLANTA CARNÍVORA! (Borde derecho masticado)
+            const numTeeth = 6;
+            const toothHeight = tHeight / numTeeth;
+            const teethPoints = [];
+            
+            for (let i = 0; i < numTeeth; i++) {
+                const depth = Math.random() * 60 + 30; // Entra hacia el ticket
+                const tipY = (i * toothHeight) + (toothHeight / 2) + (Math.random() * 30 - 15);
+                teethPoints.push({x: tWidth - depth, y: tipY});
+                teethPoints.push({x: tWidth, y: (i + 1) * toothHeight});
+            }
+            
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.moveTo(tWidth, 0);
+            for (const pt of teethPoints) {
+                ctx.lineTo(pt.x, pt.y);
+            }
+            ctx.lineTo(tWidth + 100, tHeight);
+            ctx.lineTo(tWidth + 100, 0);
+            ctx.fill();
+            ctx.restore();
+            
+            // Dibujar el borde de las "marcas de dientes"
+            ctx.save();
+            ctx.strokeStyle = darkColor;
+            ctx.lineWidth = 6;
+            ctx.lineJoin = 'miter';
+            ctx.beginPath();
+            ctx.moveTo(tWidth, 0);
+            for (const pt of teethPoints) {
+                ctx.lineTo(pt.x, pt.y);
+            }
+            ctx.stroke();
+            ctx.restore();
+            return canvas;
+        }
+
+        async function generateAndShareTicket(idx) {
+            const m = moviesData[idx];
+            if (!m) return;
+            
+            showToast("🎟️ Generando tu entrada...");
+            const canvas = await generateTicketCanvas(idx);
+            if (!canvas) return;
             
             canvas.toBlob(async (blob) => {
                 if (!blob) return;
