@@ -2444,19 +2444,23 @@ def main():
     </script>
     <!-- Cinematic Roulette Overlay -->
     <div id="roulette-overlay" class="roulette-overlay">
-        <div id="roulette-bg" style="position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; background-size: cover; background-position: center; filter: blur(30px) brightness(0.35); z-index: -1; transition: background-image 0.1s ease-out;"></div>
+        <div id="roulette-bg" style="position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; background-size: cover; background-position: center; filter: blur(30px) brightness(0.35); z-index: -2; transition: background-image 0.1s ease-out;"></div>
         <style>
             @keyframes plant-breathe {{
-                0% {{ transform: scale(1) translateY(0) rotate(0deg); }}
-                50% {{ transform: scale(1.05) translateY(-5px) rotate(2deg); }}
-                100% {{ transform: scale(1) translateY(0) rotate(0deg); }}
+                0% {{ transform: scale(1) translateY(-50%) rotate(0deg); }}
+                50% {{ transform: scale(1.05) translateY(calc(-50% - 5px)) rotate(2deg); }}
+                100% {{ transform: scale(1) translateY(-50%) rotate(0deg); }}
             }}
         </style>
         <div class="roulette-content">
-            <img src="soloplanta.png" alt="Planta carnívora hambrienta" style="width: 140px; margin-bottom: -25px; position: relative; z-index: 10; animation: plant-breathe 2s ease-in-out infinite; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8));">
-            <div class="roulette-frame">
-                <img id="roulette-poster" src="" alt="Eligiendo...">
-                <div class="film-grain"></div>
+            <div style="position: relative; display: inline-block;">
+                <div style="position: absolute; left: -220px; top: 50%; z-index: 0; pointer-events: none; animation: plant-breathe 2.5s ease-in-out infinite;">
+                    <img src="soloplanta.png" alt="Planta carnívora" style="width: 450px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9));">
+                </div>
+                <div class="roulette-frame" style="position: relative; z-index: 10; box-shadow: 0 10px 50px rgba(0,0,0,0.9); border-color: var(--accent);">
+                    <img id="roulette-poster" src="" alt="Eligiendo...">
+                    <div class="film-grain"></div>
+                </div>
             </div>
         </div>
     </div>
