@@ -287,9 +287,14 @@
         const particleSystem = new THREE.Points(geometry, material);
         scene.add(particleSystem);
 
-        // Núcleo Wireframe
-        const coreGeo = new THREE.IcosahedronGeometry(200, 2);
-        const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.1 });
+        // Núcleo (Planeta Actual)
+        const coreGeo = new THREE.SphereGeometry(250, 32, 32);
+        const coreMat = new THREE.MeshBasicMaterial({ 
+            color: 0xffffff, 
+            transparent: true, 
+            opacity: 0.8,
+            map: createPlanetTexture(worldPalettes[currentWorld].type)
+        });
         const core = new THREE.Mesh(coreGeo, coreMat);
         scene.add(core);
 
@@ -340,6 +345,10 @@
             scene.fog.color.setHex(w.bg);
             document.body.style.backgroundColor = '#' + w.bg.toString(16).padStart(6, '0');
             document.getElementById('world-title').innerText = w.name;
+            
+            // Actualizar textura del núcleo al nuevo planeta
+            coreMat.map = createPlanetTexture(w.type);
+            coreMat.needsUpdate = true;
             
             color1.setHex(w.c1);
             color2.setHex(w.c2);
