@@ -2614,6 +2614,36 @@ def main():
                 ambientBtn.style.borderColor = 'var(--primary-color)';
                 window.isAmbientPlaying = true;
             }}
+        // Easter Egg: Planta Bailarina
+        let easterEggSequence = "planta";
+        let currentSequenceIndex = 0;
+        document.addEventListener('keydown', (e) => {{
+            if (e.key.toLowerCase() === easterEggSequence[currentSequenceIndex]) {{
+                currentSequenceIndex++;
+                if (currentSequenceIndex === easterEggSequence.length) {{
+                    triggerEasterEgg();
+                    currentSequenceIndex = 0;
+                }}
+            }} else {{
+                currentSequenceIndex = 0;
+            }}
+        }});
+        
+        function triggerEasterEgg() {{
+            const container = document.getElementById('easter-egg-container');
+            const video = document.getElementById('easter-egg-video');
+            container.style.display = 'flex';
+            video.volume = 0.8;
+            video.play().catch(err => console.log(err));
+        }}
+        
+        function closeEasterEgg() {{
+            const container = document.getElementById('easter-egg-container');
+            const video = document.getElementById('easter-egg-video');
+            container.style.display = 'none';
+            video.pause();
+            video.currentTime = 0;
+        }}
         }});
     </script>
     <!-- Cinematic Roulette Overlay -->
@@ -2643,6 +2673,11 @@ def main():
         <img src="soloplanta.png" alt="Planta carnívora hambrienta">
         <div class="fab-text">¡COMÁMONOS<br>UNA PELI!</div>
     </button>
+    <!-- Easter Egg Video -->
+    <div id="easter-egg-container" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999999; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; cursor: pointer; flex-direction: column;" onclick="closeEasterEgg()">
+        <video id="easter-egg-video" src="assets/video/planta.mp4" style="max-width: 90vw; max-height: 80vh; border-radius: 20px; box-shadow: 0 0 50px rgba(100,255,100,0.3);" loop></video>
+        <p style="color: #fff; opacity: 0.5; font-family: 'Courier New', Courier, monospace; margin-top: 20px; letter-spacing: 2px;">[ HAZ CLIC PARA VOLVER ]</p>
+    </div>
 </body>
 </html>
 """
