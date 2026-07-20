@@ -2079,114 +2079,161 @@ def main():
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
-            canvas.width = 800;
-            canvas.height = 1400;
+            const scale = 2; // Duplicar tamaño y resolución
+            const tWidth = 1000;
+            const tHeight = 430;
             
-            // Fondo más envejecido/sepia
-            ctx.fillStyle = '#e8d5b7';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            canvas.width = tWidth * scale;
+            canvas.height = tHeight * scale;
+            ctx.scale(scale, scale);
             
-            // Borde exterior grueso (marrón oscuro vintage)
-            ctx.strokeStyle = '#5c3a21';
-            ctx.lineWidth = 12;
-            ctx.strokeRect(35, 35, canvas.width - 70, canvas.height - 70);
+            const darkColor = '#463b36';
+            const lightColor = '#eedfcc';
             
-            // Borde interior fino elegante
-            ctx.lineWidth = 2;
-            ctx.strokeRect(55, 55, canvas.width - 110, canvas.height - 110);
+            // 1. Fondo claro (base)
+            ctx.fillStyle = lightColor;
+            ctx.fillRect(0, 0, tWidth, tHeight);
             
-            ctx.fillStyle = '#3a2618';
-            ctx.textAlign = 'center';
+            // 2. Forma oscura de la izquierda (incluyendo los bordes que apuntan hacia el centro)
+            ctx.fillStyle = darkColor;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(480, 0);
+            ctx.lineTo(240, tHeight / 2);
+            ctx.lineTo(480, tHeight);
+            ctx.lineTo(0, tHeight);
+            ctx.fill();
             
-            // Texto superior con tipografía clásica
-            ctx.font = 'italic 35px "Georgia", serif';
-            ctx.fillText("Este verano no me pierdo...", canvas.width/2, 130);
-            
-            ctx.font = 'bold 50px "Times New Roman", serif';
-            ctx.fillText("CCCC CINEMA D'ESTIU", canvas.width/2, 190);
-            
-            const rawPosterSrc = m.poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
-            // Usamos un proxy de imágenes para evitar problemas de CORS en el canvas al intentar toBlob/toDataURL
-            const posterSrc = "https://wsrv.nl/?url=" + encodeURIComponent(rawPosterSrc);
+            // 4. Logo del festival (izquierda)
+            const logoSrc = "soloplanta.png";
             
             try {{
-                const img = await loadImage(posterSrc);
-                const pWidth = 600;
-                const pHeight = 850;
-                const pX = (canvas.width - pWidth) / 2;
-                const pY = 240;
+                const img = await loadImage(logoSrc);
                 
-                // Marco blanco tipo foto antigua para el póster
-                ctx.fillStyle = '#fdfbf7';
-                ctx.fillRect(pX - 15, pY - 15, pWidth + 30, pHeight + 45); // un poco más de margen abajo
+                ctx.save();
                 
+                // Calcular tamaño para que encaje bien en el espacio izquierdo
+                const pHeight = 320; // Buen tamaño para que destaque
+                const pWidth = pHeight * (img.width / img.height); // Mantener ratio
+                const pX = 15; // Margen izquierdo más pequeño para pegar la planta a la izquierda
+                const pY = tHeight / 2 - pHeight / 2; // Centrado verticalmente
+                
+                // Sombra suave para que resalte sobre el fondo oscuro
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 4;
+                
+                // Dibujamos el logo tal cual, sin filtros que alteren sus colores
                 ctx.drawImage(img, pX, pY, pWidth, pHeight);
                 
-                const textY = pY + pHeight + 90;
-                ctx.fillStyle = '#3a2618';
+                ctx.restore();
+            }} catch (err) {{
+                console.log("No se pudo cargar el logo del festival para la entrada");
+            }}
+
+            // 3. Perforaciones de película (arriba y abajo) AHORA DESPUÉS DEL CARTEL
+            ctx.fillStyle = '#ffffff'; // Huecos que dejan ver el fondo (usamos blanco)
+            for(let x = 12; x < tWidth; x += 32) {{
+                ctx.fillRect(x, 12, 16, 22);
+                ctx.fillRect(x, tHeight - 34, 16, 22);
+            }}
+            
+            // Número de ticket (abajo a la izquierda)
+            ctx.fillStyle = lightColor;
+            ctx.font = '22px "Trebuchet MS", Arial, sans-serif';
+            ctx.textAlign = 'left';
+            const ticketNum = Math.floor(Math.random() * 9000000 + 1000000);
+            ctx.fillText("№ " + ticketNum, 55, tHeight - 55);
+            
+            // 5. Línea de corte (más a la derecha)
+            ctx.strokeStyle = darkColor;
+            ctx.lineWidth = 2;
+            ctx.setLineDash([8, 8]);
+            ctx.beginPath();
+            ctx.moveTo(880, 0);
+            ctx.lineTo(880, tHeight);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // 6. Textos centrales
+            const textCenterX = 570; // Centro para el título (desplazado para no tocar la flecha)
+            const textCenterX_Offset = 600; // Centro para los textos superior/inferior (donde la flecha oscura es más ancha)
+            
+            ctx.fillStyle = darkColor;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            ctx.font = 'bold 32px "Trebuchet MS", Arial, sans-serif';
+            ctx.fillText("CINEMA D'ESTIU 2026", textCenterX_Offset, 125);
+            
+            let fontSize = 85;
+            const title = m.title.toUpperCase();
+            if (title.length > 25) fontSize = 50;
+            else if (title.length > 15) fontSize = 65;
+            
+            ctx.font = `bold ${{fontSize}}px "Impact", "Arial Black", sans-serif`;
+            ctx.fillText(title, textCenterX, 215, 550); // max-width más pequeño
+            
+            ctx.font = 'bold 32px "Trebuchet MS", Arial, sans-serif';
+            ctx.fillText("CCCC · CENTRE DEL CARME", textCenterX_Offset, 305);
+            
+            // Fecha y hora
+            ctx.font = 'bold 22px "Trebuchet MS", Arial, sans-serif';
+            ctx.fillText(m.date.toUpperCase() + " · 22:00 H", textCenterX_Offset, 345);
+            
+            // 7. Stub derecho (código de barras y texto, más estrecho)
+            let currX = 895;
+            while(currX < 940) {{
+                const barWidth = Math.random() * 4 + 1.5;
+                if (currX + barWidth <= 940) {{
+                    ctx.fillRect(currX, 45, barWidth, 340);
+                }}
+                currX += barWidth + Math.random() * 4 + 2;
+            }}
+            
+            ctx.save();
+            ctx.translate(965, tHeight / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillStyle = darkColor;
+            ctx.font = 'bold 26px "Impact", "Arial Black", sans-serif'; // fuente más pequeña para que quepa bien el texto largo
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText("PROMOTIONAL SOUVENIR", 0, 0);
+            ctx.restore();
+            
+            canvas.toBlob(async (blob) => {{
+                if (!blob) return;
                 
-                // Título en fuente Serif
-                ctx.font = 'bold 45px "Times New Roman", serif';
-                const title = m.title.length > 30 ? m.title.substring(0,27) + '...' : m.title;
-                ctx.fillText(title, canvas.width/2, textY);
+                const file = new File([blob], `entrada-${{m.title.replace(/\\s+/g, '-').toLowerCase()}}.png`, {{ type: 'image/png' }});
                 
-                // Fecha
-                ctx.font = 'italic 35px "Georgia", serif';
-                ctx.fillStyle = '#7a3e2a';
-                ctx.fillText(m.date, canvas.width/2, textY + 60);
-                
-                // Pequeño texto final
-                ctx.font = '22px "Georgia", serif';
-                ctx.fillStyle = '#5c3a21';
-                ctx.fillText("¡Nos vemos en el claustro!", canvas.width/2, canvas.height - 90);
-                
-                canvas.toBlob(async (blob) => {{
-                    if (!blob) return;
-                    
-                    const file = new File([blob], `entrada-${{m.title.replace(/\\s+/g, '-').toLowerCase()}}.png`, {{ type: 'image/png' }});
-                    
-                    if (navigator.canShare && navigator.canShare({{ files: [file] }})) {{
-                        try {{
-                            await navigator.share({{
-                                files: [file],
-                                title: `Entrada para ${{m.title}}`,
-                                text: `¡Me voy a ver ${{m.title}} en el CCCC Cinema d'Estiu!`
-                            }});
-                        }} catch (err) {{
-                            console.log("Error al compartir nativo:", err);
-                            showTicketModal(canvas.toDataURL());
-                        }}
-                    }} else {{
+                if (navigator.canShare && navigator.canShare({{ files: [file] }})) {{
+                    try {{
+                        await navigator.share({{
+                            files: [file],
+                            title: `Entrada para ${{m.title}}`,
+                            text: `¡Tengo mi entrada para ver ${{m.title}} en el CCCC Cinema d'Estiu!`
+                        }});
+                    }} catch (err) {{
+                        console.log("Error al compartir nativo:", err);
                         showTicketModal(canvas.toDataURL());
                     }}
-                }}, 'image/png');
-                
-            }} catch (err) {{
-                console.error("Error drawing ticket:", err);
-                showToast("❌ Error al generar la entrada");
-            }}
+                }} else {{
+                    showTicketModal(canvas.toDataURL());
+                }}
+            }}, 'image/png');
         }}
         
         function loadImage(src) {{
             return new Promise((resolve, reject) => {{
                 const img = new Image();
-                img.crossOrigin = 'Anonymous';
+                if (src.startsWith('http')) {{
+                    img.crossOrigin = 'Anonymous';
+                }}
                 img.onload = () => resolve(img);
                 img.onerror = reject;
                 img.src = src;
             }});
-        }}
-        
-        function drawBarcode(ctx, x, y, width, height) {{
-            ctx.fillStyle = '#000';
-            let currX = x;
-            while(currX < x + width) {{
-                const barWidth = Math.random() * 6 + 1;
-                if (currX + barWidth <= x + width) {{
-                    ctx.fillRect(currX, y, barWidth, height);
-                }}
-                currX += barWidth + Math.random() * 5 + 1;
-            }}
         }}
         
         function showTicketModal(dataUrl) {{
