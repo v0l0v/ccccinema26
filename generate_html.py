@@ -1519,38 +1519,50 @@ def main():
             bottom: 2rem;
             right: 2rem;
             z-index: 900;
-            background: linear-gradient(135deg, var(--accent), #e74c3c);
+            background: transparent;
             color: white;
             border: none;
-            border-radius: 50px;
-            padding: 1rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            font-family: 'Outfit', sans-serif;
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 0.5rem;
-            box-shadow: 0 10px 25px rgba(210, 44, 54, 0.4);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }}
 
         .fab-surprise:hover {{
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(210, 44, 54, 0.6);
+            transform: translateY(-10px) scale(1.1);
         }}
 
-        .fab-surprise svg {{
-            width: 1.4rem;
-            height: 1.4rem;
+        .fab-surprise img {{
+            width: 80px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6));
+            animation: plant-breathe 3s ease-in-out infinite;
+        }}
+
+        .fab-surprise .fab-text {{
+            background: var(--accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            box-shadow: 0 5px 15px rgba(210, 44, 54, 0.5);
+            text-align: center;
+            line-height: 1.1;
         }}
 
         @media (max-width: 768px) {{
             .fab-surprise {{
                 bottom: 1.5rem;
                 right: 1.5rem;
-                padding: 0.8rem 1.2rem;
-                font-size: 0.9rem;
+            }}
+            .fab-surprise img {{
+                width: 65px;
+            }}
+            .fab-surprise .fab-text {{
+                font-size: 0.8rem;
+                padding: 6px 12px;
             }}
         }}
         /* Ticket Generator Overlay */
@@ -2452,16 +2464,9 @@ def main():
         </div>
     </div>
     <!-- Surprise Me FAB -->
-    <button class="fab-surprise" onclick="surpriseMe()" title="¡Aliméntame!" aria-label="Elegir película al azar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-            <circle cx="15.5" cy="8.5" r="1.5"></circle>
-            <circle cx="15.5" cy="15.5" r="1.5"></circle>
-            <circle cx="8.5" cy="15.5" r="1.5"></circle>
-            <circle cx="12" cy="12" r="1.5"></circle>
-        </svg>
-        ¡ALIMÉNTAME!
+    <button class="fab-surprise" onclick="surpriseMe()" aria-label="Elegir película al azar">
+        <img src="soloplanta.png" alt="Planta carnívora hambrienta">
+        <div class="fab-text">¡COMÁMONOS<br>UNA PELI!</div>
     </button>
 </body>
 </html>
