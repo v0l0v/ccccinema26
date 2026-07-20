@@ -1750,10 +1750,6 @@ def main():
                                 <span class="pill-label">Duración</span>
                                 <span class="pill-value" id="modal-duration"></span>
                             </div>
-                            <a id="modal-link-imdb" href="#" target="_blank" class="meta-pill-item" style="text-decoration:none; cursor:pointer;">
-                                <span class="pill-label">Ficha</span>
-                                <span class="pill-value" style="color:var(--primary-color);">IMDb ↗</span>
-                            </a>
                             <a id="modal-link-tmdb" href="#" target="_blank" class="meta-pill-item" style="text-decoration:none; cursor:pointer;">
                                 <span class="pill-label">Ficha</span>
                                 <span class="pill-value" style="color:var(--primary-color);">TMDb ↗</span>
@@ -2036,9 +2032,6 @@ def main():
             
             // Meta pills values & Links
             document.getElementById('modal-year').innerText = movie.year;
-            
-            const imdbLink = movie.imdb_url || movie.tmdb_url || 'https://www.imdb.com';
-            document.getElementById('modal-link-imdb').href = imdbLink;
             
             const tmdbEl = document.getElementById('modal-link-tmdb');
             if (!movie.tmdb_url) {{
