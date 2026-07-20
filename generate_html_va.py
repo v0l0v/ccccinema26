@@ -1756,7 +1756,7 @@ def main():
             <div class="search-row">
                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 <input type="text" id="search-input" class="search-input" placeholder="Buscar pel·lícula per títol, director, país, data..." oninput="filterMovies()">
-                <button id="filter-saved-btn" class="filter-saved-btn" onclick="toggleSavedFilter()" title="Ver Mi Diario">
+                <button id="filter-saved-btn" class="filter-saved-btn" onclick="toggleSavedFilter()" title="Veure el Meu Diari">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                 </button>
             </div>
@@ -1903,11 +1903,11 @@ def main():
             if (index === -1) {{
                 savedMovies.push(idx);
                 if (btn) btn.classList.add('saved');
-                showToast("Película guardada en Mi Diario");
+                showToast("Pel·lícula guardada al Meu Diari");
             }} else {{
                 savedMovies.splice(index, 1);
                 if (btn) btn.classList.remove('saved');
-                showToast("Película eliminada de Mi Diario");
+                showToast("Pel·lícula eliminada del Meu Diari");
             }}
             localStorage.setItem('cineccc_saved', JSON.stringify(savedMovies));
             if (showingOnlySaved) filterMovies();

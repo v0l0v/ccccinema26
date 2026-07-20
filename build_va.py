@@ -58,6 +58,9 @@ replacements = {
     "Mostrando solo Mi Diario": "Mostrant només el Meu Diari",
     "Mostrando todo el programa": "Mostrant tot el programa",
     "Mostrando ${visibleCount} de ${cards.length} películas": "Mostrant ${visibleCount} de ${cards.length} pel·lícules",
+    "Ver Mi Diario": "Veure el Meu Diari",
+    "Película guardada en Mi Diario": "Pel·lícula guardada al Meu Diari",
+    "Película eliminada de Mi Diario": "Pel·lícula eliminada del Meu Diari",
     "<span class=\"active\">CAS</span> <span style=\"color:var(--border-color)\">|</span> <a href=\"index_va.html\">VAL</a>": "<a href=\"index.html\">CAS</a> <span style=\"color:var(--border-color)\">|</span> <span class=\"active\">VAL</span>"
 }
 
