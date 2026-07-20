@@ -57,6 +57,21 @@
             background-attachment: fixed;
         }
         
+        #app-bg {
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background-image: url('poster.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(45px) brightness(0.2);
+            transform: rotate(-12deg) scale(1.1);
+            z-index: -10;
+            pointer-events: none;
+        }
+        
         header {
             max-width: 1200px;
             margin: 0 auto;
@@ -1518,7 +1533,7 @@
     </style>
 </head>
 <body>
-
+    <div id="app-bg"></div>
     <header>
         <div class="header-content">
             <div class="header-eyebrow">
