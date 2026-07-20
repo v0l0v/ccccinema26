@@ -41,9 +41,19 @@ replacements = {
     "AÑO": "ANY",
     "PAÍS": "PAÍS",
     "DURACIÓN": "DURADA",
-    "SINOPSIS": "SINOPSI",
     "Cartel oficial CCCCinema d'Estiu 2026": "Cartell oficial CCCCinema d'Estiu 2026",
     "Póster de ": "Pòster de ",
+    "Sinopsis": "Sinopsi",
+    "Géneros": "Gèneres",
+    "Director(es)": "Director(s)",
+    "Reparto Principal": "Repartiment Principal",
+    "Comparte tu asistencia": "Comparteix la teva assistència",
+    "Haz clic en tu entrada (souvenir virtual) para avisar a tus amigos del evento.": "Fes clic a la teva entrada (souvenir virtual) per avisar els teus amics de l'esdeveniment.",
+    "Haz clic para compartir": "Fes clic per compartir",
+    "Año<": "Any<",
+    "País<": "País<",
+    "Duración<": "Durada<",
+    "Ficha<": "Fitxa<",
     "<span class=\"active\">CAS</span> <span style=\"color:var(--border-color)\">|</span> <a href=\"index_va.html\">VAL</a>": "<a href=\"index.html\">CAS</a> <span style=\"color:var(--border-color)\">|</span> <span class=\"active\">VAL</span>"
 }
 

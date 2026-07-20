@@ -1819,7 +1819,7 @@ def main():
                         </div>
                         <div class="modal-meta-pills">
                             <div class="meta-pill-item">
-                                <span class="pill-label">Año</span>
+                                <span class="pill-label">Any</span>
                                 <span class="pill-value" id="modal-year"></span>
                             </div>
                             <div class="meta-pill-item">
@@ -1827,11 +1827,11 @@ def main():
                                 <span class="pill-value" id="modal-country"></span>
                             </div>
                             <div class="meta-pill-item">
-                                <span class="pill-label">Duración</span>
+                                <span class="pill-label">Durada</span>
                                 <span class="pill-value" id="modal-duration"></span>
                             </div>
                             <a id="modal-link-tmdb" href="#" target="_blank" class="meta-pill-item" style="text-decoration:none; cursor:pointer;">
-                                <span class="pill-label">Ficha</span>
+                                <span class="pill-label">Fitxa</span>
                                 <span class="pill-value" style="color:var(--primary-color);">TMDb ↗</span>
                             </a>
                         </div>
@@ -1840,22 +1840,22 @@ def main():
                     <!-- Right side: Synopsis, Genres, Tech Spec -->
                     <div class="modal-main-content">
                         <div class="modal-section">
-                            <h4 class="section-title">Sinopsis</h4>
+                            <h4 class="section-title">Sinopsi</h4>
                             <p class="modal-synopsis" id="modal-synopsis"></p>
                         </div>
                         
                         <div class="modal-section">
-                            <h4 class="section-title">Géneros</h4>
+                            <h4 class="section-title">Gèneres</h4>
                             <div class="genres-container" id="modal-genres"></div>
                         </div>
                         
                         <div class="modal-section-grid">
                             <div class="modal-section">
-                                <h4 class="section-title">Director(es)</h4>
+                                <h4 class="section-title">Director(s)</h4>
                                 <p class="spec-value-large" id="modal-directors"></p>
                             </div>
                             <div class="modal-section">
-                                <h4 class="section-title">Reparto Principal</h4>
+                                <h4 class="section-title">Repartiment Principal</h4>
                                 <p class="spec-value-large" id="modal-cast"></p>
                             </div>
                         </div>
@@ -2133,11 +2133,11 @@ def main():
                 if(canvas) {{
                     const dataUrl = canvas.toDataURL('image/png');
                     ticketPreviewContainer.innerHTML = `
-                        <h4 class="section-title" style="text-align:left;">Comparte tu asistencia</h4>
-                        <p style="text-align:left; font-size:0.9rem; margin-top:-10px; margin-bottom:15px; opacity:0.8;">Haz clic en tu entrada (souvenir virtual) para avisar a tus amigos del evento.</p>
+                        <h4 class="section-title" style="text-align:left;">Comparteix la teva assistència</h4>
+                        <p style="text-align:left; font-size:0.9rem; margin-top:-10px; margin-bottom:15px; opacity:0.8;">Fes clic a la teva entrada (souvenir virtual) per avisar els teus amics de l'esdeveniment.</p>
                         <img src="${{dataUrl}}" alt="Entrada Generada" style="width:100%; max-width:500px; display:block; margin: 0; border-radius:10px; cursor:pointer; box-shadow: 0 5px 25px rgba(0,0,0,0.5); transition: transform 0.2s ease; transform-origin: left center;" 
                         onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'"
-                        onclick="generateAndShareTicket(${{idx}})" title="Haz clic para compartir">
+                        onclick="generateAndShareTicket(${{idx}})" title="Fes clic per compartir">
                     `;
                 }}
             }});
