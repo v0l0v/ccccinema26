@@ -173,10 +173,11 @@ def main():
             left: -20%;
             width: 140%;
             height: 140%;
-            background-image: url('poster.jpg');
+            background-image: url('poster.png');
             background-size: cover;
             background-position: center;
-            filter: blur(45px) brightness(0.2);
+            filter: blur(45px);
+            opacity: 0.25;
             transform: rotate(-12deg) scale(1.1);
             z-index: -10;
             pointer-events: none;
