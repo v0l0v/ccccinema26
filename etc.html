@@ -192,8 +192,9 @@
             let nx = normMouseX; // -1 a 1 (Izquierda a Derecha)
             let ny = normMouseY; // -1 a 1 (Abajo a Arriba)
             
-            // Calculamos la distancia máxima al centro para definir las 6 zonas de la pantalla
+            // Calculamos la distancia para definir las 6 zonas de la pantalla
             let maxDist = Math.max(Math.abs(nx), Math.abs(ny));
+            let minDist = Math.min(Math.abs(nx), Math.abs(ny));
             
             warpTargetX = 0; warpTargetY = 0; warpTargetZ = 0;
             const dist = 2800; // Distancia a la cara del "cubo"
@@ -201,8 +202,8 @@
             if (maxDist < 0.25) {
                 warpTargetZ = -dist; // Adelante (Centro)
                 pendingWorldIndex = navMap[currentWorld].center;
-            } else if (maxDist > 0.85) {
-                warpTargetZ = dist; // Atrás (Bordes extremos)
+            } else if (minDist > 0.75) {
+                warpTargetZ = dist; // Atrás (Solo en las 4 esquinas extremas)
                 pendingWorldIndex = navMap[currentWorld].edges;
             } else {
                 if (Math.abs(nx) > Math.abs(ny)) {
