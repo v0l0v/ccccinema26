@@ -89,7 +89,7 @@ def main():
                 <div class="links-row">
                     <button class="details-btn" onclick="event.stopPropagation(); openModal({idx})">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                        Veure Detalls
+                        Vore Detalls
                     </button>
                 </div>
                 <div class="share-row">
@@ -1743,7 +1743,7 @@ def main():
         </div>
         
         <div class="header-poster">
-            <img src="poster.png" alt="Cartell oficial CCCCinema d'Estiu 2026" title="Veure cartell en gran" style="cursor: pointer;" onclick="openPosterModal()">
+            <img src="poster.png" alt="Cartell oficial CCCCinema d'Estiu 2026" title="Vore cartell en gran" style="cursor: pointer;" onclick="openPosterModal()">
             <a href="CCCC-CINEMA-ESTIU-2026-CAS.pdf" target="_blank" class="download-program-link" title="Descarregar programa en PDF">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 Descarregar programa
@@ -1756,7 +1756,7 @@ def main():
             <div class="search-row">
                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 <input type="text" id="search-input" class="search-input" placeholder="Buscar pel·lícula per títol, director, país, data..." oninput="filterMovies()">
-                <button id="filter-saved-btn" class="filter-saved-btn" onclick="toggleSavedFilter()" title="Veure el Meu Diari">
+                <button id="filter-saved-btn" class="filter-saved-btn" onclick="toggleSavedFilter()" title="Vore el Meu Diari">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                 </button>
             </div>
@@ -2389,7 +2389,7 @@ def main():
                     <div class="ticket-modal">
                         <button class="close-ticket" onclick="document.getElementById('ticket-overlay').classList.remove('active')">&times;</button>
                         <h3 style="color:#fff; margin-bottom: 1rem;">La teua entrada està llesta!</h3>
-                        <p style="color:var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Mantingues premuda la imatge per enviar-la, o fes servir el botó de descarregar.</p>
+                        <p style="color:var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Mantingues premuda la imatge per a enviar-la, o utilitza el botó de descarregar.</p>
                         <img id="ticket-result" src="" alt="Ticket generado" style="max-width:100%; max-height:60vh; border-radius:8px; box-shadow:0 10px 25px rgba(0,0,0,0.5);">
                         <br><br>
                         <a id="ticket-download-btn" href="" download="entrada-cccc.png" class="details-btn" style="display:inline-flex; width:auto; padding: 0.8rem 2rem; margin-top:1rem;">
