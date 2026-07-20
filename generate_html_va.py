@@ -2564,8 +2564,8 @@ def main():
         
         ambientBtn.addEventListener('click', () => {{
             if (!window.ambientAudio) {{
-                // Audio local (asegúrate de subir 'ambient.mp3' a la carpeta assets/audio/)
-                window.ambientAudio = new Audio('assets/audio/ambient.mp3');
+                // Audio local (asegúrate de subir 'asmrcccc.mp3' a la carpeta assets/audio/)
+                window.ambientAudio = new Audio('assets/audio/asmrcccc.mp3');
                 window.ambientAudio.loop = true;
                 window.ambientAudio.volume = 0.4;
             }}
