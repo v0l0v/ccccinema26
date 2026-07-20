@@ -2675,7 +2675,7 @@ def main():
     </button>
     <!-- Easter Egg Video -->
     <div id="easter-egg-container" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999999; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; cursor: pointer; flex-direction: column;" onclick="closeEasterEgg()">
-        <video id="easter-egg-video" src="assets/video/planta.mp4" style="max-width: 90vw; max-height: 80vh; border-radius: 50%; box-shadow: 0 0 100px 50px rgba(0,0,0,1) inset, 0 0 50px rgba(50,255,50,0.2); -webkit-mask-image: radial-gradient(circle, black 40%, transparent 70%); mask-image: radial-gradient(circle, black 40%, transparent 70%); filter: contrast(1.3) saturate(1.5);" loop></video>
+        <video id="easter-egg-video" src="assets/video/planta2.mp4" style="max-width: 90vw; max-height: 80vh; border-radius: 50%; box-shadow: 0 0 100px 50px rgba(0,0,0,1) inset, 0 0 50px rgba(50,255,50,0.2); -webkit-mask-image: radial-gradient(circle, black 40%, transparent 70%); mask-image: radial-gradient(circle, black 40%, transparent 70%); filter: contrast(1.3) saturate(1.5);" loop></video>
         <p style="color: #fff; opacity: 0.5; font-family: 'Courier New', Courier, monospace; margin-top: 20px; letter-spacing: 2px;">[ HAZ CLIC PARA VOLVER ]</p>
     </div>
 </body>
