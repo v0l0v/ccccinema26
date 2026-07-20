@@ -2143,7 +2143,8 @@ def main():
             }});
             
             if (movie.youtube_id) {{
-                iframe.src = `https://www.youtube.com/embed/${{movie.youtube_id}}?autoplay=1&mute=0&controls=0&loop=1&playlist=${{movie.youtube_id}}`;
+                // Añadimos parámetros para ocultar la interfaz lo máximo posible: rel=0 (solo sugerencias del mismo canal), modestbranding=1 (sin logo de YT), iv_load_policy=3 (sin anotaciones)
+                iframe.src = `https://www.youtube.com/embed/${{movie.youtube_id}}?autoplay=1&mute=0&controls=0&loop=1&playlist=${{movie.youtube_id}}&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0`;
                 setTimeout(() => {{
                     iframe.classList.add('fade-in');
                 }}, 600);
