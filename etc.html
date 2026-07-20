@@ -128,7 +128,7 @@
     <a href="index.html" class="back-btn">← VOLVER AL CINE</a>
     
     <div id="ui">
-        <h1 id="world-title">NEON PRIME</h1>
+        <h1 id="world-title"></h1>
         <p>LABORATORIO VISUAL</p>
     </div>
     
@@ -241,16 +241,21 @@
         const positions = new Float32Array(particles * 3);
         const colors = new Float32Array(particles * 3);
         
-        // 6 Mundos para las 6 caras del cubo direccional numerados del 1 al 6
-        let currentWorld = 0;
+        // 6 Mundos para las 6 caras del cubo direccional numerados del I al VI
         const worldPalettes = [
-            { name: "1: NEON PRIME", bg: 0x0a0515, c1: 0xff0055, c2: 0x00eeff, c3: 0x5500ff, type: 'neon' }, 
-            { name: "2: AURA-5", bg: 0x110011, c1: 0xff00ff, c2: 0xaa00ff, c3: 0xff88ff, type: 'aura' },    
-            { name: "3: SOLARIS-VII", bg: 0x1a0a00, c1: 0xff8800, c2: 0xffd700, c3: 0xff0000, type: 'fire' },
-            { name: "4: TERRA-NOVA", bg: 0x001100, c1: 0x00ff00, c2: 0x004400, c3: 0x88cc00, type: 'terra' },
-            { name: "5: TOX-9", bg: 0x001105, c1: 0x00ff00, c2: 0x0088ff, c3: 0xccff00, type: 'toxic' },   
-            { name: "6: GLACIER-X", bg: 0x000511, c1: 0x00ffff, c2: 0xffffff, c3: 0x0055ff, type: 'ice' }     
+            { name: "NEON PRIME I", bg: 0x0a0515, c1: 0xff0055, c2: 0x00eeff, c3: 0x5500ff, type: 'neon' }, 
+            { name: "AURA-5 II", bg: 0x110011, c1: 0xff00ff, c2: 0xaa00ff, c3: 0xff88ff, type: 'aura' },    
+            { name: "SOLARIS-VII III", bg: 0x1a0a00, c1: 0xff8800, c2: 0xffd700, c3: 0xff0000, type: 'fire' },
+            { name: "TERRA-NOVA IV", bg: 0x001100, c1: 0x00ff00, c2: 0x004400, c3: 0x88cc00, type: 'terra' },
+            { name: "TOX-9 V", bg: 0x001105, c1: 0x00ff00, c2: 0x0088ff, c3: 0xccff00, type: 'toxic' },   
+            { name: "GLACIER-X VI", bg: 0x000511, c1: 0x00ffff, c2: 0xffffff, c3: 0x0055ff, type: 'ice' }     
         ];
+        
+        let currentWorld = Math.floor(Math.random() * 6);
+        const initW = worldPalettes[currentWorld];
+        document.getElementById('world-title').innerText = initW.name;
+        document.body.style.backgroundColor = '#' + initW.bg.toString(16).padStart(6, '0');
+        scene.fog.color.setHex(initW.bg);
 
         // Mapa de navegación (grafo topológico personalizado)
         const navMap = {
@@ -266,9 +271,9 @@
             5: { center: 4, edges: 5, right: 0, left: 4, up: 1, down: 3 }  // 6 (Izquierda) -> izq: 5(4), der: 1(0)
         };
         
-        let color1 = new THREE.Color(worldPalettes[0].c1);
-        let color2 = new THREE.Color(worldPalettes[0].c2);
-        let color3 = new THREE.Color(worldPalettes[0].c3);
+        let color1 = new THREE.Color(initW.c1);
+        let color2 = new THREE.Color(initW.c2);
+        let color3 = new THREE.Color(initW.c3);
 
         // Texturizador procedural para los planetas
         function createPlanetTexture(type) {
