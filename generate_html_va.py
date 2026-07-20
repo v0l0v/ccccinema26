@@ -1717,9 +1717,33 @@ def main():
         .close-ticket:hover {{
             background: rgba(255, 255, 255, 0.2);
         }}
+
+        #film-burn-overlay {{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999999;
+            opacity: 0;
+        }}
+
+        #film-burn-overlay.burning {{
+            animation: filmBurnAnim 0.7s ease-in-out forwards;
+        }}
+
+        @keyframes filmBurnAnim {{
+            0% {{ opacity: 0; background: rgba(255, 100, 0, 0); }}
+            15% {{ opacity: 1; background: rgba(255, 150, 0, 0.6); mix-blend-mode: color-dodge; box-shadow: inset 0 0 100px 50px rgba(255,0,0,0.5); }}
+            30% {{ background: rgba(255, 255, 255, 1); mix-blend-mode: normal; }}
+            60% {{ background: rgba(255, 50, 0, 0.9); mix-blend-mode: overlay; box-shadow: inset 0 0 200px 100px rgba(0,0,0,1); }}
+            100% {{ opacity: 0; background: rgba(0, 0, 0, 0); }}
+        }}
     </style>
 </head>
 <body>
+    <div id="film-burn-overlay"></div>
     <div id="app-bg"></div>
     <header>
         <div class="header-content">
@@ -2110,10 +2134,16 @@ def main():
         let currentMovieIndex = null;
 
         function openModal(idx) {{
-            const movie = moviesData[idx];
-            currentMovieIndex = idx;
+            const filmBurn = document.getElementById('film-burn-overlay');
+            filmBurn.classList.remove('burning');
+            void filmBurn.offsetWidth; // Force reflow para reiniciar animacion
+            filmBurn.classList.add('burning');
             
-            document.getElementById('modal-title').innerText = movie.title;
+            setTimeout(() => {{
+                const movie = moviesData[idx];
+                currentMovieIndex = idx;
+                
+                document.getElementById('modal-title').innerText = movie.title;
             document.getElementById('modal-subtitle').innerText = `${{movie.year}} · ${{movie.country}} · ${{movie.duration}}`;
             document.getElementById('modal-date').innerText = movie.date;
             document.getElementById('modal-poster').src = movie.poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
@@ -2188,6 +2218,7 @@ def main():
             
             // Update URL hash without jumping page
             history.pushState(null, null, `#movie-${{idx}}`);
+            }}, 250); // 250ms delay para sincronizar con el fogonazo de película
         }}
 
         function openPosterModal() {{
