@@ -189,28 +189,42 @@
         document.addEventListener('dblclick', () => {
             if (isWarpSpeed) return;
             
-            // Usamos raycaster para saber hacia dónde hacemos el doble clic
-            mouseVector.x = normMouseX;
-            mouseVector.y = normMouseY;
-            raycaster.setFromCamera(mouseVector, camera);
-            const dir = raycaster.ray.direction;
+            let nx = normMouseX; // -1 a 1 (Izquierda a Derecha)
+            let ny = normMouseY; // -1 a 1 (Abajo a Arriba)
             
-            let absX = Math.abs(dir.x);
-            let absY = Math.abs(dir.y);
-            let absZ = Math.abs(dir.z);
-
+            // Calculamos la distancia máxima al centro para definir las 6 zonas de la pantalla
+            let maxDist = Math.max(Math.abs(nx), Math.abs(ny));
+            
             warpTargetX = 0; warpTargetY = 0; warpTargetZ = 0;
             const dist = 2800; // Distancia a la cara del "cubo"
 
-            if (absX > absY && absX > absZ) {
-                warpTargetX = Math.sign(dir.x) * dist;
-                pendingWorldIndex = dir.x > 0 ? 2 : 3; // X+ (Derecha), X- (Izquierda)
-            } else if (absY > absX && absY > absZ) {
-                warpTargetY = Math.sign(dir.y) * dist;
-                pendingWorldIndex = dir.y > 0 ? 4 : 5; // Y+ (Arriba), Y- (Abajo)
+            if (maxDist < 0.25) {
+                // Zona 1: Centro (Adelante)
+                warpTargetZ = -dist;
+                pendingWorldIndex = 0;
+            } else if (maxDist > 0.85) {
+                // Zona 2: Bordes extremos de la pantalla (Atrás)
+                warpTargetZ = dist;
+                pendingWorldIndex = 1;
             } else {
-                warpTargetZ = Math.sign(dir.z) * dist;
-                pendingWorldIndex = dir.z > 0 ? 1 : 0; // Z+ (Atrás), Z- (Adelante)
+                // Zonas 3, 4, 5, 6: Puntos Cardinales
+                if (Math.abs(nx) > Math.abs(ny)) {
+                    if (nx > 0) {
+                        warpTargetX = dist; // Este (Derecha)
+                        pendingWorldIndex = 2;
+                    } else {
+                        warpTargetX = -dist; // Oeste (Izquierda)
+                        pendingWorldIndex = 3;
+                    }
+                } else {
+                    if (ny > 0) {
+                        warpTargetY = dist; // Norte (Arriba)
+                        pendingWorldIndex = 4;
+                    } else {
+                        warpTargetY = -dist; // Sur (Abajo)
+                        pendingWorldIndex = 5;
+                    }
+                }
             }
             
             if (pendingWorldIndex === currentWorld) {
