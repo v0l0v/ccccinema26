@@ -1453,6 +1453,7 @@ def main():
             transition: opacity 0.4s ease;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            overflow: hidden;
         }}
         
         .roulette-overlay.active {{
@@ -2415,6 +2416,7 @@ def main():
                 const tempIdx = Math.floor(Math.random() * moviesData.length);
                 const tempPoster = moviesData[tempIdx].poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
                 posterEl.src = tempPoster;
+                document.getElementById('roulette-bg').style.backgroundImage = `url('${{tempPoster}}')`;
                 
                 counter++;
                 
@@ -2430,6 +2432,7 @@ def main():
                     const finalIdx = Math.floor(Math.random() * moviesData.length);
                     const finalPoster = moviesData[finalIdx].poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
                     posterEl.src = finalPoster;
+                    document.getElementById('roulette-bg').style.backgroundImage = `url('${{finalPoster}}')`;
                     
                     posterEl.style.opacity = '0';
                     setTimeout(() => {{ posterEl.style.opacity = '1'; }}, 50);
@@ -2448,6 +2451,7 @@ def main():
     </script>
     <!-- Cinematic Roulette Overlay -->
     <div id="roulette-overlay" class="roulette-overlay">
+        <div id="roulette-bg" style="position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; background-size: cover; background-position: center; filter: blur(30px) brightness(0.35); z-index: -1; transition: background-image 0.1s ease-out;"></div>
         <style>
             @keyframes plant-breathe {{
                 0% {{ transform: scale(1) translateY(0) rotate(0deg); }}
