@@ -48,7 +48,7 @@ def main():
             <div class="card-header-img">
                 <img class="poster-img" src="{poster_src}" alt="Pòster de {m['title']}" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="{youtube_id}" style="background-image: url('{yt_thumb}')"></div>
-                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark({idx})" data-idx="{idx}" title="Desar al Meu Diari" aria-label="Desar al Meu Diari">
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark({idx})" data-idx="{idx}" title="Guardar al Meu Diari" aria-label="Guardar al Meu Diari">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                 </button>
                 <div class="date-badge">
@@ -2133,8 +2133,8 @@ def main():
                 if(canvas) {{
                     const dataUrl = canvas.toDataURL('image/png');
                     ticketPreviewContainer.innerHTML = `
-                        <h4 class="section-title" style="text-align:left;">Comparteix la teva assistència</h4>
-                        <p style="text-align:left; font-size:0.9rem; margin-top:-10px; margin-bottom:15px; opacity:0.8;">Fes clic a la teva entrada (souvenir virtual) per avisar els teus amics de l'esdeveniment.</p>
+                        <h4 class="section-title" style="text-align:left;">Comparteix la teua assistència</h4>
+                        <p style="text-align:left; font-size:0.9rem; margin-top:-10px; margin-bottom:15px; opacity:0.8;">Fes clic a la teua entrada (souvenir virtual) per avisar els teus amics de l'esdeveniment.</p>
                         <img src="${{dataUrl}}" alt="Entrada Generada" style="width:100%; max-width:500px; display:block; margin: 0; border-radius:10px; cursor:pointer; box-shadow: 0 5px 25px rgba(0,0,0,0.5); transition: transform 0.2s ease; transform-origin: left center;" 
                         onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'"
                         onclick="generateAndShareTicket(${{idx}})" title="Fes clic per compartir">
