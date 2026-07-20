@@ -276,45 +276,54 @@
         let color2 = new THREE.Color(initW.c2);
         let color3 = new THREE.Color(initW.c3);
 
+        function getHexColor(num) {
+            return '#' + num.toString(16).padStart(6, '0');
+        }
+
         // Texturizador procedural para los planetas
-        function createPlanetTexture(type) {
+        function createPlanetTexture(w) {
             const canvas = document.createElement('canvas');
             canvas.width = 512;
             canvas.height = 512;
             const ctx = canvas.getContext('2d');
             
-            if (type === 'neon') {
-                ctx.fillStyle = '#0a0515';
+            const bgStr = getHexColor(w.bg);
+            const c1Str = getHexColor(w.c1);
+            const c2Str = getHexColor(w.c2);
+            const c3Str = getHexColor(w.c3);
+            
+            if (w.type === 'neon') {
+                ctx.fillStyle = bgStr;
                 ctx.fillRect(0,0,512,512);
                 for(let i=0; i<300; i++) {
-                    ctx.fillStyle = Math.random() > 0.5 ? '#ff0055' : '#00eeff';
+                    ctx.fillStyle = Math.random() > 0.5 ? c1Str : c2Str;
                     ctx.beginPath();
                     ctx.arc(Math.random()*512, Math.random()*512, Math.random()*15, 0, Math.PI*2);
                     ctx.fill();
                 }
-            } else if (type === 'fire') {
+            } else if (w.type === 'fire') {
                 const grad = ctx.createRadialGradient(256, 256, 0, 256, 256, 300);
-                grad.addColorStop(0, '#ffcc00');
-                grad.addColorStop(1, '#aa0000');
+                grad.addColorStop(0, c2Str);
+                grad.addColorStop(1, bgStr);
                 ctx.fillStyle = grad;
                 ctx.fillRect(0,0,512,512);
                 for(let i=0; i<150; i++) {
                     ctx.fillStyle = 'rgba(255,255,255,0.2)';
                     ctx.fillRect(Math.random()*512, Math.random()*512, 100, 5);
                 }
-            } else if (type === 'toxic') {
-                ctx.fillStyle = '#001105';
+            } else if (w.type === 'toxic') {
+                ctx.fillStyle = bgStr;
                 ctx.fillRect(0,0,512,512);
                 for(let x=0; x<512; x+=32) {
                     for(let y=0; y<512; y+=32) {
-                        ctx.fillStyle = Math.random() > 0.5 ? '#00ff00' : '#003300';
+                        ctx.fillStyle = Math.random() > 0.5 ? c1Str : c2Str;
                         ctx.fillRect(x,y,32,32);
                     }
                 }
-            } else if (type === 'ice') {
+            } else if (w.type === 'ice') {
                 const grad = ctx.createLinearGradient(0, 0, 512, 512);
-                grad.addColorStop(0, '#00ffff');
-                grad.addColorStop(1, '#001155');
+                grad.addColorStop(0, c1Str);
+                grad.addColorStop(1, bgStr);
                 ctx.fillStyle = grad;
                 ctx.fillRect(0,0,512,512);
                 for(let i=0; i<200; i++) {
@@ -325,16 +334,17 @@
                     ctx.lineTo(Math.random()*512, Math.random()*512);
                     ctx.fill();
                 }
-            } else if (type === 'aura') {
+            } else if (w.type === 'aura') {
                 for(let i=0; i<512; i+=4) {
-                    ctx.fillStyle = `hsl(${280 + Math.random()*40}, 100%, 50%)`;
+                    const r = Math.random();
+                    ctx.fillStyle = r > 0.66 ? c1Str : (r > 0.33 ? c2Str : c3Str);
                     ctx.fillRect(0, i, 512, 4);
                 }
-            } else if (type === 'terra') {
-                ctx.fillStyle = '#0033aa';
+            } else if (w.type === 'terra') {
+                ctx.fillStyle = bgStr;
                 ctx.fillRect(0,0,512,512);
                 for(let i=0; i<50; i++) {
-                    ctx.fillStyle = '#00aa00';
+                    ctx.fillStyle = Math.random() > 0.5 ? c1Str : c3Str;
                     ctx.beginPath();
                     ctx.arc(Math.random()*512, Math.random()*512, 30+Math.random()*50, 0, Math.PI*2);
                     ctx.fill();
@@ -384,7 +394,7 @@
             color: 0xffffff, 
             transparent: true, 
             opacity: 0.8,
-            map: createPlanetTexture(worldPalettes[currentWorld].type)
+            map: createPlanetTexture(worldPalettes[currentWorld])
         });
         const core = new THREE.Mesh(coreGeo, coreMat);
         scene.add(core);
@@ -398,7 +408,7 @@
 
         function updatePortalAppearance(idx) {
             const targetWorld = worldPalettes[idx];
-            portalMat.map = createPlanetTexture(targetWorld.type);
+            portalMat.map = createPlanetTexture(targetWorld);
             portalMat.needsUpdate = true;
         }
 
@@ -439,7 +449,7 @@
             document.getElementById('world-title').innerText = w.name;
             
             // Actualizar textura del núcleo al nuevo planeta
-            coreMat.map = createPlanetTexture(w.type);
+            coreMat.map = createPlanetTexture(w);
             coreMat.needsUpdate = true;
             
             color1.setHex(w.c1);
