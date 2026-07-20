@@ -3788,12 +3788,17 @@ Te invito a ver la cartelera de películas programada para este mes. Aquí tiene
             
             if (movie.youtube_id) {
                 // Añadimos parámetros para ocultar la interfaz lo máximo posible: rel=0 (solo sugerencias del mismo canal), modestbranding=1 (sin logo de YT), iv_load_policy=3 (sin anotaciones)
-                iframe.src = `https://www.youtube.com/embed/${movie.youtube_id}?autoplay=1&mute=0&controls=0&loop=1&playlist=${movie.youtube_id}&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0`;
+                iframe.src = `https://www.youtube.com/embed/${movie.youtube_id}?autoplay=1&mute=0&controls=0&loop=1&playlist=${movie.youtube_id}&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1`;
+                iframe.onload = () => {
+                    // Bajar el volumen del reproductor de YouTube al 20%
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[20]}', '*');
+                };
                 setTimeout(() => {
                     iframe.classList.add('fade-in');
                 }, 600);
             } else {
                 iframe.src = '';
+                iframe.onload = null;
             }
             
             // Open Modal
