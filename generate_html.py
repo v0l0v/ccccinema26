@@ -2156,16 +2156,15 @@ def main():
             ctx.stroke();
             ctx.setLineDash([]);
             
-            // 6. Textos centrales
-            const textCenterX = 570; // Centro para el título (desplazado para no tocar la flecha)
-            const textCenterX_Offset = 600; // Centro para los textos superior/inferior (donde la flecha oscura es más ancha)
+            // 6. Textos centrales (alineados a la derecha)
+            const textRightX = 850; // Margen derecho, pegado a la línea de corte (880)
             
             ctx.fillStyle = darkColor;
-            ctx.textAlign = 'center';
+            ctx.textAlign = 'right'; // Alineado a la derecha
             ctx.textBaseline = 'middle';
             
             ctx.font = 'bold 32px "Trebuchet MS", Arial, sans-serif';
-            ctx.fillText("CINEMA D'ESTIU 2026", textCenterX_Offset, 125);
+            ctx.fillText("CINEMA D'ESTIU 2026", textRightX, 125);
             
             let fontSize = 85;
             const title = m.title.toUpperCase();
@@ -2173,14 +2172,14 @@ def main():
             else if (title.length > 15) fontSize = 65;
             
             ctx.font = `bold ${{fontSize}}px "Impact", "Arial Black", sans-serif`;
-            ctx.fillText(title, textCenterX, 215, 550); // max-width más pequeño
+            ctx.fillText(title, textRightX, 215, 550); // max-width
             
             ctx.font = 'bold 32px "Trebuchet MS", Arial, sans-serif';
-            ctx.fillText("CCCC · CENTRE DEL CARME", textCenterX_Offset, 305);
+            ctx.fillText("CCCC · CENTRE DEL CARME", textRightX, 305);
             
             // Fecha y hora
             ctx.font = 'bold 22px "Trebuchet MS", Arial, sans-serif';
-            ctx.fillText(m.date.toUpperCase() + " · 22:00 H", textCenterX_Offset, 345);
+            ctx.fillText(m.date.toUpperCase() + " · 22:00 H", textRightX, 345);
             
             // 7. Stub derecho (código de barras y texto, más estrecho)
             let currX = 895;
