@@ -2164,7 +2164,10 @@ def main():
             ctx.textBaseline = 'middle';
             
             ctx.font = 'bold 32px "Trebuchet MS", Arial, sans-serif';
-            ctx.fillText("CINEMA D'ESTIU 2026", textRightX, 125);
+            ctx.fillText("CCCCINEMA D'ESTIU 2026", textRightX, 105);
+            
+            ctx.font = 'bold 16px "Trebuchet MS", Arial, sans-serif';
+            ctx.fillText("EMBRIAGADOS DE HUMOR AMÉRICA Y LA COMEDIA", textRightX, 135);
             
             let fontSize = 85;
             const title = m.title.toUpperCase();
