@@ -184,15 +184,44 @@
         document.addEventListener('touchstart', onDocumentTouchStart, {passive: true});
         document.addEventListener('touchmove', onDocumentTouchMove, {passive: true});
         
+        let pendingWorldIndex = -1;
+        
         document.addEventListener('dblclick', () => {
             if (isWarpSpeed) return;
-            isWarpSpeed = true;
-            warpTimer = 3.5; // 3.5 segundos de velocidad láser profunda
             
-            // Dirección aleatoria hacia las profundidades de la esfera de partículas
-            warpTargetX = (Math.random() - 0.5) * 3000;
-            warpTargetY = (Math.random() - 0.5) * 3000;
-            warpTargetZ = (Math.random() - 0.5) * 3000;
+            // Usamos raycaster para saber hacia dónde hacemos el doble clic
+            mouseVector.x = normMouseX;
+            mouseVector.y = normMouseY;
+            raycaster.setFromCamera(mouseVector, camera);
+            const dir = raycaster.ray.direction;
+            
+            let absX = Math.abs(dir.x);
+            let absY = Math.abs(dir.y);
+            let absZ = Math.abs(dir.z);
+
+            warpTargetX = 0; warpTargetY = 0; warpTargetZ = 0;
+            const dist = 2800; // Distancia a la cara del "cubo"
+
+            if (absX > absY && absX > absZ) {
+                warpTargetX = Math.sign(dir.x) * dist;
+                pendingWorldIndex = dir.x > 0 ? 2 : 3; // X+ (Derecha), X- (Izquierda)
+            } else if (absY > absX && absY > absZ) {
+                warpTargetY = Math.sign(dir.y) * dist;
+                pendingWorldIndex = dir.y > 0 ? 4 : 5; // Y+ (Arriba), Y- (Abajo)
+            } else {
+                warpTargetZ = Math.sign(dir.z) * dist;
+                pendingWorldIndex = dir.z > 0 ? 1 : 0; // Z+ (Atrás), Z- (Adelante)
+            }
+            
+            if (pendingWorldIndex === currentWorld) {
+                // Si saltamos a la cara donde ya estamos, simplemente rebotamos al centro
+                warpTargetX = 0; warpTargetY = 0; warpTargetZ = 1200; 
+                pendingWorldIndex = -1;
+            }
+
+            isWarpSpeed = true;
+            warpTimer = 3.5; 
+            portal.visible = false;
         });
 
         // Generar un sistema de partículas (15,000 puntos)
@@ -201,12 +230,15 @@
         const positions = new Float32Array(particles * 3);
         const colors = new Float32Array(particles * 3);
         
-        // Colores iniciales
+        // 6 Mundos para las 6 caras del cubo direccional
         let currentWorld = 0;
         const worldPalettes = [
-            { name: "NEON PRIME", bg: 0x0a0515, c1: 0xff0055, c2: 0x00eeff, c3: 0x5500ff, type: 'neon' }, 
-            { name: "SOLARIS-VII", bg: 0x1a0a00, c1: 0xff8800, c2: 0xffd700, c3: 0xff0000, type: 'fire' },
-            { name: "TOX-9", bg: 0x001105, c1: 0x00ff00, c2: 0x0088ff, c3: 0xccff00, type: 'toxic' } 
+            { name: "NEON PRIME", bg: 0x0a0515, c1: 0xff0055, c2: 0x00eeff, c3: 0x5500ff, type: 'neon' }, // 0: Adelante (Centro)
+            { name: "SOLARIS-VII", bg: 0x1a0a00, c1: 0xff8800, c2: 0xffd700, c3: 0xff0000, type: 'fire' }, // 1: Atrás
+            { name: "TOX-9", bg: 0x001105, c1: 0x00ff00, c2: 0x0088ff, c3: 0xccff00, type: 'toxic' },    // 2: Derecha
+            { name: "GLACIER-X", bg: 0x000511, c1: 0x00ffff, c2: 0xffffff, c3: 0x0055ff, type: 'ice' },      // 3: Izquierda
+            { name: "AURA-5", bg: 0x110011, c1: 0xff00ff, c2: 0xaa00ff, c3: 0xff88ff, type: 'aura' },        // 4: Arriba
+            { name: "TERRA-NOVA", bg: 0x001100, c1: 0x00ff00, c2: 0x004400, c3: 0x88cc00, type: 'terra' }    // 5: Abajo
         ];
         
         let color1 = new THREE.Color(worldPalettes[0].c1);
@@ -247,6 +279,34 @@
                         ctx.fillStyle = Math.random() > 0.5 ? '#00ff00' : '#003300';
                         ctx.fillRect(x,y,32,32);
                     }
+                }
+            } else if (type === 'ice') {
+                const grad = ctx.createLinearGradient(0, 0, 512, 512);
+                grad.addColorStop(0, '#00ffff');
+                grad.addColorStop(1, '#001155');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0,0,512,512);
+                for(let i=0; i<200; i++) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                    ctx.beginPath();
+                    ctx.moveTo(Math.random()*512, Math.random()*512);
+                    ctx.lineTo(Math.random()*512, Math.random()*512);
+                    ctx.lineTo(Math.random()*512, Math.random()*512);
+                    ctx.fill();
+                }
+            } else if (type === 'aura') {
+                for(let i=0; i<512; i+=4) {
+                    ctx.fillStyle = `hsl(${280 + Math.random()*40}, 100%, 50%)`;
+                    ctx.fillRect(0, i, 512, 4);
+                }
+            } else if (type === 'terra') {
+                ctx.fillStyle = '#0033aa';
+                ctx.fillRect(0,0,512,512);
+                for(let i=0; i<50; i++) {
+                    ctx.fillStyle = '#00aa00';
+                    ctx.beginPath();
+                    ctx.arc(Math.random()*512, Math.random()*512, 30+Math.random()*50, 0, Math.PI*2);
+                    ctx.fill();
                 }
             }
             return new THREE.CanvasTexture(canvas);
@@ -305,9 +365,9 @@
         portal.visible = false;
         scene.add(portal);
 
-        function updatePortalAppearance() {
-            const nextWorld = worldPalettes[(currentWorld + 1) % worldPalettes.length];
-            portalMat.map = createPlanetTexture(nextWorld.type);
+        function updatePortalAppearance(idx) {
+            const targetWorld = worldPalettes[idx];
+            portalMat.map = createPlanetTexture(targetWorld.type);
             portalMat.needsUpdate = true;
         }
 
@@ -326,20 +386,21 @@
             const intersects = raycaster.intersectObject(portal);
             
             if (intersects.length > 0) {
-                changeWorld();
+                changeWorld(pendingWorldIndex);
             }
         });
 
-        function changeWorld() {
-            currentWorld = (currentWorld + 1) % worldPalettes.length;
+        function changeWorld(idx) {
+            currentWorld = idx;
             portal.visible = false;
             
-            // Disparar un salto hiperespacial para camuflar la transición
+            // Disparar un salto hiperespacial de retorno para camuflar la transición
             isWarpSpeed = true;
-            warpTimer = 3.0;
-            warpTargetX = (Math.random() - 0.5) * 3000;
-            warpTargetY = (Math.random() - 0.5) * 3000;
-            warpTargetZ = (Math.random() - 0.5) * 3000;
+            warpTimer = 2.0;
+            warpTargetX = 0;
+            warpTargetY = 0;
+            warpTargetZ = 1200; // Volvemos al centro
+            pendingWorldIndex = -1;
 
             const w = worldPalettes[currentWorld];
             scene.fog.color.setHex(w.bg);
@@ -382,13 +443,14 @@
 
                 if (warpTimer <= 0) {
                     isWarpSpeed = false;
-                    // Al detenerse, probabilidad de aparecer un portal (planeta)
-                    if (Math.random() > 0.4 && !portal.visible) {
-                        updatePortalAppearance();
+                    // Al detenerse en una de las caras, aparece el portal del mundo destino frente a la cámara
+                    if (pendingWorldIndex !== -1 && !portal.visible) {
+                        updatePortalAppearance(pendingWorldIndex);
+                        // La cámara está en warpTarget (aprox). Ponemos el portal frente a ella.
                         portal.position.set(
-                            cameraBaseX + (Math.random() - 0.5) * 800,
-                            cameraBaseY + (Math.random() - 0.5) * 800,
-                            cameraBaseZ - 500 - Math.random() * 500
+                            cameraBaseX * 0.8,
+                            cameraBaseY * 0.8,
+                            cameraBaseZ * 0.8
                         );
                         portal.visible = true;
                     }
@@ -445,8 +507,8 @@
                 if (intersects.length > 0) {
                     document.body.style.cursor = 'crosshair';
                     planetInfo.style.opacity = '1';
-                    const nextWorld = worldPalettes[(currentWorld + 1) % worldPalettes.length];
-                    infoTitle.innerText = "SECTOR: " + nextWorld.name;
+                    const targetWorld = worldPalettes[pendingWorldIndex];
+                    infoTitle.innerText = "SECTOR: " + targetWorld.name;
                 } else {
                     document.body.style.cursor = 'default';
                     planetInfo.style.opacity = '0';
