@@ -97,7 +97,7 @@
     <a href="index.html" class="back-btn">← VOLVER AL CINE</a>
     
     <div id="ui">
-        <h1>ETC</h1>
+        <h1 id="world-title">NEON PRIME</h1>
         <p>LABORATORIO VISUAL</p>
     </div>
     
@@ -163,14 +163,53 @@
         // Colores iniciales
         let currentWorld = 0;
         const worldPalettes = [
-            { bg: 0x0a0515, c1: 0xff0055, c2: 0x00eeff, c3: 0x5500ff }, // Cyberpunk Neon
-            { bg: 0x1a0a00, c1: 0xff8800, c2: 0xffd700, c3: 0xff0000 }, // Golden Fire
-            { bg: 0x001105, c1: 0x00ff00, c2: 0x0088ff, c3: 0xccff00 }  // Matrix Toxic
+            { name: "NEON PRIME", bg: 0x0a0515, c1: 0xff0055, c2: 0x00eeff, c3: 0x5500ff, type: 'neon' }, 
+            { name: "SOLARIS-VII", bg: 0x1a0a00, c1: 0xff8800, c2: 0xffd700, c3: 0xff0000, type: 'fire' },
+            { name: "TOX-9", bg: 0x001105, c1: 0x00ff00, c2: 0x0088ff, c3: 0xccff00, type: 'toxic' } 
         ];
         
         let color1 = new THREE.Color(worldPalettes[0].c1);
         let color2 = new THREE.Color(worldPalettes[0].c2);
         let color3 = new THREE.Color(worldPalettes[0].c3);
+
+        // Texturizador procedural para los planetas
+        function createPlanetTexture(type) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            
+            if (type === 'neon') {
+                ctx.fillStyle = '#0a0515';
+                ctx.fillRect(0,0,512,512);
+                for(let i=0; i<300; i++) {
+                    ctx.fillStyle = Math.random() > 0.5 ? '#ff0055' : '#00eeff';
+                    ctx.beginPath();
+                    ctx.arc(Math.random()*512, Math.random()*512, Math.random()*15, 0, Math.PI*2);
+                    ctx.fill();
+                }
+            } else if (type === 'fire') {
+                const grad = ctx.createRadialGradient(256, 256, 0, 256, 256, 300);
+                grad.addColorStop(0, '#ffcc00');
+                grad.addColorStop(1, '#aa0000');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0,0,512,512);
+                for(let i=0; i<150; i++) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                    ctx.fillRect(Math.random()*512, Math.random()*512, 100, 5);
+                }
+            } else if (type === 'toxic') {
+                ctx.fillStyle = '#001105';
+                ctx.fillRect(0,0,512,512);
+                for(let x=0; x<512; x+=32) {
+                    for(let y=0; y<512; y+=32) {
+                        ctx.fillStyle = Math.random() > 0.5 ? '#00ff00' : '#003300';
+                        ctx.fillRect(x,y,32,32);
+                    }
+                }
+            }
+            return new THREE.CanvasTexture(canvas);
+        }
 
         function generateParticles() {
             for (let i = 0; i < particles; i++) {
@@ -215,10 +254,16 @@
 
         // Esfera Portal (Mundo alternativo)
         const portalGeo = new THREE.SphereGeometry(150, 32, 32);
-        const portalMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9, wireframe: true });
+        const portalMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.95 });
         const portal = new THREE.Mesh(portalGeo, portalMat);
         portal.visible = false;
         scene.add(portal);
+
+        function updatePortalAppearance() {
+            const nextWorld = worldPalettes[(currentWorld + 1) % worldPalettes.length];
+            portalMat.map = createPlanetTexture(nextWorld.type);
+            portalMat.needsUpdate = true;
+        }
 
         // Raycaster para el clic en el portal
         const raycaster = new THREE.Raycaster();
@@ -251,6 +296,7 @@
             const w = worldPalettes[currentWorld];
             scene.fog.color.setHex(w.bg);
             document.body.style.backgroundColor = '#' + w.bg.toString(16).padStart(6, '0');
+            document.getElementById('world-title').innerText = w.name;
             
             color1.setHex(w.c1);
             color2.setHex(w.c2);
@@ -284,8 +330,9 @@
 
                 if (warpTimer <= 0) {
                     isWarpSpeed = false;
-                    // Al detenerse, probabilidad de aparecer un portal
+                    // Al detenerse, probabilidad de aparecer un portal (planeta)
                     if (Math.random() > 0.4 && !portal.visible) {
+                        updatePortalAppearance();
                         portal.position.set(
                             cameraBaseX + (Math.random() - 0.5) * 800,
                             cameraBaseY + (Math.random() - 0.5) * 800,
