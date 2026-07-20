@@ -1094,21 +1094,22 @@ def main():
         .modal-video-header {{
             position: relative;
             width: 100%;
-            height: 0;
-            padding-bottom: 50.25%; /* 16:9 Aspect Ratio */
+            display: flex;
+            flex-direction: column;
             background: #000;
             overflow: hidden;
         }}
         
         .video-wrapper {{
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: relative;
             width: 100%;
-            height: 100%;
+            padding-bottom: 50.25%; /* 16:9 Aspect Ratio */
         }}
         
         .video-wrapper iframe {{
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             border: 0;
@@ -1400,15 +1401,26 @@ def main():
                 height: 2.5rem;
             }}
             .modal-video-header {{
+                background: var(--bg-primary); /* match body background */
+            }}
+            .video-wrapper {{
                 padding-bottom: 56.25%; /* normal 16:9 on mobile */
+                order: 2; /* place after title */
+            }}
+            .video-overlay-gradient {{
+                display: none; /* remove gradient on mobile since text doesn't overlap */
             }}
             .modal-title {{
                 font-size: 1.8rem;
             }}
             .modal-header-info {{
-                bottom: 1.5rem;
-                left: 1.5rem;
-                right: 1.5rem;
+                position: relative; /* no longer absolute */
+                bottom: auto;
+                left: auto;
+                right: auto;
+                padding: 1.5rem; /* space around text */
+                order: 1; /* place before video */
+                z-index: 2;
             }}
             .modal-body {{
                 padding: 1.5rem;
