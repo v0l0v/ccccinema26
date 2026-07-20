@@ -2289,13 +2289,17 @@ def main():
             
             // 7. Stub derecho (texto sin código de barras para que destaque la mordida)
             ctx.save();
-            ctx.translate(940, tHeight / 2); // Centrado en el talón derecho
+            ctx.translate(900, tHeight / 2); // Movido más hacia la izquierda, pegado a la línea de corte
             ctx.rotate(-Math.PI / 2);
             ctx.fillStyle = darkColor;
             ctx.font = 'bold 26px "Impact", "Arial Black", sans-serif'; // fuente más pequeña para que quepa bien el texto largo
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText("PROMOTIONAL SOUVENIR", 0, 0);
+            ctx.fillText("RECUERDO PROMOCIONAL", 0, 0);
+            
+            // Subtítulo aclaratorio (más a la derecha visualmente, que equivale a Y positiva tras la rotación)
+            ctx.font = '12px "Arial", sans-serif'; // fuente más pequeña y normal
+            ctx.fillText("ENTRADA SIN VALIDEZ", 0, 30);
             ctx.restore();
             
             // 8. ¡EL MORDISCO DE LA PLANTA CARNÍVORA! (Borde derecho masticado)
