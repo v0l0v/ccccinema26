@@ -2176,8 +2176,8 @@ def main():
             const modal = document.getElementById('movie-modal');
             
             // Bajar volumen ASMR si está sonando
-            if (window.ambientAudio && window.isAmbientPlaying) {{
-                window.ambientAudio.volume = 0.05;
+            if (window.ambientGain && window.isAmbientPlaying) {{
+                window.ambientGain.gain.value = 0.05;
             }}
             
             modal.style.display = 'block';
@@ -2445,8 +2445,8 @@ def main():
             document.body.style.overflow = '';
             
             // Recuperar volumen ASMR si estaba sonando
-            if (window.ambientAudio && window.isAmbientPlaying) {{
-                window.ambientAudio.volume = 0.4;
+            if (window.ambientGain && window.isAmbientPlaying) {{
+                window.ambientGain.gain.value = 0.5;
             }}
             
             // Reset iframe to stop playback
@@ -2563,21 +2563,48 @@ def main():
         window.isAmbientPlaying = false;
         
         ambientBtn.addEventListener('click', () => {{
-            if (!window.ambientAudio) {{
-                // Audio de ambiente estival (usando un loop muy agradable de wikimedia commons para asegurar disponibilidad)
-                window.ambientAudio = new Audio('https://upload.wikimedia.org/wikipedia/commons/4/4b/Crickets_at_Night.ogg');
-                window.ambientAudio.loop = true;
-                window.ambientAudio.volume = 0.4;
+            if (!window.ambientAudioCtx) {{
+                // Usamos Web Audio API para generar un ruido de proyector analógico / viento infinito (¡100% offline y sin descargar archivos!)
+                window.ambientAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                const bufferSize = window.ambientAudioCtx.sampleRate * 2;
+                const buffer = window.ambientAudioCtx.createBuffer(1, bufferSize, window.ambientAudioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {{
+                    data[i] = (Math.random() * 2 - 1) * 0.05; // ruido blanco de fondo suave
+                    if (Math.random() < 0.005) {{ 
+                        data[i] = (Math.random() * 2 - 1) * 0.6; // crujido de película analógica (pop/crackle)
+                    }}
+                }}
+                
+                window.ambientSource = window.ambientAudioCtx.createBufferSource();
+                window.ambientSource.buffer = buffer;
+                window.ambientSource.loop = true;
+                
+                // Filtro para que suene oscuro y vintage, como un rumor nocturno / proyector de fondo
+                window.ambientFilter = window.ambientAudioCtx.createBiquadFilter();
+                window.ambientFilter.type = 'lowpass';
+                window.ambientFilter.frequency.value = 800;
+                
+                window.ambientGain = window.ambientAudioCtx.createGain();
+                window.ambientGain.gain.value = 0.5;
+                
+                window.ambientSource.connect(window.ambientFilter);
+                window.ambientFilter.connect(window.ambientGain);
+                window.ambientGain.connect(window.ambientAudioCtx.destination);
+                
+                window.ambientSource.start();
+                window.ambientAudioCtx.suspend(); // Empieza pausado
             }}
             
             if (window.isAmbientPlaying) {{
-                window.ambientAudio.pause();
+                window.ambientAudioCtx.suspend();
                 ambientBtn.innerHTML = '🔇 ASMR';
                 ambientBtn.style.color = 'var(--text-color)';
                 ambientBtn.style.borderColor = 'var(--border-color)';
                 window.isAmbientPlaying = false;
             }} else {{
-                window.ambientAudio.play();
+                window.ambientAudioCtx.resume();
                 ambientBtn.innerHTML = '🔊 ASMR';
                 ambientBtn.style.color = 'var(--primary-color)';
                 ambientBtn.style.borderColor = 'var(--primary-color)';
