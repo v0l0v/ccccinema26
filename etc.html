@@ -130,16 +130,28 @@
         let warpTimer = 0;
         let currentSpeed = 1;
         let targetSpeed = 1;
+        let cameraBaseX = 0;
+        let cameraBaseY = 0;
         let cameraBaseZ = 1200;
         let fovTarget = 75;
+        
+        let warpTargetX = 0;
+        let warpTargetY = 0;
+        let warpTargetZ = 1200;
 
         document.addEventListener('mousemove', onDocumentMouseMove);
         document.addEventListener('touchstart', onDocumentTouchStart, {passive: true});
         document.addEventListener('touchmove', onDocumentTouchMove, {passive: true});
         
         document.addEventListener('dblclick', () => {
+            if (isWarpSpeed) return;
             isWarpSpeed = true;
-            warpTimer = 5.0; // 5 segundos de velocidad láser
+            warpTimer = 3.5; // 3.5 segundos de velocidad láser profunda
+            
+            // Dirección aleatoria hacia las profundidades de la esfera de partículas
+            warpTargetX = (Math.random() - 0.5) * 3000;
+            warpTargetY = (Math.random() - 0.5) * 3000;
+            warpTargetZ = (Math.random() - 0.5) * 3000;
         });
 
         // Generar un sistema de partículas (15,000 puntos)
@@ -147,43 +159,42 @@
         const particles = 15000;
         const positions = new Float32Array(particles * 3);
         const colors = new Float32Array(particles * 3);
-        const sizes = new Float32Array(particles);
         
-        // Paleta de colores Ciberpunk/Neón
-        const color1 = new THREE.Color(0xff0055); // Rosa neón
-        const color2 = new THREE.Color(0x00eeff); // Cian
-        const color3 = new THREE.Color(0x5500ff); // Morado
+        // Colores iniciales
+        let currentWorld = 0;
+        const worldPalettes = [
+            { bg: 0x0a0515, c1: 0xff0055, c2: 0x00eeff, c3: 0x5500ff }, // Cyberpunk Neon
+            { bg: 0x1a0a00, c1: 0xff8800, c2: 0xffd700, c3: 0xff0000 }, // Golden Fire
+            { bg: 0x001105, c1: 0x00ff00, c2: 0x0088ff, c3: 0xccff00 }  // Matrix Toxic
+        ];
+        
+        let color1 = new THREE.Color(worldPalettes[0].c1);
+        let color2 = new THREE.Color(worldPalettes[0].c2);
+        let color3 = new THREE.Color(worldPalettes[0].c3);
 
-        for (let i = 0; i < particles; i++) {
-            // Posiciones iniciales (esfera distorsionada)
-            const x = (Math.random() - 0.5) * 4000;
-            const y = (Math.random() - 0.5) * 4000;
-            const z = (Math.random() - 0.5) * 4000;
+        function generateParticles() {
+            for (let i = 0; i < particles; i++) {
+                // Posiciones
+                positions[i * 3] = (Math.random() - 0.5) * 4000;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 4000;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 4000;
 
-            positions[i * 3] = x;
-            positions[i * 3 + 1] = y;
-            positions[i * 3 + 2] = z;
+                // Colores
+                let mixedColor;
+                const rand = Math.random();
+                if (rand < 0.33) mixedColor = color1.clone().lerp(color2, Math.random());
+                else if (rand < 0.66) mixedColor = color2.clone().lerp(color3, Math.random());
+                else mixedColor = color3.clone().lerp(color1, Math.random());
 
-            // Mezcla de colores locos
-            let mixedColor;
-            const rand = Math.random();
-            if (rand < 0.33) {
-                mixedColor = color1.clone().lerp(color2, Math.random());
-            } else if (rand < 0.66) {
-                mixedColor = color2.clone().lerp(color3, Math.random());
-            } else {
-                mixedColor = color3.clone().lerp(color1, Math.random());
+                colors[i * 3] = mixedColor.r;
+                colors[i * 3 + 1] = mixedColor.g;
+                colors[i * 3 + 2] = mixedColor.b;
             }
-
-            colors[i * 3] = mixedColor.r;
-            colors[i * 3 + 1] = mixedColor.g;
-            colors[i * 3 + 2] = mixedColor.b;
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
         }
+        generateParticles();
 
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-        // Material estilo "holograma/luz"
         const material = new THREE.PointsMaterial({
             size: 3,
             vertexColors: true,
@@ -196,16 +207,56 @@
         const particleSystem = new THREE.Points(geometry, material);
         scene.add(particleSystem);
 
-        // Geometría extra: un núcleo wireframe en el centro que da vueltas
+        // Núcleo Wireframe
         const coreGeo = new THREE.IcosahedronGeometry(200, 2);
-        const coreMat = new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.1
-        });
+        const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.1 });
         const core = new THREE.Mesh(coreGeo, coreMat);
         scene.add(core);
+
+        // Esfera Portal (Mundo alternativo)
+        const portalGeo = new THREE.SphereGeometry(150, 32, 32);
+        const portalMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9, wireframe: true });
+        const portal = new THREE.Mesh(portalGeo, portalMat);
+        portal.visible = false;
+        scene.add(portal);
+
+        // Raycaster para el clic en el portal
+        const raycaster = new THREE.Raycaster();
+        const mouseVector = new THREE.Vector2();
+
+        document.addEventListener('click', (event) => {
+            if (!portal.visible) return;
+            mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            raycaster.setFromCamera(mouseVector, camera);
+            const intersects = raycaster.intersectObject(portal);
+            
+            if (intersects.length > 0) {
+                changeWorld();
+            }
+        });
+
+        function changeWorld() {
+            currentWorld = (currentWorld + 1) % worldPalettes.length;
+            portal.visible = false;
+            
+            // Disparar un salto hiperespacial para camuflar la transición
+            isWarpSpeed = true;
+            warpTimer = 3.0;
+            warpTargetX = (Math.random() - 0.5) * 3000;
+            warpTargetY = (Math.random() - 0.5) * 3000;
+            warpTargetZ = (Math.random() - 0.5) * 3000;
+
+            const w = worldPalettes[currentWorld];
+            scene.fog.color.setHex(w.bg);
+            document.body.style.backgroundColor = '#' + w.bg.toString(16).padStart(6, '0');
+            
+            color1.setHex(w.c1);
+            color2.setHex(w.c2);
+            color3.setHex(w.c3);
+            generateParticles();
+        }
 
         // Bucle de animación (60fps)
         const clock = new THREE.Clock();
@@ -218,54 +269,76 @@
 
         function render() {
             const delta = clock.getDelta();
+            const timeRaw = clock.getElapsedTime();
             
-            // Lógica de Velocidad Láser con inercia
+            // Lógica de Velocidad Láser y desplazamiento
             if (isWarpSpeed) {
                 warpTimer -= delta;
-                targetSpeed = 15.0; // Rotación y flujo súper rápidos
-                fovTarget = 140; // Efecto túnel estirando la lente
+                targetSpeed = 15.0; 
+                fovTarget = 140; 
+                
+                // Mover base de la cámara hacia el objetivo aleatorio
+                cameraBaseX += (warpTargetX - cameraBaseX) * 0.03;
+                cameraBaseY += (warpTargetY - cameraBaseY) * 0.03;
+                cameraBaseZ += (warpTargetZ - cameraBaseZ) * 0.03;
+
                 if (warpTimer <= 0) {
                     isWarpSpeed = false;
+                    // Al detenerse, probabilidad de aparecer un portal
+                    if (Math.random() > 0.4 && !portal.visible) {
+                        portal.position.set(
+                            cameraBaseX + (Math.random() - 0.5) * 800,
+                            cameraBaseY + (Math.random() - 0.5) * 800,
+                            cameraBaseZ - 500 - Math.random() * 500
+                        );
+                        portal.visible = true;
+                    }
                 }
             } else {
                 targetSpeed = 1.0;
                 fovTarget = 75;
+                // La cámara vuelve lentamente a la órbita base (1200) si no hay portal a la vista
+                if (!portal.visible) {
+                    cameraBaseX += (0 - cameraBaseX) * 0.005;
+                    cameraBaseY += (0 - cameraBaseY) * 0.005;
+                    cameraBaseZ += (1200 - cameraBaseZ) * 0.005;
+                }
             }
             
             // Inercia de frenada / aceleración
             currentSpeed += (targetSpeed - currentSpeed) * 0.03;
             camera.fov += (fovTarget - camera.fov) * 0.03;
             camera.updateProjectionMatrix();
-            
-            // Efecto de cámara zambulléndose hacia las partículas
-            const targetZ = isWarpSpeed ? 200 : 1200;
-            cameraBaseZ += (targetZ - cameraBaseZ) * 0.03;
 
             accumulatedTime += delta * currentSpeed * 0.1;
             const time = accumulatedTime;
 
-            // Rotación del sistema completo
+            // Rotación general
             particleSystem.rotation.y = time;
             particleSystem.rotation.z = time * 0.5;
-            
             core.rotation.x = time * 2;
             core.rotation.y = time * 3;
 
-            // Físicas de cámara (Parallax con Inercia)
+            // Animación del portal
+            if (portal.visible) {
+                portal.rotation.y += 0.05;
+                portal.scale.setScalar(1.0 + Math.sin(timeRaw * 5) * 0.1);
+            }
+
+            // Físicas de cámara y Parallax
             targetX = mouseX * 1.5;
             targetY = mouseY * 1.5;
             
-            // Interpolación (Lerp) para movimiento súper suave "estilo agencia"
-            camera.position.x += (targetX - camera.position.x) * 0.05;
-            camera.position.y += (-targetY - camera.position.y) * 0.05;
-            // Usamos cameraBaseZ en lugar de un Z estático para el efecto láser
+            camera.position.x = cameraBaseX + targetX;
+            camera.position.y = cameraBaseY - targetY;
             camera.position.z = cameraBaseZ; 
+            
+            // Siempre miramos al centro del universo, esto crea una sensación vertiginosa al viajar
             camera.lookAt(scene.position);
 
-            // Deformar partículas como si fuera agua/ondas
+            // Deformar partículas sutilmente
             const posArray = particleSystem.geometry.attributes.position.array;
             for(let i = 0; i < particles * 3; i += 3) {
-                // Onda senoidal sutil
                 posArray[i] += Math.sin(time * 5 + posArray[i+1] * 0.005) * 0.3;
                 posArray[i+1] += Math.cos(time * 5 + posArray[i] * 0.005) * 0.3;
             }
@@ -279,27 +352,23 @@
             mouseX = event.clientX - windowHalfX;
             mouseY = event.clientY - windowHalfY;
         }
-        
         function onDocumentTouchStart(event) {
             if (event.touches.length === 1) {
                 mouseX = event.touches[0].pageX - windowHalfX;
                 mouseY = event.touches[0].pageY - windowHalfY;
             }
         }
-        
         function onDocumentTouchMove(event) {
             if (event.touches.length === 1) {
                 mouseX = event.touches[0].pageX - windowHalfX;
                 mouseY = event.touches[0].pageY - windowHalfY;
             }
         }
-
-        window.addEventListener('resize', onWindowResize, false);
-        function onWindowResize() {
+        window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        }
+        });
 
         animate();
     </script>
