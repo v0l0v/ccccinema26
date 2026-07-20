@@ -8,7 +8,7 @@
         body { 
             margin: 0; 
             overflow: hidden; 
-            background-color: #050505; 
+            background-color: #0a0515; 
             color: #fff; 
             font-family: 'Outfit', sans-serif; 
         }
@@ -107,7 +107,7 @@
         // Configuración base de Active Theory / Three.js style
         const scene = new THREE.Scene();
         // Niebla para dar profundidad al fondo
-        scene.fog = new THREE.FogExp2(0x050505, 0.0008);
+        scene.fog = new THREE.FogExp2(0x0a0515, 0.0008);
 
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
         camera.position.z = 1200;
@@ -124,10 +124,23 @@
         let targetY = 0;
         const windowHalfX = window.innerWidth / 2;
         const windowHalfY = window.innerHeight / 2;
+        
+        // Variables para la "Velocidad Láser"
+        let isWarpSpeed = false;
+        let warpTimer = 0;
+        let currentSpeed = 1;
+        let targetSpeed = 1;
+        let cameraBaseZ = 1200;
+        let fovTarget = 75;
 
         document.addEventListener('mousemove', onDocumentMouseMove);
         document.addEventListener('touchstart', onDocumentTouchStart, {passive: true});
         document.addEventListener('touchmove', onDocumentTouchMove, {passive: true});
+        
+        document.addEventListener('dblclick', () => {
+            isWarpSpeed = true;
+            warpTimer = 5.0; // 5 segundos de velocidad láser
+        });
 
         // Generar un sistema de partículas (15,000 puntos)
         const geometry = new THREE.BufferGeometry();
@@ -196,6 +209,7 @@
 
         // Bucle de animación (60fps)
         const clock = new THREE.Clock();
+        let accumulatedTime = 0;
 
         function animate() {
             requestAnimationFrame(animate);
@@ -203,7 +217,32 @@
         }
 
         function render() {
-            const time = clock.getElapsedTime() * 0.1;
+            const delta = clock.getDelta();
+            
+            // Lógica de Velocidad Láser con inercia
+            if (isWarpSpeed) {
+                warpTimer -= delta;
+                targetSpeed = 15.0; // Rotación y flujo súper rápidos
+                fovTarget = 140; // Efecto túnel estirando la lente
+                if (warpTimer <= 0) {
+                    isWarpSpeed = false;
+                }
+            } else {
+                targetSpeed = 1.0;
+                fovTarget = 75;
+            }
+            
+            // Inercia de frenada / aceleración
+            currentSpeed += (targetSpeed - currentSpeed) * 0.03;
+            camera.fov += (fovTarget - camera.fov) * 0.03;
+            camera.updateProjectionMatrix();
+            
+            // Efecto de cámara zambulléndose hacia las partículas
+            const targetZ = isWarpSpeed ? 200 : 1200;
+            cameraBaseZ += (targetZ - cameraBaseZ) * 0.03;
+
+            accumulatedTime += delta * currentSpeed * 0.1;
+            const time = accumulatedTime;
 
             // Rotación del sistema completo
             particleSystem.rotation.y = time;
@@ -219,6 +258,8 @@
             // Interpolación (Lerp) para movimiento súper suave "estilo agencia"
             camera.position.x += (targetX - camera.position.x) * 0.05;
             camera.position.y += (-targetY - camera.position.y) * 0.05;
+            // Usamos cameraBaseZ en lugar de un Z estático para el efecto láser
+            camera.position.z = cameraBaseZ; 
             camera.lookAt(scene.position);
 
             // Deformar partículas como si fuera agua/ondas
