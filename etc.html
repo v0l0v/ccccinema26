@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETC - Locuras Interactivas</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background-color: #050505; 
+            color: #fff; 
+            font-family: 'Outfit', sans-serif; 
+        }
+        canvas { 
+            display: block; 
+        }
+        #ui {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+        h1 {
+            font-size: clamp(3rem, 10vw, 8rem);
+            letter-spacing: clamp(0.5rem, 2vw, 2rem);
+            margin: 0;
+            text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(0, 238, 255, 0.4);
+            background: linear-gradient(90deg, #ff0055, #00eeff, #ff0055);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-flow 3s linear infinite;
+        }
+        p {
+            font-size: clamp(0.8rem, 2vw, 1.2rem);
+            letter-spacing: 0.3rem;
+            opacity: 0.8;
+            margin-top: 1rem;
+            font-weight: 300;
+        }
+        .back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            pointer-events: auto;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 12px 24px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            z-index: 20;
+        }
+        .back-btn:hover {
+            background: #fff;
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.2);
+        }
+        
+        .hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            text-transform: uppercase;
+            animation: fade-in-out 4s infinite;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        @keyframes fade-in-out {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&display=swap" rel="stylesheet">
+    <!-- Three.js (Librería estándar para 3D en la web) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← VOLVER AL CINE</a>
+    
+    <div id="ui">
+        <h1>ETC</h1>
+        <p>LABORATORIO VISUAL</p>
+    </div>
+    
+    <div class="hint">Mueve el ratón para explorar el espacio</div>
+
+    <script>
+        // Configuración base de Active Theory / Three.js style
+        const scene = new THREE.Scene();
+        // Niebla para dar profundidad al fondo
+        scene.fog = new THREE.FogExp2(0x050505, 0.0008);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+        camera.position.z = 1200;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Variables de ratón
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', onDocumentMouseMove);
+        document.addEventListener('touchstart', onDocumentTouchStart, {passive: true});
+        document.addEventListener('touchmove', onDocumentTouchMove, {passive: true});
+
+        // Generar un sistema de partículas (15,000 puntos)
+        const geometry = new THREE.BufferGeometry();
+        const particles = 15000;
+        const positions = new Float32Array(particles * 3);
+        const colors = new Float32Array(particles * 3);
+        const sizes = new Float32Array(particles);
+        
+        // Paleta de colores Ciberpunk/Neón
+        const color1 = new THREE.Color(0xff0055); // Rosa neón
+        const color2 = new THREE.Color(0x00eeff); // Cian
+        const color3 = new THREE.Color(0x5500ff); // Morado
+
+        for (let i = 0; i < particles; i++) {
+            // Posiciones iniciales (esfera distorsionada)
+            const x = (Math.random() - 0.5) * 4000;
+            const y = (Math.random() - 0.5) * 4000;
+            const z = (Math.random() - 0.5) * 4000;
+
+            positions[i * 3] = x;
+            positions[i * 3 + 1] = y;
+            positions[i * 3 + 2] = z;
+
+            // Mezcla de colores locos
+            let mixedColor;
+            const rand = Math.random();
+            if (rand < 0.33) {
+                mixedColor = color1.clone().lerp(color2, Math.random());
+            } else if (rand < 0.66) {
+                mixedColor = color2.clone().lerp(color3, Math.random());
+            } else {
+                mixedColor = color3.clone().lerp(color1, Math.random());
+            }
+
+            colors[i * 3] = mixedColor.r;
+            colors[i * 3 + 1] = mixedColor.g;
+            colors[i * 3 + 2] = mixedColor.b;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        // Material estilo "holograma/luz"
+        const material = new THREE.PointsMaterial({
+            size: 3,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            depthTest: false,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const particleSystem = new THREE.Points(geometry, material);
+        scene.add(particleSystem);
+
+        // Geometría extra: un núcleo wireframe en el centro que da vueltas
+        const coreGeo = new THREE.IcosahedronGeometry(200, 2);
+        const coreMat = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.1
+        });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        scene.add(core);
+
+        // Bucle de animación (60fps)
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            render();
+        }
+
+        function render() {
+            const time = clock.getElapsedTime() * 0.1;
+
+            // Rotación del sistema completo
+            particleSystem.rotation.y = time;
+            particleSystem.rotation.z = time * 0.5;
+            
+            core.rotation.x = time * 2;
+            core.rotation.y = time * 3;
+
+            // Físicas de cámara (Parallax con Inercia)
+            targetX = mouseX * 1.5;
+            targetY = mouseY * 1.5;
+            
+            // Interpolación (Lerp) para movimiento súper suave "estilo agencia"
+            camera.position.x += (targetX - camera.position.x) * 0.05;
+            camera.position.y += (-targetY - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            // Deformar partículas como si fuera agua/ondas
+            const posArray = particleSystem.geometry.attributes.position.array;
+            for(let i = 0; i < particles * 3; i += 3) {
+                // Onda senoidal sutil
+                posArray[i] += Math.sin(time * 5 + posArray[i+1] * 0.005) * 0.3;
+                posArray[i+1] += Math.cos(time * 5 + posArray[i] * 0.005) * 0.3;
+            }
+            particleSystem.geometry.attributes.position.needsUpdate = true;
+
+            renderer.render(scene, camera);
+        }
+
+        // Eventos de usuario
+        function onDocumentMouseMove(event) {
+            mouseX = event.clientX - windowHalfX;
+            mouseY = event.clientY - windowHalfY;
+        }
+        
+        function onDocumentTouchStart(event) {
+            if (event.touches.length === 1) {
+                mouseX = event.touches[0].pageX - windowHalfX;
+                mouseY = event.touches[0].pageY - windowHalfY;
+            }
+        }
+        
+        function onDocumentTouchMove(event) {
+            if (event.touches.length === 1) {
+                mouseX = event.touches[0].pageX - windowHalfX;
+                mouseY = event.touches[0].pageY - windowHalfY;
+            }
+        }
+
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
