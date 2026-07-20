@@ -293,6 +293,25 @@ def main():
             color: var(--accent);
         }}
         
+        .ambient-btn {{
+            background: rgba(11, 15, 25, 0.4);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-left: 12px;
+            transition: all 0.3s;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+        }}
+        .ambient-btn:hover {{
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }}
+        
         h1 {{
             font-family: 'Barlow Condensed', sans-serif;
             font-size: clamp(3.5rem, 7vw, 6.5rem);
@@ -1710,6 +1729,7 @@ def main():
                 <span class="header-tag">CCCCinema d&#39;Estiu 2026</span>
                 <div class="lang-switcher">
                     <span class="active">CAS</span> <span style="color:var(--border-color)">|</span> <a href="index_va.html">VAL</a>
+                    <button id="ambient-audio-btn" class="ambient-btn" aria-label="Sonido ambiente">🔇 ASMR</button>
                 </div>
             </div>
             
@@ -2154,6 +2174,12 @@ def main():
             
             // Open Modal
             const modal = document.getElementById('movie-modal');
+            
+            // Bajar volumen ASMR si está sonando
+            if (window.ambientAudio && window.isAmbientPlaying) {{
+                window.ambientAudio.volume = 0.05;
+            }}
+            
             modal.style.display = 'block';
             // Force reflow for transitions
             modal.offsetHeight;
@@ -2418,6 +2444,11 @@ def main():
             modal.classList.remove('open');
             document.body.style.overflow = '';
             
+            // Recuperar volumen ASMR si estaba sonando
+            if (window.ambientAudio && window.isAmbientPlaying) {{
+                window.ambientAudio.volume = 0.4;
+            }}
+            
             // Reset iframe to stop playback
             const iframe = document.getElementById('modal-trailer-iframe');
             iframe.classList.remove('fade-in');
@@ -2526,6 +2557,33 @@ def main():
             
             tick();
         }}
+        // Lógica de Sonido Ambiente ASMR
+        const ambientBtn = document.getElementById('ambient-audio-btn');
+        window.ambientAudio = null;
+        window.isAmbientPlaying = false;
+        
+        ambientBtn.addEventListener('click', () => {{
+            if (!window.ambientAudio) {{
+                // Audio de ambiente estival (usando un loop muy agradable de wikimedia commons para asegurar disponibilidad)
+                window.ambientAudio = new Audio('https://upload.wikimedia.org/wikipedia/commons/4/4b/Crickets_at_Night.ogg');
+                window.ambientAudio.loop = true;
+                window.ambientAudio.volume = 0.4;
+            }}
+            
+            if (window.isAmbientPlaying) {{
+                window.ambientAudio.pause();
+                ambientBtn.innerHTML = '🔇 ASMR';
+                ambientBtn.style.color = 'var(--text-color)';
+                ambientBtn.style.borderColor = 'var(--border-color)';
+                window.isAmbientPlaying = false;
+            }} else {{
+                window.ambientAudio.play();
+                ambientBtn.innerHTML = '🔊 ASMR';
+                ambientBtn.style.color = 'var(--primary-color)';
+                ambientBtn.style.borderColor = 'var(--primary-color)';
+                window.isAmbientPlaying = true;
+            }}
+        }});
     </script>
     <!-- Cinematic Roulette Overlay -->
     <div id="roulette-overlay" class="roulette-overlay">

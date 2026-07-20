@@ -293,6 +293,25 @@ def main():
             color: var(--accent);
         }}
         
+        .ambient-btn {{
+            background: rgba(11, 15, 25, 0.4);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-left: 12px;
+            transition: all 0.3s;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+        }}
+        .ambient-btn:hover {{
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }}
+        
         h1 {{
             font-family: 'Barlow Condensed', sans-serif;
             font-size: clamp(3.5rem, 7vw, 6.5rem);
@@ -1710,6 +1729,7 @@ def main():
                 <span class="header-tag">CCCCinema d&#39;Estiu 2026</span>
                 <div class="lang-switcher">
                     <a href="index.html">CAS</a> <span style="color:var(--border-color)">|</span> <span class="active">VAL</span>
+                    <button id="ambient-audio-btn" class="ambient-btn" aria-label="Sonido ambiente">🔇 ASMR</button>
                 </div>
             </div>
             
@@ -2143,7 +2163,8 @@ def main():
             }});
             
             if (movie.youtube_id) {{
-                iframe.src = `https://www.youtube.com/embed/${{movie.youtube_id}}?autoplay=1&mute=0&controls=0&loop=1&playlist=${{movie.youtube_id}}`;
+                // Añadimos parámetros para ocultar la interfaz lo máximo posible: rel=0 (solo sugerencias del mismo canal), modestbranding=1 (sin logo de YT), iv_load_policy=3 (sin anotaciones)
+                iframe.src = `https://www.youtube.com/embed/${{movie.youtube_id}}?autoplay=1&mute=0&controls=0&loop=1&playlist=${{movie.youtube_id}}&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0`;
                 setTimeout(() => {{
                     iframe.classList.add('fade-in');
                 }}, 600);
@@ -2153,6 +2174,12 @@ def main():
             
             // Open Modal
             const modal = document.getElementById('movie-modal');
+            
+            // Bajar volumen ASMR si está sonando
+            if (window.ambientAudio && window.isAmbientPlaying) {{
+                window.ambientAudio.volume = 0.05;
+            }}
+            
             modal.style.display = 'block';
             // Force reflow for transitions
             modal.offsetHeight;
@@ -2289,13 +2316,17 @@ def main():
             
             // 7. Stub derecho (texto sin código de barras para que destaque la mordida)
             ctx.save();
-            ctx.translate(940, tHeight / 2); // Centrado en el talón derecho
+            ctx.translate(900, tHeight / 2); // Movido más hacia la izquierda, pegado a la línea de corte
             ctx.rotate(-Math.PI / 2);
             ctx.fillStyle = darkColor;
             ctx.font = 'bold 26px "Impact", "Arial Black", sans-serif'; // fuente más pequeña para que quepa bien el texto largo
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText("PROMOTIONAL SOUVENIR", 0, 0);
+            ctx.fillText("RECUERDO PROMOCIONAL", 0, 0);
+            
+            // Subtítulo aclaratorio (más a la derecha visualmente, que equivale a Y positiva tras la rotación)
+            ctx.font = '12px "Arial", sans-serif'; // fuente más pequeña y normal
+            ctx.fillText("ENTRADA SIN VALIDEZ", 0, 30);
             ctx.restore();
             
             // 8. ¡EL MORDISCO DE LA PLANTA CARNÍVORA! (Borde derecho masticado)
@@ -2413,6 +2444,11 @@ def main():
             modal.classList.remove('open');
             document.body.style.overflow = '';
             
+            // Recuperar volumen ASMR si estaba sonando
+            if (window.ambientAudio && window.isAmbientPlaying) {{
+                window.ambientAudio.volume = 0.4;
+            }}
+            
             // Reset iframe to stop playback
             const iframe = document.getElementById('modal-trailer-iframe');
             iframe.classList.remove('fade-in');
@@ -2521,6 +2557,33 @@ def main():
             
             tick();
         }}
+        // Lógica de Sonido Ambiente ASMR
+        const ambientBtn = document.getElementById('ambient-audio-btn');
+        window.ambientAudio = null;
+        window.isAmbientPlaying = false;
+        
+        ambientBtn.addEventListener('click', () => {{
+            if (!window.ambientAudio) {{
+                // Audio de ambiente estival (usando un loop muy agradable de wikimedia commons para asegurar disponibilidad)
+                window.ambientAudio = new Audio('https://upload.wikimedia.org/wikipedia/commons/4/4b/Crickets_at_Night.ogg');
+                window.ambientAudio.loop = true;
+                window.ambientAudio.volume = 0.4;
+            }}
+            
+            if (window.isAmbientPlaying) {{
+                window.ambientAudio.pause();
+                ambientBtn.innerHTML = '🔇 ASMR';
+                ambientBtn.style.color = 'var(--text-color)';
+                ambientBtn.style.borderColor = 'var(--border-color)';
+                window.isAmbientPlaying = false;
+            }} else {{
+                window.ambientAudio.play();
+                ambientBtn.innerHTML = '🔊 ASMR';
+                ambientBtn.style.color = 'var(--primary-color)';
+                ambientBtn.style.borderColor = 'var(--primary-color)';
+                window.isAmbientPlaying = true;
+            }}
+        }});
     </script>
     <!-- Cinematic Roulette Overlay -->
     <div id="roulette-overlay" class="roulette-overlay">
