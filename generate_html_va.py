@@ -3,11 +3,11 @@ import urllib.parse
 import os
 
 def main():
-    if not os.path.exists('movies_data.json'):
-        print("Error: movies_data.json not found!")
+    if not os.path.exists('movies_data_va.json'):
+        print("Error: movies_data_va.json not found!")
         return
 
-    with open('movies_data.json', 'r', encoding='utf-8') as f:
+    with open('movies_data_va.json', 'r', encoding='utf-8') as f:
         movies = json.load(f)
 
     # Generate movie cards HTML
@@ -46,9 +46,9 @@ def main():
         cards_html += f"""
         <div class="movie-card" onclick="openModal({idx})" data-title="{m['title'].lower()}" data-director="{directors.lower()}" data-genres="{','.join(m['genres']).lower()}" data-country="{m['country'].lower()}" data-date="{m['date'].lower()}" data-cast="{','.join(m['cast']).lower() if m['cast'] else ''}">
             <div class="card-header-img">
-                <img class="poster-img" src="{poster_src}" alt="Póster de {m['title']}" loading="lazy">
+                <img class="poster-img" src="{poster_src}" alt="Pòster de {m['title']}" loading="lazy">
                 <div class="thumb-overlay" data-yt-id="{youtube_id}" style="background-image: url('{yt_thumb}')"></div>
-                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark({idx})" data-idx="{idx}" title="Guardar en Mi Diario" aria-label="Guardar en Mi Diario">
+                <button class="bookmark-btn" onclick="event.stopPropagation(); toggleBookmark({idx})" data-idx="{idx}" title="Desar al Meu Diari" aria-label="Desar al Meu Diari">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                 </button>
                 <div class="date-badge">
@@ -79,7 +79,7 @@ def main():
                         <span class="spec-value">{directors}</span>
                     </div>
                     <div class="spec-item">
-                        <span class="spec-label">Elenco principal:</span>
+                        <span class="spec-label">Repartiment principal:</span>
                         <span class="spec-value">{cast}</span>
                     </div>
                 </div>
@@ -89,16 +89,16 @@ def main():
                 <div class="links-row">
                     <button class="details-btn" onclick="event.stopPropagation(); openModal({idx})">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                        Ver Detalles
+                        Veure Detalls
                     </button>
                 </div>
                 <div class="share-row">
                     <span class="share-label">Generar Entrada:</span>
                     <div class="share-buttons">
-                        <button onclick="event.stopPropagation(); generateAndShareTicket({idx})" class="share-btn whatsapp" title="Compartir Entrada por WhatsApp" aria-label="Compartir por WhatsApp">
+                        <button onclick="event.stopPropagation(); generateAndShareTicket({idx})" class="share-btn whatsapp" title="Compartir Entrada per WhatsApp" aria-label="Compartir per WhatsApp">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.335 4.963L2 22l5.233-1.371a9.948 9.948 0 0 0 4.779 1.218h.004c5.502 0 9.99-4.478 9.99-9.988.002-2.67-1.034-5.177-2.92-7.062C17.199 3.013 14.691 2 12.012 2zm4.72 13.568c-.26.732-1.503 1.35-2.065 1.415-.561.066-1.125.107-1.912-.139a11.516 11.516 0 0 1-5.158-3.177 12.19 12.19 0 0 1-2.203-3.666 4.3 4.3 0 0 1-.225-1.92c.166-.889.585-1.38.868-1.745.283-.365.617-.456.822-.456.205 0 .41.002.589.012.192.01.442-.074.693.528.26.626.884 2.144.962 2.302.078.158.13.342.026.55-.104.208-.156.342-.312.521-.156.18-.328.401-.468.538-.156.152-.32.318-.138.63.182.312.812 1.337 1.737 2.164.925.826 1.704 1.08 2.029 1.215.325.135.513.114.707-.107.195-.221.844-.981 1.071-1.317.227-.336.455-.28.766-.165.311.115 1.97.928 2.307 1.096.337.168.562.25.642.387.08.137.08.795-.18 1.527z"/></svg>
                         </button>
-                        <button onclick="event.stopPropagation(); generateAndShareTicket({idx})" class="share-btn telegram" title="Compartir Entrada por Telegram" aria-label="Compartir por Telegram">
+                        <button onclick="event.stopPropagation(); generateAndShareTicket({idx})" class="share-btn telegram" title="Compartir Entrada per Telegram" aria-label="Compartir per Telegram">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.6.15-.15 2.72-2.5 2.77-2.7.01-.03.01-.15-.06-.21-.07-.06-.17-.04-.25-.02-.11.02-1.92 1.23-5.43 3.59-.51.35-.97.52-1.37.51-.44-.01-1.29-.25-1.92-.45-.77-.25-1.38-.39-1.33-.82.03-.22.33-.45.92-.69 3.6-1.57 6-2.6 7.2-3.1 3.42-1.42 4.12-1.67 4.59-1.68.1 0 .33.02.48.15.12.1.16.24.18.34.02.09.02.26 0 .31z"/></svg>
                         </button>
                     </div>
@@ -109,7 +109,7 @@ def main():
 
     # Read base index.html template and insert
     html_content = f"""<!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1709,23 +1709,23 @@ def main():
                 <div class="header-divider"></div>
                 <span class="header-tag">CCCCinema d&#39;Estiu 2026</span>
                 <div class="lang-switcher">
-                    <span class="active">CAS</span> <span style="color:var(--border-color)">|</span> <a href="index_va.html">VAL</a>
+                    <a href="index.html">CAS</a> <span style="color:var(--border-color)">|</span> <span class="active">VAL</span>
                 </div>
             </div>
             
-            <h1>Embriagados<br>de humor</h1>
-            <h2 class="header-subtitle-edition">América y la comedia</h2>
+            <h1>Embriagats<br>d'humor</h1>
+            <h2 class="header-subtitle-edition">Amèrica i la comèdia</h2>
             
-            <p class="subtitle">Un recorrido por la comedia producida en América. Mockumentaries, clásicos incúnables, cine político y de autor. Películas donde la personalidad triunfa y el placer campa a sus anchas.</p>
+            <p class="subtitle">Un recorregut per la comèdia produïda a Amèrica. Mockumentaries, clàssics incunables, cinema polític i d'autor. Pel·lícules on la personalitat triomfa i el plaer campa al seu aire.</p>
             
             <div class="header-info-pills">
                 <span class="info-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    31 julio &ndash; 30 agosto 2026
+                    31 juliol &ndash; 30 agost 2026
                 </span>
                 <span class="info-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    A las 22:00 h
+                    A les 22:00 h
                 </span>
                 <span class="info-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
@@ -1733,7 +1733,7 @@ def main():
                 </span>
                 <span class="info-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"></path><path d="M22 7H2v5h20V7z"></path><path d="M12 22V7"></path><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
-                    Entrada gratuita
+                    Entrada gratuïta
                 </span>
                 <span class="info-pill">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
@@ -1743,10 +1743,10 @@ def main():
         </div>
         
         <div class="header-poster">
-            <img src="poster.png" alt="Cartel oficial CCCCinema d'Estiu 2026" title="Ver cartel en grande" style="cursor: pointer;" onclick="openPosterModal()">
-            <a href="CCCC-CINEMA-ESTIU-2026-CAS.pdf" target="_blank" class="download-program-link" title="Descargar programa en PDF">
+            <img src="poster.png" alt="Cartell oficial CCCCinema d'Estiu 2026" title="Veure cartell en gran" style="cursor: pointer;" onclick="openPosterModal()">
+            <a href="CCCC-CINEMA-ESTIU-2026-CAS.pdf" target="_blank" class="download-program-link" title="Descarregar programa en PDF">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                Descargar programa
+                Descarregar programa
             </a>
         </div>
     </header>
@@ -1755,7 +1755,7 @@ def main():
         <div class="controls-card">
             <div class="search-row">
                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" id="search-input" class="search-input" placeholder="Buscar película por título, director, país, fecha..." oninput="filterMovies()">
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar pel·lícula per títol, director, país, data..." oninput="filterMovies()">
                 <button id="filter-saved-btn" class="filter-saved-btn" onclick="toggleSavedFilter()" title="Ver Mi Diario">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                 </button>
@@ -1777,8 +1777,8 @@ def main():
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="8" y1="12" x2="16" y2="12"></line>
             </svg>
-            <h3>No se encontraron películas</h3>
-            <p>Prueba a buscar con otros términos o limpia los filtros activos.</p>
+            <h3>No s'han trobat pel·lícules</h3>
+            <p>Prova a buscar amb altres termes o neteja els filtres actius.</p>
         </div>
     </main>
 
@@ -1792,7 +1792,7 @@ def main():
     <!-- Movie Details Modal -->
     <div id="movie-modal" class="modal-overlay" onclick="closeModal()">
         <div class="modal-container" onclick="event.stopPropagation()">
-            <button class="modal-close-btn" onclick="closeModal()" aria-label="Cerrar detalles">
+            <button class="modal-close-btn" onclick="closeModal()" aria-label="Tancar detalls">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
             
@@ -1877,10 +1877,10 @@ def main():
 
     <!-- Footer -->
     <footer class="site-footer">
-        <p class="footer-highlight">© 2026 CCCC · Centre del Carme. Todos los derechos reservados.</p>
-        <p>Fichas técnicas y sinopsis oficiales extraídas del programa del Centre del Carme (CCCC).</p>
+        <p class="footer-highlight">© 2026 CCCC · Centre del Carme. Tots els drets reservats.</p>
+        <p>Fitxes tècniques i sinopsis oficials extretes del programa del Centre del Carme (CCCC).</p>
         <p>CCCCinema d'Estiu 2026</p>
-        <p style="margin-top: 1.5rem; font-size: 0.8rem; opacity: 0.8;">Creado y diseñado por v0l0v</p>
+        <p style="margin-top: 1.5rem; font-size: 0.8rem; opacity: 0.8;">Creat i dissenyat per v0l0v</p>
     </footer>
 
     <script>
@@ -2097,7 +2097,7 @@ def main():
             document.getElementById('modal-subtitle').innerText = `${{movie.year}} · ${{movie.country}} · ${{movie.duration}}`;
             document.getElementById('modal-date').innerText = movie.date;
             document.getElementById('modal-poster').src = movie.poster_url || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&q=80';
-            document.getElementById('modal-poster').alt = `Póster de ${{movie.title}}`;
+            document.getElementById('modal-poster').alt = `Pòster de ${{movie.title}}`;
             document.getElementById('modal-country').innerText = movie.country;
             document.getElementById('modal-duration').innerText = movie.duration;
             document.getElementById('modal-synopsis').innerText = movie.synopsis;
@@ -2538,25 +2538,25 @@ def main():
                     <img src="soloplanta.png" alt="Planta carnívora" style="width: 550px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9)); animation: plant-breathe 2.5s ease-in-out infinite;">
                 </div>
                 <div class="roulette-frame" style="position: relative; z-index: 10; box-shadow: 0 10px 50px rgba(0,0,0,0.9); border-color: var(--accent);">
-                    <img id="roulette-poster" src="" alt="Eligiendo...">
+                    <img id="roulette-poster" src="" alt="Triant...">
                     <div class="film-grain"></div>
                 </div>
             </div>
         </div>
     </div>
     <!-- Surprise Me FAB -->
-    <button class="fab-surprise" onclick="surpriseMe()" aria-label="Elegir película al azar">
+    <button class="fab-surprise" onclick="surpriseMe()" aria-label="Tria pel·lícula a l'atzar">
         <img src="soloplanta.png" alt="Planta carnívora hambrienta">
-        <div class="fab-text">¡COMÁMONOS<br>UNA PELI!</div>
+        <div class="fab-text">MENGEM-NOS<br>UNA PEL·LI!</div>
     </button>
 </body>
 </html>
 """
 
-    with open('index.html', 'w', encoding='utf-8') as f:
+    with open('index_va.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
 
-    print("index.html generated successfully!")
+    print("index_va.html generated successfully!")
 
 if __name__ == '__main__':
     main()
