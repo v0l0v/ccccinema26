@@ -61,6 +61,9 @@ replacements = {
     "Ver Mi Diario": "Veure el Meu Diari",
     "Película guardada en Mi Diario": "Pel·lícula guardada al Meu Diari",
     "Película eliminada de Mi Diario": "Pel·lícula eliminada del Meu Diari",
+    "¡Tu entrada está lista!": "La teua entrada està llesta!",
+    "Mantén pulsada la imagen para enviarla, o usa el botón de descargar.": "Mantingues premuda la imatge per enviar-la, o fes servir el botó de descarregar.",
+    "⬇️ Descargar Entrada": "⬇️ Descarregar Entrada",
     "<span class=\"active\">CAS</span> <span style=\"color:var(--border-color)\">|</span> <a href=\"index_va.html\">VAL</a>": "<a href=\"index.html\">CAS</a> <span style=\"color:var(--border-color)\">|</span> <span class=\"active\">VAL</span>"
 }
 
