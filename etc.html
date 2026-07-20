@@ -88,6 +88,37 @@
             0%, 100% { opacity: 0.2; }
             50% { opacity: 0.8; }
         }
+        
+        #planet-info {
+            position: absolute;
+            pointer-events: none;
+            background: rgba(10, 5, 21, 0.85);
+            border: 1px solid rgba(0, 238, 255, 0.3);
+            padding: 15px 25px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 30;
+            color: white;
+            text-align: left;
+            transform: translate(20px, 20px); 
+            box-shadow: 0 0 20px rgba(0, 238, 255, 0.2);
+        }
+        #planet-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #00eeff;
+            text-transform: uppercase;
+        }
+        #planet-info p {
+            margin: 0;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            color: #ccc;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&display=swap" rel="stylesheet">
     <!-- Three.js (Librería estándar para 3D en la web) -->
@@ -99,6 +130,11 @@
     <div id="ui">
         <h1 id="world-title">NEON PRIME</h1>
         <p>LABORATORIO VISUAL</p>
+    </div>
+    
+    <div id="planet-info">
+        <h3 id="info-title">NUEVO MUNDO</h3>
+        <p>Haz clic para iniciar el salto hiperespacial</p>
     </div>
     
     <div class="hint">Mueve el ratón para explorar el espacio</div>
@@ -120,10 +156,15 @@
         // Variables de ratón
         let mouseX = 0;
         let mouseY = 0;
+        let normMouseX = 0;
+        let normMouseY = 0;
         let targetX = 0;
         let targetY = 0;
         const windowHalfX = window.innerWidth / 2;
         const windowHalfY = window.innerHeight / 2;
+        
+        const planetInfo = document.getElementById('planet-info');
+        const infoTitle = document.getElementById('info-title');
         
         // Variables para la "Velocidad Láser"
         let isWarpSpeed = false;
@@ -265,14 +306,16 @@
             portalMat.needsUpdate = true;
         }
 
-        // Raycaster para el clic en el portal
+        // Raycaster para interacciones
         const raycaster = new THREE.Raycaster();
         const mouseVector = new THREE.Vector2();
 
         document.addEventListener('click', (event) => {
             if (!portal.visible) return;
-            mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            // Reutilizamos normMouseX y normMouseY del event listener de movimiento
+            mouseVector.x = normMouseX;
+            mouseVector.y = normMouseY;
             
             raycaster.setFromCamera(mouseVector, camera);
             const intersects = raycaster.intersectObject(portal);
@@ -380,8 +423,29 @@
             camera.position.y = cameraBaseY - targetY;
             camera.position.z = cameraBaseZ; 
             
-            // Siempre miramos al centro del universo, esto crea una sensación vertiginosa al viajar
+            // Siempre miramos al centro del universo
             camera.lookAt(scene.position);
+            
+            // Raycasting en tiempo real para el portal (Cursor y Tooltip HUD)
+            if (portal.visible) {
+                mouseVector.x = normMouseX;
+                mouseVector.y = normMouseY;
+                raycaster.setFromCamera(mouseVector, camera);
+                const intersects = raycaster.intersectObject(portal);
+                
+                if (intersects.length > 0) {
+                    document.body.style.cursor = 'crosshair';
+                    planetInfo.style.opacity = '1';
+                    const nextWorld = worldPalettes[(currentWorld + 1) % worldPalettes.length];
+                    infoTitle.innerText = "SECTOR: " + nextWorld.name;
+                } else {
+                    document.body.style.cursor = 'default';
+                    planetInfo.style.opacity = '0';
+                }
+            } else {
+                document.body.style.cursor = 'default';
+                planetInfo.style.opacity = '0';
+            }
 
             // Deformar partículas sutilmente
             const posArray = particleSystem.geometry.attributes.position.array;
@@ -398,6 +462,12 @@
         function onDocumentMouseMove(event) {
             mouseX = event.clientX - windowHalfX;
             mouseY = event.clientY - windowHalfY;
+            
+            normMouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            normMouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            planetInfo.style.left = event.clientX + 'px';
+            planetInfo.style.top = event.clientY + 'px';
         }
         function onDocumentTouchStart(event) {
             if (event.touches.length === 1) {
