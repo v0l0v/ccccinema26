@@ -2614,6 +2614,8 @@ def main():
                 ambientBtn.style.borderColor = 'var(--primary-color)';
                 window.isAmbientPlaying = true;
             }}
+        }});
+        
         // Easter Egg: Planta Bailarina
         let easterEggSequence = "planta";
         let currentSequenceIndex = 0;
@@ -2629,22 +2631,22 @@ def main():
             }}
         }});
         
-        function triggerEasterEgg() {{
+        // Hacer la función global explícitamente para el onclick del HTML
+        window.triggerEasterEgg = function() {{
             const container = document.getElementById('easter-egg-container');
             const video = document.getElementById('easter-egg-video');
             container.style.display = 'flex';
             video.volume = 0.8;
             video.play().catch(err => console.log(err));
-        }}
+        }};
         
-        function closeEasterEgg() {{
+        window.closeEasterEgg = function() {{
             const container = document.getElementById('easter-egg-container');
             const video = document.getElementById('easter-egg-video');
             container.style.display = 'none';
             video.pause();
             video.currentTime = 0;
-        }}
-        }});
+        }};
     </script>
     <!-- Cinematic Roulette Overlay -->
     <div id="roulette-overlay" class="roulette-overlay">
