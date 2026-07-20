@@ -54,6 +54,10 @@ replacements = {
     "País<": "País<",
     "Duración<": "Durada<",
     "Ficha<": "Fitxa<",
+    "Mostrando 27 de 27 películas": "Mostrant 27 de 27 pel·lícules",
+    "Mostrando solo Mi Diario": "Mostrant només el Meu Diari",
+    "Mostrando todo el programa": "Mostrant tot el programa",
+    "Mostrando ${visibleCount} de ${cards.length} películas": "Mostrant ${visibleCount} de ${cards.length} pel·lícules",
     "<span class=\"active\">CAS</span> <span style=\"color:var(--border-color)\">|</span> <a href=\"index_va.html\">VAL</a>": "<a href=\"index.html\">CAS</a> <span style=\"color:var(--border-color)\">|</span> <span class=\"active\">VAL</span>"
 }
 

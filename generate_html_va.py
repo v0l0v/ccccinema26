@@ -1763,7 +1763,7 @@ def main():
             
 
             <div class="stats-row">
-                <span id="results-count">Mostrando 27 de 27 películas</span>
+                <span id="results-count">Mostrant 27 de 27 pel·lícules</span>
                 <button class="clear-filters-btn" id="clear-btn" onclick="clearFilters()" style="display: none;">Limpiar filtros</button>
             </div>
         </div>
@@ -1918,10 +1918,10 @@ def main():
             const btn = document.getElementById('filter-saved-btn');
             if (showingOnlySaved) {{
                 btn.classList.add('active');
-                showToast("Mostrando solo Mi Diario");
+                showToast("Mostrant només el Meu Diari");
             }} else {{
                 btn.classList.remove('active');
-                showToast("Mostrando todo el programa");
+                showToast("Mostrant tot el programa");
             }}
             filterMovies();
         }}
