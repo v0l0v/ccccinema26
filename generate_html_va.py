@@ -412,7 +412,17 @@ def main():
                 width: 160px;
                 margin: 0 auto;
             }}
-            .header-eyebrow, .header-info-pills {{
+            .header-eyebrow {{
+                justify-content: center;
+                flex-wrap: wrap;
+            }}
+            .header-eyebrow .lang-switcher {{
+                width: 100%;
+                justify-content: center;
+                margin-top: 0.5rem;
+                margin-left: 0;
+            }}
+            .header-info-pills {{
                 justify-content: center;
             }}
             .subtitle {{ max-width: 100%; }}
