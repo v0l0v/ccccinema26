@@ -1379,6 +1379,9 @@ def main():
             h1 {{
                 font-size: 2.2rem;
             }}
+            .header-subtitle-edition {{
+                font-size: 1.8rem;
+            }}
             header {{
                 padding: 3rem 1rem 1.5rem;
             }}
@@ -1440,11 +1443,14 @@ def main():
             }}
             .modal-meta-pills {{
                 flex-direction: row;
+                flex-wrap: wrap;
                 justify-content: center;
+                gap: 0.5rem;
             }}
             .meta-pill-item {{
-                flex: 1;
+                flex: 1 1 calc(50% - 1rem);
                 text-align: center;
+                padding: 0.5rem;
             }}
             .modal-section-grid {{
                 grid-template-columns: 1fr;
