@@ -3746,8 +3746,8 @@ Te invito a ver la cartelera de películas programada para este mes. Aquí tiene
             const modal = document.getElementById('movie-modal');
             
             // Bajar volumen ASMR si está sonando
-            if (window.ambientGain && window.isAmbientPlaying) {
-                window.ambientGain.gain.value = 0.05;
+            if (window.ambientAudio && window.isAmbientPlaying) {
+                window.ambientAudio.volume = 0.05;
             }
             
             modal.style.display = 'block';
@@ -4015,8 +4015,8 @@ Te invito a ver la cartelera de películas programada para este mes. Aquí tiene
             document.body.style.overflow = '';
             
             // Recuperar volumen ASMR si estaba sonando
-            if (window.ambientGain && window.isAmbientPlaying) {
-                window.ambientGain.gain.value = 0.5;
+            if (window.ambientAudio && window.isAmbientPlaying) {
+                window.ambientAudio.volume = 0.4;
             }
             
             // Reset iframe to stop playback
@@ -4139,48 +4139,21 @@ ${shareUrl}`;
         window.isAmbientPlaying = false;
         
         ambientBtn.addEventListener('click', () => {
-            if (!window.ambientAudioCtx) {
-                // Usamos Web Audio API para generar un ruido de proyector analógico / viento infinito (¡100% offline y sin descargar archivos!)
-                window.ambientAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                
-                const bufferSize = window.ambientAudioCtx.sampleRate * 2;
-                const buffer = window.ambientAudioCtx.createBuffer(1, bufferSize, window.ambientAudioCtx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = (Math.random() * 2 - 1) * 0.05; // ruido blanco de fondo suave
-                    if (Math.random() < 0.005) { 
-                        data[i] = (Math.random() * 2 - 1) * 0.6; // crujido de película analógica (pop/crackle)
-                    }
-                }
-                
-                window.ambientSource = window.ambientAudioCtx.createBufferSource();
-                window.ambientSource.buffer = buffer;
-                window.ambientSource.loop = true;
-                
-                // Filtro para que suene oscuro y vintage, como un rumor nocturno / proyector de fondo
-                window.ambientFilter = window.ambientAudioCtx.createBiquadFilter();
-                window.ambientFilter.type = 'lowpass';
-                window.ambientFilter.frequency.value = 800;
-                
-                window.ambientGain = window.ambientAudioCtx.createGain();
-                window.ambientGain.gain.value = 0.5;
-                
-                window.ambientSource.connect(window.ambientFilter);
-                window.ambientFilter.connect(window.ambientGain);
-                window.ambientGain.connect(window.ambientAudioCtx.destination);
-                
-                window.ambientSource.start();
-                window.ambientAudioCtx.suspend(); // Empieza pausado
+            if (!window.ambientAudio) {
+                // Audio local (asegúrate de subir 'ambient.mp3' a la carpeta assets/audio/)
+                window.ambientAudio = new Audio('assets/audio/ambient.mp3');
+                window.ambientAudio.loop = true;
+                window.ambientAudio.volume = 0.4;
             }
             
             if (window.isAmbientPlaying) {
-                window.ambientAudioCtx.suspend();
+                window.ambientAudio.pause();
                 ambientBtn.innerHTML = '🔇 ASMR';
                 ambientBtn.style.color = 'var(--text-color)';
                 ambientBtn.style.borderColor = 'var(--border-color)';
                 window.isAmbientPlaying = false;
             } else {
-                window.ambientAudioCtx.resume();
+                window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
                 ambientBtn.innerHTML = '🔊 ASMR';
                 ambientBtn.style.color = 'var(--primary-color)';
                 ambientBtn.style.borderColor = 'var(--primary-color)';
