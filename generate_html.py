@@ -265,13 +265,15 @@ def main():
         
         .header-subtitle-edition {{
             font-family: 'Barlow Condensed', sans-serif;
-            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-            font-weight: 600;
-            font-style: italic;
-            letter-spacing: 0.06em;
+            font-size: clamp(2.5rem, 5vw, 4.2rem);
+            font-weight: 800;
+            letter-spacing: 0.02em;
             text-transform: uppercase;
             color: var(--accent);
+            margin-top: -0.1em;
             margin-bottom: 1.5rem;
+            line-height: 1;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }}
         
         .subtitle {{
@@ -1654,7 +1656,7 @@ def main():
             </div>
             
             <h1>Embriagados<br>de humor</h1>
-            <p class="header-subtitle-edition">América y la comedia &mdash; 3&ordf; edición</p>
+            <h2 class="header-subtitle-edition">América y la comedia</h2>
             
             <p class="subtitle">Un recorrido por la comedia producida en América. Mockumentaries, clásicos incúnables, cine político y de autor. Películas donde la personalidad triunfa y el placer campa a sus anchas.</p>
             
