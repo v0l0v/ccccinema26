@@ -109,6 +109,26 @@
             transform: rotate(0deg) scale(1.03);
         }
         
+        .download-program-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.7;
+            transition: all 0.2s ease;
+        }
+
+        .download-program-link:hover {
+            opacity: 1;
+            color: var(--cream);
+            transform: translateY(-2px);
+        }
+        
         .header-eyebrow {
             display: flex;
             align-items: center;
@@ -1578,8 +1598,12 @@
             </div>
         </div>
         
-        <div class="header-poster" style="cursor: pointer;" onclick="openPosterModal()">
-            <img src="poster.png" alt="Cartel oficial CCCC Cinema d'Estiu 2026" title="Ver cartel en grande">
+        <div class="header-poster">
+            <img src="poster.png" alt="Cartel oficial CCCC Cinema d'Estiu 2026" title="Ver cartel en grande" style="cursor: pointer;" onclick="openPosterModal()">
+            <a href="CCCC-CINEMA-ESTIU-2026-CAS.pdf" target="_blank" class="download-program-link" title="Descargar programa en PDF">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Descargar programa
+            </a>
         </div>
     </header>
 
