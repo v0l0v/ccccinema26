@@ -302,43 +302,30 @@
             sweepOsc.stop(t + dur);
         }
 
-        function triggerJump() {
+        function triggerDirectionalJump(direction) {
             if (isWarpSpeed) return;
-            
-            let nx = normMouseX; // -1 a 1 (Izquierda a Derecha)
-            let ny = normMouseY; // -1 a 1 (Abajo a Arriba)
-            
-            // Calculamos la distancia para definir las 6 zonas de la pantalla
-            let maxDist = Math.max(Math.abs(nx), Math.abs(ny));
-            let minDist = Math.min(Math.abs(nx), Math.abs(ny));
             
             warpTargetX = 0; warpTargetY = 0; warpTargetZ = 0;
             const dist = 2800; // Distancia a la cara del "cubo"
 
-            if (maxDist < 0.25) {
-                warpTargetZ = -dist; // Adelante (Centro)
+            if (direction === 'up') {
+                warpTargetY = dist;
+                pendingWorldIndex = navMap[currentWorld].up;
+            } else if (direction === 'down') {
+                warpTargetY = -dist;
+                pendingWorldIndex = navMap[currentWorld].down;
+            } else if (direction === 'left') {
+                warpTargetX = -dist;
+                pendingWorldIndex = navMap[currentWorld].left;
+            } else if (direction === 'right') {
+                warpTargetX = dist;
+                pendingWorldIndex = navMap[currentWorld].right;
+            } else if (direction === 'center') {
+                warpTargetZ = -dist;
                 pendingWorldIndex = navMap[currentWorld].center;
-            } else if (minDist > 0.75) {
-                warpTargetZ = dist; // Atrás (Solo en las 4 esquinas extremas)
+            } else if (direction === 'edges') {
+                warpTargetZ = dist;
                 pendingWorldIndex = navMap[currentWorld].edges;
-            } else {
-                if (Math.abs(nx) > Math.abs(ny)) {
-                    if (nx > 0) {
-                        warpTargetX = dist; // Derecha
-                        pendingWorldIndex = navMap[currentWorld].right;
-                    } else {
-                        warpTargetX = -dist; // Izquierda
-                        pendingWorldIndex = navMap[currentWorld].left;
-                    }
-                } else {
-                    if (ny > 0) {
-                        warpTargetY = dist; // Arriba
-                        pendingWorldIndex = navMap[currentWorld].up;
-                    } else {
-                        warpTargetY = -dist; // Abajo
-                        pendingWorldIndex = navMap[currentWorld].down;
-                    }
-                }
             }
             
             if (pendingWorldIndex === currentWorld) {
@@ -355,9 +342,45 @@
             playWarpSound(3.5);
         }
 
+        function triggerJump() {
+            let nx = normMouseX; // -1 a 1 (Izquierda a Derecha)
+            let ny = normMouseY; // -1 a 1 (Abajo a Arriba)
+            
+            // Calculamos la distancia para definir las 6 zonas de la pantalla
+            let maxDist = Math.max(Math.abs(nx), Math.abs(ny));
+            let minDist = Math.min(Math.abs(nx), Math.abs(ny));
+
+            if (maxDist < 0.25) {
+                triggerDirectionalJump('center');
+            } else if (minDist > 0.75) {
+                triggerDirectionalJump('edges');
+            } else {
+                if (Math.abs(nx) > Math.abs(ny)) {
+                    if (nx > 0) triggerDirectionalJump('right');
+                    else triggerDirectionalJump('left');
+                } else {
+                    if (ny > 0) triggerDirectionalJump('up');
+                    else triggerDirectionalJump('down');
+                }
+            }
+        }
+
         document.addEventListener('dblclick', () => {
             initAudio();
             triggerJump();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            initAudio();
+            if (isWarpSpeed) return;
+            
+            if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') triggerDirectionalJump('up');
+            else if (event.key === 'ArrowDown' || event.key === 's' || event.key === 'S') triggerDirectionalJump('down');
+            else if (event.key === 'ArrowLeft' || event.key === 'a' || event.key === 'A') triggerDirectionalJump('left');
+            else if (event.key === 'ArrowRight' || event.key === 'd' || event.key === 'D') triggerDirectionalJump('right');
+            else if (event.key === 'Enter' || event.key === ' ') {
+                if (portal.visible) changeWorld(pendingWorldIndex);
+            }
         });
 
         // Generar un sistema de partículas (15,000 puntos)
