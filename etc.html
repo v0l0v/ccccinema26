@@ -23,6 +23,7 @@
             text-align: center;
             pointer-events: none;
             z-index: 10;
+            transition: opacity 0.5s ease;
         }
         h1 {
             font-size: clamp(3rem, 10vw, 8rem);
@@ -230,6 +231,8 @@
                 warpTargetX = 0; warpTargetY = 0; warpTargetZ = 1200; 
                 pendingWorldIndex = -1;
             }
+
+            document.getElementById('ui').style.opacity = '0';
 
             isWarpSpeed = true;
             warpTimer = 3.5; 
@@ -494,6 +497,8 @@
                             cameraBaseZ * 0.8
                         );
                         portal.visible = true;
+                    } else if (pendingWorldIndex === -1) {
+                        document.getElementById('ui').style.opacity = '1';
                     }
                 }
             } else {
