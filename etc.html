@@ -147,18 +147,19 @@
             color: #ccc;
         }
         /* Modal AURA Transmission */
-        #aura-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s ease; }
-        #aura-modal-content { position: relative; width: 80vw; height: 80vh; border-radius: 20px; overflow: hidden; border: 1px solid rgba(0, 238, 255, 0.3); box-shadow: 0 0 50px rgba(0, 238, 255, 0.2); display: flex; flex-direction: column; justify-content: center; align-items: center; transform: scale(0); opacity: 0; }
-        #aura-modal-content.portal-open { animation: portalOpen 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        #aura-modal-content.portal-close { animation: portalClose 0.6s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards; }
+        #aura-modal, #aura-video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); justify-content: center; align-items: center; opacity: 0; transition: opacity 0.5s ease; }
+        #aura-modal-content, #aura-video-modal-content { position: relative; width: 80vw; height: 80vh; border-radius: 20px; overflow: hidden; border: 1px solid rgba(0, 238, 255, 0.3); box-shadow: 0 0 50px rgba(0, 238, 255, 0.2); display: flex; flex-direction: column; justify-content: center; align-items: center; transform: scale(0); opacity: 0; background: #000; }
+        #aura-modal-content.portal-open, #aura-video-modal-content.portal-open { animation: portalOpen 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        #aura-modal-content.portal-close, #aura-video-modal-content.portal-close { animation: portalClose 0.6s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards; }
         #aura-modal-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.15; mix-blend-mode: screen; }
+        #aura-video-player { width: 100%; height: 100%; object-fit: cover; z-index: 1; border-radius: 20px; }
         .crt-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 6px 100%; pointer-events: none; }
         .vignette { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; background: radial-gradient(circle, transparent 50%, #000 120%); pointer-events: none; }
         .modal-text-content { position: relative; z-index: 5; text-align: center; }
         .signal-text { font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; letter-spacing: 0.5rem; margin: 0; text-transform: uppercase; text-shadow: 0 0 10px rgba(255,255,255,0.5), 2px 2px 0px rgba(255, 0, 85, 0.5), -2px -2px 0px rgba(0, 238, 255, 0.5); animation: glitch 2s infinite linear alternate-reverse; }
         .sub-text { font-size: 1.2rem; font-weight: 300; letter-spacing: 0.3rem; margin-top: 1rem; opacity: 0.7; text-transform: uppercase; animation: blink 3s infinite; }
-        #close-aura-modal { position: absolute; top: 20px; right: 20px; z-index: 10; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; font-family: 'Outfit', sans-serif; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; }
-        #close-aura-modal:hover { background: rgba(255,255,255,0.2); border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.3); }
+        .close-modal-btn { position: absolute; top: 20px; right: 20px; z-index: 10; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; font-family: 'Outfit', sans-serif; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; }
+        .close-modal-btn:hover { background: rgba(255,255,255,0.2); border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.3); }
         @keyframes glitch { 0% { transform: translate(-2px, 2px); } 20% { transform: translate(-2px, 0); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(-2px, -2px); } 80% { transform: translate(-2px, 2px); } 100% { transform: translate(-2px, 2px); } }
         @keyframes blink { 0%, 49%, 100% { opacity: 0.7; } 50%, 99% { opacity: 0.2; } }
         @keyframes portalOpen { 0% { transform: scale(0) rotate(-45deg); filter: hue-rotate(180deg) brightness(5) blur(10px); border-radius: 100%; opacity: 0; } 40% { transform: scale(1.1) rotate(10deg); filter: hue-rotate(90deg) brightness(2) blur(5px); border-radius: 40%; opacity: 1; } 100% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg) brightness(1) blur(0px); border-radius: 20px; opacity: 1; } }
@@ -167,7 +168,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&display=swap" rel="stylesheet">
     <div id="aura-modal">
         <div id="aura-modal-content">
-            <button id="close-aura-modal" onclick="closeAuraModal()">CERRAR TRANSMISIÓN</button>
+            <button class="close-modal-btn" onclick="closeAuraModal()">CERRAR TRANSMISIÓN</button>
             <canvas id="aura-modal-canvas"></canvas>
             <div class="crt-overlay"></div>
             <div class="vignette"></div>
@@ -175,6 +176,14 @@
                 <h1 class="signal-text">NO SIGNAL</h1>
                 <p class="sub-text">Buscando frecuencia...</p>
             </div>
+        </div>
+    </div>
+    <div id="aura-video-modal">
+        <div id="aura-video-modal-content">
+            <button class="close-modal-btn" onclick="closeAuraVideoModal()">CERRAR REGISTRO</button>
+            <video id="aura-video-player" src="auraii.mp4" controls loop playsinline></video>
+            <div class="crt-overlay" style="opacity: 0.3;"></div>
+            <div class="vignette" style="opacity: 0.5;"></div>
         </div>
     </div>
 
@@ -255,6 +264,34 @@
                     auraAudioCtx.suspend();
                 }
             }, 500);
+        function openAuraVideoModal() {
+            const modal = document.getElementById('aura-video-modal');
+            const content = document.getElementById('aura-video-modal-content');
+            modal.style.display = 'flex';
+            void modal.offsetWidth;
+            modal.style.opacity = '1';
+            
+            content.classList.remove('portal-close');
+            content.classList.add('portal-open');
+            
+            const player = document.getElementById('aura-video-player');
+            player.play();
+        }
+
+        function closeAuraVideoModal() {
+            const modal = document.getElementById('aura-video-modal');
+            const content = document.getElementById('aura-video-modal-content');
+            
+            content.classList.remove('portal-open');
+            content.classList.add('portal-close');
+            
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                const player = document.getElementById('aura-video-player');
+                player.pause();
+                player.currentTime = 0;
+            }, 500);
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -267,7 +304,7 @@
         <p id="world-desc">LABORATORIO VISUAL</p>
         <div id="aura-links">
             <a href="#" onclick="openAuraModal(); return false;" class="aura-link">Ver Transmisión</a>
-            <a href="#" class="aura-link">Enlace Derecho</a>
+            <a href="#" onclick="openAuraVideoModal(); return false;" class="aura-link">Ver Registro</a>
         </div>
     </div>
     
