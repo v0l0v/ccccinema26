@@ -188,7 +188,92 @@
         
         let pendingWorldIndex = -1;
         
-        document.addEventListener('dblclick', () => {
+        // --- MOTOR DE AUDIO PROCEDURAL (Web Audio API) ---
+        let audioCtx, droneOsc, droneFilter, droneGain;
+        let isAudioInit = false;
+
+        function initAudio() {
+            if (isAudioInit) return;
+            isAudioInit = true;
+            
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            
+            droneOsc = audioCtx.createOscillator();
+            droneFilter = audioCtx.createBiquadFilter();
+            droneGain = audioCtx.createGain();
+            
+            droneOsc.type = 'sawtooth';
+            droneOsc.frequency.setValueAtTime(55, audioCtx.currentTime); 
+            
+            droneFilter.type = 'lowpass';
+            droneFilter.frequency.setValueAtTime(200, audioCtx.currentTime);
+            
+            droneGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            droneGain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 2);
+            
+            droneOsc.connect(droneFilter);
+            droneFilter.connect(droneGain);
+            droneGain.connect(audioCtx.destination);
+            
+            droneOsc.start();
+            updateAudioForWorld(worldPalettes[currentWorld]);
+        }
+        
+        function updateAudioForWorld(w) {
+            if (!audioCtx) return;
+            const t = audioCtx.currentTime;
+            
+            if (w.type === 'neon') {
+                droneOsc.type = 'square';
+                droneOsc.frequency.linearRampToValueAtTime(110, t + 1);
+                droneFilter.frequency.linearRampToValueAtTime(800, t + 1);
+            } else if (w.type === 'aura') {
+                droneOsc.type = 'triangle';
+                droneOsc.frequency.linearRampToValueAtTime(130.81, t + 1); 
+                droneFilter.frequency.linearRampToValueAtTime(1200, t + 1);
+            } else if (w.type === 'fire') {
+                droneOsc.type = 'sawtooth';
+                droneOsc.frequency.linearRampToValueAtTime(32.7, t + 1); 
+                droneFilter.frequency.linearRampToValueAtTime(150, t + 1);
+            } else if (w.type === 'terra') {
+                droneOsc.type = 'sine';
+                droneOsc.frequency.linearRampToValueAtTime(82.41, t + 1); 
+                droneFilter.frequency.linearRampToValueAtTime(400, t + 1);
+            } else if (w.type === 'toxic') {
+                droneOsc.type = 'sawtooth';
+                droneOsc.frequency.linearRampToValueAtTime(73.42, t + 1); 
+                droneFilter.frequency.linearRampToValueAtTime(300, t + 1);
+            } else if (w.type === 'ice') {
+                droneOsc.type = 'sine';
+                droneOsc.frequency.linearRampToValueAtTime(261.63, t + 1); 
+                droneFilter.frequency.linearRampToValueAtTime(1000, t + 1);
+            }
+        }
+
+        function playWarpSound(dur) {
+            if (!audioCtx) return;
+            const t = audioCtx.currentTime;
+            
+            const sweepOsc = audioCtx.createOscillator();
+            const sweepGain = audioCtx.createGain();
+            
+            sweepOsc.type = 'sine';
+            sweepOsc.frequency.setValueAtTime(1200, t);
+            sweepOsc.frequency.exponentialRampToValueAtTime(40, t + dur);
+            
+            sweepGain.gain.setValueAtTime(0, t);
+            sweepGain.gain.linearRampToValueAtTime(0.3, t + 0.1);
+            sweepGain.gain.exponentialRampToValueAtTime(0.01, t + dur);
+            
+            sweepOsc.connect(sweepGain);
+            sweepGain.connect(audioCtx.destination);
+            
+            sweepOsc.start(t);
+            sweepOsc.stop(t + dur);
+        }
+
+        function triggerJump() {
             if (isWarpSpeed) return;
             
             let nx = normMouseX; // -1 a 1 (Izquierda a Derecha)
@@ -238,6 +323,12 @@
             isWarpSpeed = true;
             warpTimer = 3.5; 
             portal.visible = false;
+            playWarpSound(3.5);
+        }
+
+        document.addEventListener('dblclick', () => {
+            initAudio();
+            triggerJump();
         });
 
         // Generar un sistema de partículas (15,000 puntos)
@@ -421,6 +512,7 @@
         const mouseVector = new THREE.Vector2();
 
         document.addEventListener('click', (event) => {
+            initAudio();
             if (!portal.visible) return;
             
             // Reutilizamos normMouseX y normMouseY del event listener de movimiento
@@ -447,7 +539,11 @@
             warpTargetZ = 1200; // Volvemos al centro
             pendingWorldIndex = -1;
 
+            playWarpSound(2.0);
+
             const w = worldPalettes[currentWorld];
+            updateAudioForWorld(w);
+            
             scene.fog.color.setHex(w.bg);
             document.body.style.backgroundColor = '#' + w.bg.toString(16).padStart(6, '0');
             document.getElementById('world-title').innerText = w.name;
@@ -587,16 +683,42 @@
             planetInfo.style.left = event.clientX + 'px';
             planetInfo.style.top = event.clientY + 'px';
         }
+        let lastTapTime = 0;
         function onDocumentTouchStart(event) {
+            initAudio();
             if (event.touches.length === 1) {
+                const now = new Date().getTime();
+                const timeDiff = now - lastTapTime;
+                
                 mouseX = event.touches[0].pageX - windowHalfX;
                 mouseY = event.touches[0].pageY - windowHalfY;
+                normMouseX = (event.touches[0].pageX / window.innerWidth) * 2 - 1;
+                normMouseY = -(event.touches[0].pageY / window.innerHeight) * 2 + 1;
+                
+                if (timeDiff < 300 && timeDiff > 0) {
+                    // Doble toque en móviles detectado
+                    triggerJump();
+                } else {
+                    // Toque simple, intentamos hacer clic en el portal
+                    if (portal.visible) {
+                        mouseVector.x = normMouseX;
+                        mouseVector.y = normMouseY;
+                        raycaster.setFromCamera(mouseVector, camera);
+                        const intersects = raycaster.intersectObject(portal);
+                        if (intersects.length > 0) {
+                            changeWorld(pendingWorldIndex);
+                        }
+                    }
+                }
+                lastTapTime = now;
             }
         }
         function onDocumentTouchMove(event) {
             if (event.touches.length === 1) {
                 mouseX = event.touches[0].pageX - windowHalfX;
                 mouseY = event.touches[0].pageY - windowHalfY;
+                normMouseX = (event.touches[0].pageX / window.innerWidth) * 2 - 1;
+                normMouseY = -(event.touches[0].pageY / window.innerHeight) * 2 + 1;
             }
         }
         window.addEventListener('resize', () => {
