@@ -26,6 +26,31 @@
             opacity: 1;
             transition: opacity 0.5s ease;
         }
+        #aura-links {
+            display: none;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            pointer-events: auto;
+        }
+        .aura-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            padding: 10px 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            text-transform: uppercase;
+        }
+        .aura-link:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
         h1 {
             font-size: clamp(3rem, 10vw, 8rem);
             letter-spacing: clamp(0.5rem, 2vw, 2rem);
@@ -132,6 +157,10 @@
     <div id="ui">
         <h1 id="world-title"></h1>
         <p>LABORATORIO VISUAL</p>
+        <div id="aura-links">
+            <a href="#" class="aura-link">Enlace Izquierdo</a>
+            <a href="#" class="aura-link">Enlace Derecho</a>
+        </div>
     </div>
     
     <div id="planet-info">
@@ -350,6 +379,7 @@
         let currentWorld = Math.floor(Math.random() * 6);
         const initW = worldPalettes[currentWorld];
         document.getElementById('world-title').innerText = initW.name;
+        document.getElementById('aura-links').style.display = initW.name === "AURA II" ? 'flex' : 'none';
         document.body.style.backgroundColor = '#' + initW.bg.toString(16).padStart(6, '0');
         scene.fog.color.setHex(initW.bg);
 
@@ -547,6 +577,7 @@
             scene.fog.color.setHex(w.bg);
             document.body.style.backgroundColor = '#' + w.bg.toString(16).padStart(6, '0');
             document.getElementById('world-title').innerText = w.name;
+            document.getElementById('aura-links').style.display = w.name === "AURA II" ? 'flex' : 'none';
             
             // Actualizar textura del núcleo al nuevo planeta
             coreMat.map = createPlanetTexture(w);
