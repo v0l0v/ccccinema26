@@ -4237,28 +4237,22 @@ ${shareUrl}`;
             
             tick();
         }
-        // Lógica de Sonido Ambiente ASMR
+        // Lógica de So Ambient per hover
         const ambientBtn = document.getElementById('ambient-audio-btn');
         window.ambientAudio = null;
         window.isAmbientPlaying = false;
-        
-        ambientBtn.addEventListener('click', () => {
+
+        function initAmbientAudio() {
             if (!window.ambientAudio) {
-                // Audio local (asegúrate de subir 'asmrcccc.mp3' a la carpeta assets/audio/)
                 window.ambientAudio = new Audio('assets/audio/asmrcccc.mp3');
                 window.ambientAudio.loop = true;
                 window.ambientAudio.volume = 0.4;
             }
-            
-            if (window.isAmbientPlaying) {
-                window.ambientAudio.pause();
-                ambientBtn.innerHTML = 'Escoltar So Ambient';
-                ambientBtn.style.color = 'var(--text-muted)';
-                ambientBtn.style.borderColor = 'rgba(210, 44, 54, 0.2)';
-                ambientBtn.style.background = 'rgba(210, 44, 54, 0.08)';
-                ambientBtn.style.boxShadow = 'none';
-                window.isAmbientPlaying = false;
-            } else {
+        }
+
+        function playAmbient() {
+            initAmbientAudio();
+            if (!window.isAmbientPlaying) {
                 window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
                 ambientBtn.innerHTML = 'Silenciar So Ambient';
                 ambientBtn.style.color = 'var(--accent)';
@@ -4267,7 +4261,23 @@ ${shareUrl}`;
                 ambientBtn.style.boxShadow = '0 0 14px var(--accent-glow)';
                 window.isAmbientPlaying = true;
             }
-        });
+        }
+
+        function pauseAmbient() {
+            initAmbientAudio();
+            if (window.isAmbientPlaying) {
+                window.ambientAudio.pause();
+                ambientBtn.innerHTML = 'Escoltar So Ambient';
+                ambientBtn.style.color = 'var(--text-muted)';
+                ambientBtn.style.borderColor = 'rgba(210, 44, 54, 0.2)';
+                ambientBtn.style.background = 'rgba(210, 44, 54, 0.08)';
+                ambientBtn.style.boxShadow = 'none';
+                window.isAmbientPlaying = false;
+            }
+        }
+
+        ambientBtn.addEventListener('mouseenter', playAmbient);
+        ambientBtn.addEventListener('mouseleave', pauseAmbient);
         
         // Easter Egg: Planta Bailarina
         let easterEggSequence = "planta";

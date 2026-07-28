@@ -2661,19 +2661,34 @@ def main():
             
             tick();
         }}
-        // Lógica de Sonido Ambiente ASMR
+        // Lógica de Sonido Ambiente por hover
         const ambientBtn = document.getElementById('ambient-audio-btn');
         window.ambientAudio = null;
         window.isAmbientPlaying = false;
-        
-        ambientBtn.addEventListener('click', () => {{
+
+        function initAmbientAudio() {{
             if (!window.ambientAudio) {{
-                // Audio local (asegúrate de subir 'asmrcccc.mp3' a la carpeta assets/audio/)
                 window.ambientAudio = new Audio('assets/audio/asmrcccc.mp3');
                 window.ambientAudio.loop = true;
                 window.ambientAudio.volume = 0.4;
             }}
-            
+        }}
+
+        function playAmbient() {{
+            initAmbientAudio();
+            if (!window.isAmbientPlaying) {{
+                window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
+                ambientBtn.innerHTML = 'Silenciar Sonido Ambiente';
+                ambientBtn.style.color = 'var(--accent)';
+                ambientBtn.style.borderColor = 'var(--accent)';
+                ambientBtn.style.background = 'rgba(210, 44, 54, 0.2)';
+                ambientBtn.style.boxShadow = '0 0 14px var(--accent-glow)';
+                window.isAmbientPlaying = true;
+            }}
+        }}
+
+        function pauseAmbient() {{
+            initAmbientAudio();
             if (window.isAmbientPlaying) {{
                 window.ambientAudio.pause();
                 ambientBtn.innerHTML = 'Escuchar Sonido Ambiente';
@@ -2682,18 +2697,11 @@ def main():
                 ambientBtn.style.background = 'rgba(210, 44, 54, 0.08)';
                 ambientBtn.style.boxShadow = 'none';
                 window.isAmbientPlaying = false;
-            }} else {{
-                window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
-                ambientBtn.innerHTML = 'Silenciar Sonido Ambiente';
-                ambientBtn.style.color = 'var(--accent)';
-                ambientBtn.style.borderColor = 'var(--accent)';
-                ambientBtn.style.background = 'rgba(210, 44, 54, 0.2)';
-                ambientBtn.style.boxShadow = '0 0 14px var(--accent-glow)';
-                ambientBtn.style.color = 'var(--primary-color)';
-                ambientBtn.style.borderColor = 'var(--primary-color)';
-                window.isAmbientPlaying = true;
             }}
-        }});
+        }}
+
+        ambientBtn.addEventListener('mouseenter', playAmbient);
+        ambientBtn.addEventListener('mouseleave', pauseAmbient);
         
         // Easter Egg: Planta Bailarina
         let easterEggSequence = "planta";
