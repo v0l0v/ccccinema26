@@ -1673,7 +1673,7 @@
                 <span class="header-tag">CCCCinema d&#39;Estiu 2026</span>
                 <div class="lang-switcher">
                     <a href="index.html">CAS</a> <span style="color:var(--border-color)">|</span> <span class="active">VAL</span>
-                    <button id="ambient-audio-btn" class="ambient-btn" aria-label="So ambiental">So ambiental OFF</button>
+                    <button id="ambient-audio-btn" class="ambient-btn" aria-label="So ambiental">Escoltar So Ambient</button>
                 </div>
             </div>
             
@@ -4252,19 +4252,19 @@ ${shareUrl}`;
             
             if (window.isAmbientPlaying) {
                 window.ambientAudio.pause();
-                ambientBtn.innerHTML = 'So ambiental OFF';
-                ambientBtn.style.color = 'var(--text-muted)';
-                ambientBtn.style.borderColor = 'rgba(210, 44, 54, 0.2)';
-                ambientBtn.style.background = 'rgba(210, 44, 54, 0.08)';
-                ambientBtn.style.boxShadow = 'none';
-                window.isAmbientPlaying = false;
-            } else {
-                window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
-                ambientBtn.innerHTML = 'So ambiental ON';
+                ambientBtn.innerHTML = 'Silenciar So Ambient';
                 ambientBtn.style.color = 'var(--accent)';
                 ambientBtn.style.borderColor = 'var(--accent)';
                 ambientBtn.style.background = 'rgba(210, 44, 54, 0.2)';
                 ambientBtn.style.boxShadow = '0 0 14px var(--accent-glow)';
+                window.isAmbientPlaying = false;
+            } else {
+                window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
+                ambientBtn.innerHTML = 'Escoltar So Ambient';
+                ambientBtn.style.color = 'var(--text-muted)';
+                ambientBtn.style.borderColor = 'rgba(210, 44, 54, 0.2)';
+                ambientBtn.style.background = 'rgba(210, 44, 54, 0.08)';
+                ambientBtn.style.boxShadow = 'none';
                 window.isAmbientPlaying = true;
             }
         });
