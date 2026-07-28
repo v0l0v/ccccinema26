@@ -279,6 +279,17 @@ def main():
             font-size: 0.78rem;
             display: inline-block;
         }}
+
+        .header-tag-link {{
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }}
+
+        .header-tag-link:hover {{
+            color: var(--cream);
+            text-shadow: 0 0 12px rgba(247, 240, 225, 0.5), 0 0 30px rgba(247, 240, 225, 0.2);
+        }}
         
         .lang-switcher {{
             margin-left: auto;
@@ -1791,7 +1802,7 @@ def main():
             <div class="header-eyebrow">
                 <span class="header-logo"><a href="https://www.consorcimuseus.gva.es/centro-del-carmen/?lang=es" target="_blank" class="header-logo-link">CCCC · Centre del Carme</a></span>
                 <div class="header-divider"></div>
-                <span class="header-tag">CCCCinema d&#39;Estiu 2026</span>
+                <span class="header-tag"><a href="https://www.consorcimuseus.gva.es/actividades/ccccinema-destiu-2026/?lang=es&lang=es" target="_blank" class="header-tag-link">CCCCinema d&#39;Estiu 2026</a></span>
                 <div class="lang-switcher">
                     <a href="index.html">CAS</a> <span style="color:var(--border-color)">|</span> <span class="active">VAL</span>
                     <button id="ambient-audio-btn" class="ambient-btn" aria-label="So ambiental">Escoltar So Ambient</button>
