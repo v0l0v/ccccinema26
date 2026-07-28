@@ -1779,7 +1779,7 @@ def main():
                 <span class="header-tag">CCCCinema d&#39;Estiu 2026</span>
                 <div class="lang-switcher">
                     <a href="index.html">CAS</a> <span style="color:var(--border-color)">|</span> <span class="active">VAL</span>
-                    <button id="ambient-audio-btn" class="ambient-btn" aria-label="So ambiental">♫ Ambient</button>
+                    <button id="ambient-audio-btn" class="ambient-btn" aria-label="So ambiental">So ambiental OFF</button>
                 </div>
             </div>
             
@@ -2672,13 +2672,13 @@ def main():
             
             if (window.isAmbientPlaying) {{
                 window.ambientAudio.pause();
-                ambientBtn.innerHTML = '♫ Ambient';
+                ambientBtn.innerHTML = 'So ambiental OFF';
                 ambientBtn.style.color = 'var(--text-color)';
                 ambientBtn.style.borderColor = 'var(--border-color)';
                 window.isAmbientPlaying = false;
             }} else {{
                 window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
-                ambientBtn.innerHTML = '♫ Ambient';
+                ambientBtn.innerHTML = 'So ambiental ON';
                 ambientBtn.style.color = 'var(--primary-color)';
                 ambientBtn.style.borderColor = 'var(--primary-color)';
                 window.isAmbientPlaying = true;
