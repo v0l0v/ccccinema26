@@ -1800,9 +1800,9 @@ def main():
     <header>
         <div class="header-content">
             <div class="header-eyebrow">
-                <span class="header-logo"><a href="https://www.consorcimuseus.gva.es/centro-del-carmen/?lang=es" target="_blank" class="header-logo-link">CCCC · Centre del Carme</a></span>
+                <span class="header-logo"><a href="https://www.consorcimuseus.gva.es/centro-del-carmen/" target="_blank" class="header-logo-link">CCCC · Centre del Carme</a></span>
                 <div class="header-divider"></div>
-                <span class="header-tag"><a href="https://www.consorcimuseus.gva.es/actividades/ccccinema-destiu-2026/?lang=es&lang=es" target="_blank" class="header-tag-link">CCCCinema d&#39;Estiu 2026</a></span>
+                <span class="header-tag"><a href="https://www.consorcimuseus.gva.es/actividades/ccccinema-destiu-2026/" target="_blank" class="header-tag-link">CCCCinema d&#39;Estiu 2026</a></span>
                 <div class="lang-switcher">
                     <a href="index.html">CAS</a> <span style="color:var(--border-color)">|</span> <span class="active">VAL</span>
                     <button id="ambient-audio-btn" class="ambient-btn" aria-label="So ambiental">Escoltar So Ambient</button>
