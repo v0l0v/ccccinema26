@@ -1334,6 +1334,22 @@ def main():
             border-top: 1px solid rgba(255,255,255,0.06);
             padding-top: 1.5rem;
         }}
+
+        .credits-section {{
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 1.5rem;
+        }}
+
+        .credits-reel {{
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+        }}
+
+        .credits-reel .credit-line {{
+            margin: 0;
+            padding: 0.1rem 0;
+        }}
         
         .resources-buttons {{
             display: flex;
@@ -1893,6 +1909,11 @@ def main():
                     
                     <!-- Right side: Synopsis, Genres, Tech Spec -->
                     <div class="modal-main-content">
+                        <div class="modal-section credits-section" id="modal-credits-section">
+                            <h4 class="section-title">Fitxa tècnica</h4>
+                            <div class="credits-reel" id="modal-credits"></div>
+                        </div>
+
                         <div class="modal-section">
                             <h4 class="section-title">Sinopsi</h4>
                             <p class="modal-synopsis" id="modal-synopsis"></p>
@@ -1901,17 +1922,6 @@ def main():
                         <div class="modal-section">
                             <h4 class="section-title">Gèneres</h4>
                             <div class="genres-container" id="modal-genres"></div>
-                        </div>
-                        
-                        <div class="modal-section-grid">
-                            <div class="modal-section">
-                                <h4 class="section-title">Director(s)</h4>
-                                <p class="spec-value-large" id="modal-directors"></p>
-                            </div>
-                            <div class="modal-section">
-                                <h4 class="section-title">Repartiment Principal</h4>
-                                <p class="spec-value-large" id="modal-cast"></p>
-                            </div>
                         </div>
                         
                         <div class="modal-section resources-section" id="modal-ticket-preview-container">
@@ -2190,9 +2200,20 @@ def main():
             const genresContainer = document.getElementById('modal-genres');
             genresContainer.innerHTML = movie.genres.map(g => `<span class="genre-badge" onclick="closeModalAndFilterGenre('${{g}}')">${{g}}</span>`).join('');
             
-            // Directors & Cast
-            document.getElementById('modal-directors').innerText = movie.directors.join(', ') || 'No disponible';
-            document.getElementById('modal-cast').innerText = movie.cast.join(', ') || 'No disponible';
+            // Credits / Fitxa tècnica
+            const creditsText = movie.credits_text;
+            const creditsEl = document.getElementById('modal-credits');
+            const creditsSection = document.getElementById('modal-credits-section');
+            if (creditsText && creditsText.trim()) {{
+                creditsSection.style.display = '';
+                const lines = creditsText.split('\\n').filter(l => l.trim());
+                creditsEl.innerHTML = lines.map(line => {{
+                    const safe = line.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    return `<p class="credit-line">${{safe}}</p>`;
+                }}).join('');
+            }} else {{
+                creditsSection.style.display = 'none';
+            }}
             
             // Meta pills values & Links
             document.getElementById('modal-year').innerText = movie.year;
