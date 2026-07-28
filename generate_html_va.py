@@ -2687,10 +2687,10 @@ def main():
             }} else {{
                 window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
                 ambientBtn.innerHTML = 'Silenciar So Ambient';
-                ambientBtn.style.color = 'var(--accent)';
+                ambientBtn.style.color = '#fff';
                 ambientBtn.style.borderColor = 'var(--accent)';
-                ambientBtn.style.background = 'rgba(210, 44, 54, 0.2)';
-                ambientBtn.style.boxShadow = '0 0 14px var(--accent-glow)';
+                ambientBtn.style.background = 'rgba(210, 44, 54, 0.25)';
+                ambientBtn.style.boxShadow = '0 0 18px var(--accent-glow)';
                 window.isAmbientPlaying = true;
             }}
         }});
