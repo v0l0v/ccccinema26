@@ -247,7 +247,7 @@ def main():
         }}
         
         .header-logo {{
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 800;
             letter-spacing: 0.12rem;
             color: var(--text-muted);
