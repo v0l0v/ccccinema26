@@ -2661,7 +2661,7 @@ def main():
             
             tick();
         }}
-        // Lógica de So Ambient per hover
+        // Lógica de So Ambient
         const ambientBtn = document.getElementById('ambient-audio-btn');
         window.ambientAudio = null;
         window.isAmbientPlaying = false;
@@ -2674,20 +2674,7 @@ def main():
             }}
         }}
 
-        function playAmbient() {{
-            initAmbientAudio();
-            if (!window.isAmbientPlaying) {{
-                window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
-                ambientBtn.innerHTML = 'Silenciar So Ambient';
-                ambientBtn.style.color = 'var(--accent)';
-                ambientBtn.style.borderColor = 'var(--accent)';
-                ambientBtn.style.background = 'rgba(210, 44, 54, 0.2)';
-                ambientBtn.style.boxShadow = '0 0 14px var(--accent-glow)';
-                window.isAmbientPlaying = true;
-            }}
-        }}
-
-        function pauseAmbient() {{
+        ambientBtn.addEventListener('click', () => {{
             initAmbientAudio();
             if (window.isAmbientPlaying) {{
                 window.ambientAudio.pause();
@@ -2697,11 +2684,16 @@ def main():
                 ambientBtn.style.background = 'rgba(210, 44, 54, 0.08)';
                 ambientBtn.style.boxShadow = 'none';
                 window.isAmbientPlaying = false;
+            }} else {{
+                window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
+                ambientBtn.innerHTML = 'Silenciar So Ambient';
+                ambientBtn.style.color = 'var(--accent)';
+                ambientBtn.style.borderColor = 'var(--accent)';
+                ambientBtn.style.background = 'rgba(210, 44, 54, 0.2)';
+                ambientBtn.style.boxShadow = '0 0 14px var(--accent-glow)';
+                window.isAmbientPlaying = true;
             }}
-        }}
-
-        ambientBtn.addEventListener('mouseenter', playAmbient);
-        ambientBtn.addEventListener('mouseleave', pauseAmbient);
+        }});
         
         // Easter Egg: Planta Bailarina
         let easterEggSequence = "planta";
