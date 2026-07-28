@@ -247,7 +247,7 @@ def main():
         }}
         
         .header-logo {{
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 800;
             letter-spacing: 0.12rem;
             color: var(--text-muted);
@@ -262,6 +262,7 @@ def main():
 
         .header-logo-link:hover {{
             color: var(--cream);
+            font-size: 1.1rem;
             text-shadow: 0 0 12px rgba(247, 240, 225, 0.5), 0 0 30px rgba(247, 240, 225, 0.2);
         }}
         
