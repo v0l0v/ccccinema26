@@ -294,22 +294,26 @@ def main():
         }}
         
         .ambient-btn {{
-            background: rgba(11, 15, 25, 0.4);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.8rem;
+            background: rgba(210, 44, 54, 0.08);
+            border: 1px solid rgba(210, 44, 54, 0.2);
+            color: var(--text-muted);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
             cursor: pointer;
             margin-left: 12px;
-            transition: all 0.3s;
-            font-family: 'Space Grotesk', sans-serif;
-            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-weight: 600;
+            letter-spacing: 0.06rem;
             backdrop-filter: blur(4px);
+            text-transform: uppercase;
         }}
         .ambient-btn:hover {{
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(210, 44, 54, 0.15);
+            box-shadow: 0 0 12px var(--accent-glow);
         }}
         
         h1 {{
@@ -2673,12 +2677,18 @@ def main():
             if (window.isAmbientPlaying) {{
                 window.ambientAudio.pause();
                 ambientBtn.innerHTML = 'Sonido ambiente OFF';
-                ambientBtn.style.color = 'var(--text-color)';
-                ambientBtn.style.borderColor = 'var(--border-color)';
+                ambientBtn.style.color = 'var(--text-muted)';
+                ambientBtn.style.borderColor = 'rgba(210, 44, 54, 0.2)';
+                ambientBtn.style.background = 'rgba(210, 44, 54, 0.08)';
+                ambientBtn.style.boxShadow = 'none';
                 window.isAmbientPlaying = false;
             }} else {{
                 window.ambientAudio.play().catch(e => console.error("Error al reproducir:", e));
                 ambientBtn.innerHTML = 'Sonido ambiente ON';
+                ambientBtn.style.color = 'var(--accent)';
+                ambientBtn.style.borderColor = 'var(--accent)';
+                ambientBtn.style.background = 'rgba(210, 44, 54, 0.2)';
+                ambientBtn.style.boxShadow = '0 0 14px var(--accent-glow)';
                 ambientBtn.style.color = 'var(--primary-color)';
                 ambientBtn.style.borderColor = 'var(--primary-color)';
                 window.isAmbientPlaying = true;
