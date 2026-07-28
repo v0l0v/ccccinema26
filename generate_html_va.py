@@ -253,6 +253,17 @@ def main():
             color: var(--text-muted);
             text-transform: uppercase;
         }}
+
+        .header-logo-link {{
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }}
+
+        .header-logo-link:hover {{
+            color: var(--cream);
+            text-shadow: 0 0 12px rgba(247, 240, 225, 0.5), 0 0 30px rgba(247, 240, 225, 0.2);
+        }}
         
         .header-divider {{
             width: 1px;
@@ -1778,7 +1789,7 @@ def main():
     <header>
         <div class="header-content">
             <div class="header-eyebrow">
-                <span class="header-logo">CCCC · Centre del Carme</span>
+                <span class="header-logo"><a href="https://www.consorcimuseus.gva.es/centro-del-carmen/?lang=es" target="_blank" class="header-logo-link">CCCC · Centre del Carme</a></span>
                 <div class="header-divider"></div>
                 <span class="header-tag">CCCCinema d&#39;Estiu 2026</span>
                 <div class="lang-switcher">
